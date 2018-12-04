@@ -1,3 +1,13 @@
+/********************************************************
+*  File : LinkedList.h
+*  Description : A LinkedList implementation, should be
+*  used to store references and pointer as it uses the
+*  NULL value
+*
+*  Author : Romain Fournier romain.fournier.095@gmail.com
+*  4/12/2018
+*/
+
 #ifndef __LinkedList
 #define __LinkedList
 
@@ -15,6 +25,7 @@ class LinkedList {
  private:
 	Node<T>* head;
 	Node<T>* tail;
+	Node<T>* current;
 	int len;
  public:
 	LinkedList();
@@ -23,9 +34,10 @@ class LinkedList {
 	bool RmAt(int i);
 	bool Rm(T data);
 	T Get(int i);
-	T Get();
 	int Lenght();
 	void Print();
+	T Pull();
+	void ResetPull();
  private:
 	void Rm(Node<T>* n);
 };
