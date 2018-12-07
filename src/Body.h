@@ -29,12 +29,14 @@ private:
 	int width;
 	int height;
 	Color color;
+	char ch;
 	Window window;
+	bool solid;
+	bool stationary;
 	static LinkedList<Body> Objects;
 	//Constructors
 public:
 	Body(int x, int y, int heigth, int width, Color color, char ch=' ');
-	Body(int x, int y, float heigth, float width, Color color);
 	//Methods
 public:
 	int GetX ();
@@ -51,8 +53,8 @@ public:
 	void SetColor (color);
 	LinkedList<Body> AllColisions ();
 	bool Collide (Body);
-	int CollideNormal (Body); //0 Left, 1 Top, 2 Right, 3 Bottom
-	void Move ();
+	int CollideNormal (Body); //0 Left, 1 Top, 2 Right, 3 Bottom, -1 No collisions
+	void Update ();
 };
 
 #endif
