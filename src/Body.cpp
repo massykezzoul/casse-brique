@@ -1,4 +1,6 @@
 // Author : Romain Fournier romain.fournier.095@gmail.com
+#include <iostream>
+
 #include "window.h"
 #include "LinkedList.h"
 #include "Body.h"
@@ -7,13 +9,14 @@ using namespace std;
 
 LinkedList<Body>* Body::Objects = new LinkedList<Body>();
 
-Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary), window(height, width, x, y, ch) {
-	if (AllColisions().Lenght() != 0) {//This object overlaps with something
+Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary) {
+	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
-	}
+	}*/
 	Objects->Add(this);
-	window.setCouleurFenetre(color);
+	window = new Window(1, 1, 1, 1, ' ');
+	Draw();
 }
 
 //GETTERS
@@ -29,30 +32,25 @@ int Body::GetHeight () { return height; }
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
 void Body::SetColor (Color c) { color = c; }
-bool Body::SetPosition (int x, int y) { return SetPosition((float)x, (float)y); }
+void Body::SetPosition (int x, int y) { SetPosition((float)x, (float)y); }
 
-bool Body::SetPosition (float nx, float ny) {
-	float tx = GetFX();
-	float ty = GetFY();
+void Body::SetPosition (float nx, float ny) {
 	x = nx;
 	y = ny;
-	if (AllColisions().Lenght() == 0) {
-		return true;
-	}
-	x = tx;
-	y = ty;
-	return false;
 }
 
 bool Body::Collide (Body* b) {
+	if (b == this) {
+		return false;
+	}
 	if (!this->solid || !b->solid) {
 		return false;
 	}
 	float x1, x2, y1, y2 = 0;
 	float bx1, bx2, by1, by2 = 0;
 
-	x1 = GetFX();
-	y1 = GetFY();
+	x1 = GetFX() + GetVelX();
+	y1 = GetFY() + GetVelY();
 	x2 = x1 + GetWidth();
 	y2 = y1 + GetHeight();
 
@@ -61,20 +59,21 @@ bool Body::Collide (Body* b) {
 	bx2 = bx1 + b->GetWidth();
 	by2 = by1 + b->GetHeight();
 
-	if (bx2 <= x1 || bx1 >= x2 || by2 <= y1 || by1 >= y2) {
+	if (x1 > bx2 || x2 < bx1 || y1 > by2 || y2 < by1) {
 		return false;
 	}
+		std::cout << "A" << std::endl;
 	return true;
 }
 
-LinkedList<Body> Body::AllColisions () {
-	LinkedList<Body> ans;
+LinkedList<Body>* Body::AllColisions () {
+	LinkedList<Body>* ans = new LinkedList<Body>();
 	Objects->ResetPull();
 	Body* tmp = Objects->Pull();
 
 	while (tmp != NULL) {
 		if (Collide(tmp)) {
-			ans.Add(tmp);
+			ans->Add(tmp);
 		}
 		tmp = Objects->Pull();
 	}
@@ -82,16 +81,13 @@ LinkedList<Body> Body::AllColisions () {
 }
 
 int Body::CollideNormal (Body* b) {
-	if (!Collide(b)) {
-		return -1;
-	}
-	if (GetFX() > b->GetFX() + b->GetWidth() - 1) {
+	if (GetFX() >= b->GetFX() + b->GetWidth()) {
 		return 2;
 	}
-	if (GetFX() + GetWidth() < b->GetFX() + 1) {
+	if (GetFX() + GetWidth() <= b->GetFX()) {
 		return 0;
 	}
-	if (GetFY() > b->GetFY() + b->GetHeight() - 1) {
+	if (GetFY() >= b->GetFY() + b->GetHeight()) {
 		return 3;
 	}
 	return 1;
@@ -99,17 +95,19 @@ int Body::CollideNormal (Body* b) {
 
 void Body::Update () {
 	if (solid && !stationary) {
-		LinkedList<Body> ll = AllColisions();
-		if (ll.Lenght() != 0) {
-			int normal = CollideNormal(ll.Get(0));
+		LinkedList<Body>* ll = AllColisions();
+		if (ll->Lenght() != 0) {
+			int normal = CollideNormal(ll->Get(0));
+			std::cout << "Normal " << normal << std::endl;
 			if (normal == 0 || normal == 2) {
 				SetVelocity(-GetVelX(), GetVelY());
-				ll.Get(0)->SetVelocity(-ll.Get(0)->GetVelX(), ll.Get(0)->GetVelY());
+				ll->Get(0)->SetVelocity(-ll->Get(0)->GetVelX(), ll->Get(0)->GetVelY());
 			} else {
 				SetVelocity(GetVelX(), -GetVelY());
-				ll.Get(0)->SetVelocity(ll.Get(0)->GetVelX(), -ll.Get(0)->GetVelY());
+				ll->Get(0)->SetVelocity(ll->Get(0)->GetVelX(), -ll->Get(0)->GetVelY());
 			}
 		}
+		delete ll;
 	}
 	if (!stationary) {
 		SetPosition(GetFX() + GetVelX(), GetFY() + GetVelY());
@@ -119,15 +117,16 @@ void Body::Update () {
 
 void Body::AllUpdate () {
 	Objects->ResetPull();
-	Body* b;
-	while ((b = Objects->Pull()) != NULL) {
+	Body* b = Objects->Pull();
+	while (b != NULL) {
 		b->Update();
+		b = Objects->Pull();
 	}
 }
 
 void Body::Draw () {
-	window.~Window();
-	Window w(width, height, x, y, ch);
-	w.setCouleurFenetre(WYELLOW);
-	window = w;
+	delete window;
+	window = new Window(height, width, x, y, ' ');
+	window->setCouleurFenetre(color);
+	window->setCouleurBordure(WBLACK);
 }

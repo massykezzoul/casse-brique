@@ -32,13 +32,13 @@ private:
 	int height;
 	Color color;
 	char ch;
-	Window window;
 	bool solid;
 	bool stationary;
+	Window* window;
 	static LinkedList<Body>* Objects;
 	//Constructors
 public:
-	Body(int x, int y, int heigth, int width, Color color, char ch, bool solid, bool stationary);
+	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary);
 	//~Body();
 	//Methods
 public:
@@ -52,10 +52,10 @@ public:
 	int GetWidth ();
 	int GetHeight ();
 	void SetVelocity (float, float);
-	bool SetPosition (float, float);
-	bool SetPosition (int, int);
+	void SetPosition (float, float);
+	void SetPosition (int, int);
 	void SetColor (Color);
-	LinkedList<Body> AllColisions ();
+	LinkedList<Body>* AllColisions ();
 	bool Collide (Body*);
 	int CollideNormal (Body*); //0 Left, 1 Top, 2 Right, 3 Bottom, -1 No collisions
 	void Update ();

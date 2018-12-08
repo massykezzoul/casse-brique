@@ -4,13 +4,15 @@
 
 int main () {
   startProgramX();
-  Body b(1, 1, 5, 5, WRED, ' ', true, true);
-  Body b2(10, 10, 5, 5, WRED, ' ', true, true);
-  Body c(20, 20, 1, 1, WBLACK, ' ', true, false);
-  c.SetVelocity(1, 1);
+  Body b(0, 0, 1, 40, WRED, ' ', true, true);
+  Body b2(0, 0, 20, 1, WRED, ' ', true, true);
+  Body b3(0, 20, 1, 40, WRED, ' ', true, true);
+  Body b4(40, 0, 20, 1, WRED, ' ', true, true);
+  Body c(10, 10, 1, 1, WRED, ' ', true, false);
+  c.SetVelocity(-0.5f, -0.3f);
   while (1) {
-    sleep(1);
-    c.Update();
+    usleep(10000);
+    Body::AllUpdate();
   }
-  stopProgramX();
+  //stopProgramX();
 }
