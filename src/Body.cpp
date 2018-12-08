@@ -7,9 +7,12 @@
 
 using namespace std;
 
+/* List of all Body */
 LinkedList<Body>* Body::Objects = new LinkedList<Body>();
 
-Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary) {
+/* Creates a Body and adds it into the Objects linked list
+*/
+Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, bool ball): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary), ball(ball) {
 	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
@@ -33,12 +36,10 @@ int Body::GetHeight () { return height; }
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
 void Body::SetColor (Color c) { color = c; }
 void Body::SetPosition (int x, int y) { SetPosition((float)x, (float)y); }
+void Body::SetPosition (float nx, float ny) { x = nx; y = ny; }
 
-void Body::SetPosition (float nx, float ny) {
-	x = nx;
-	y = ny;
-}
-
+/* Checks if this will collide with b at the next frame
+*/
 bool Body::Collide (Body* b) {
 	if (b == this) {
 		return false;
@@ -62,10 +63,11 @@ bool Body::Collide (Body* b) {
 	if (x1 > bx2 || x2 < bx1 || y1 > by2 || y2 < by1) {
 		return false;
 	}
-		std::cout << "A" << std::endl;
 	return true;
 }
 
+/* Returns a linked list of all colisions @ the next frame for this body
+*/
 LinkedList<Body>* Body::AllColisions () {
 	LinkedList<Body>* ans = new LinkedList<Body>();
 	Objects->ResetPull();
@@ -80,6 +82,8 @@ LinkedList<Body>* Body::AllColisions () {
 	return ans;
 }
 
+/* Returns the normal of the colision, used to calculate the bounce direction
+*/
 int Body::CollideNormal (Body* b) {
 	if (GetFX() >= b->GetFX() + b->GetWidth()) {
 		return 2;
@@ -93,12 +97,15 @@ int Body::CollideNormal (Body* b) {
 	return 1;
 }
 
+/* next frame,
+* here we change the velocity of non stationary and
+* solid bodies that collide with solid
+*/
 void Body::Update () {
 	if (solid && !stationary) {
 		LinkedList<Body>* ll = AllColisions();
 		if (ll->Lenght() != 0) {
 			int normal = CollideNormal(ll->Get(0));
-			std::cout << "Normal " << normal << std::endl;
 			if (normal == 0 || normal == 2) {
 				SetVelocity(-GetVelX(), GetVelY());
 				ll->Get(0)->SetVelocity(-ll->Get(0)->GetVelX(), ll->Get(0)->GetVelY());
@@ -115,6 +122,8 @@ void Body::Update () {
 	Draw ();
 }
 
+/* Makes all bodies go one frame forward
+*/
 void Body::AllUpdate () {
 	Objects->ResetPull();
 	Body* b = Objects->Pull();
@@ -124,9 +133,20 @@ void Body::AllUpdate () {
 	}
 }
 
+/* Draws the body based on its dimentions and coordinates
+*/
 void Body::Draw () {
-	delete window;
+	window->~Window();
 	window = new Window(height, width, x, y, ' ');
 	window->setCouleurFenetre(color);
-	window->setCouleurBordure(WBLACK);
+	if (ball) {
+		char c;
+		if (y - (int)y > 0.5f) {
+			c = '.';
+		}
+		if (y - (int)y < 0.5f) {
+			c = '\'';
+		}
+		window->print(0, 0, c);
+	}
 }
