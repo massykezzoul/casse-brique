@@ -1,20 +1,24 @@
 // Author : Romain Fournier romain.fournier.095@gmail.com
-#include "Body.h"
 #include "window.h"
 #include "LinkedList.h"
+#include "Body.h"
 
-Body::Body(int x, int y, int height, int width, Color color, char ch=' ', bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height)
-																																										 , velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary) {
+using namespace std;
+
+LinkedList<Body>* Body::Objects = new LinkedList<Body>();
+
+Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary), window(height, width, x, y, ch) {
 	if (AllColisions().Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
-		~Body();
+		//~Body();
 	}
-	Window tmp(height, width, x, y, ch);
-	window = tmp;
+	Objects->Add(this);
+	window.setCouleurBordure(color);
+	window.setCouleurFenetre(color);
 }
 
 //GETTERS
-int Body::GetX () { return (int)X; }
+int Body::GetX () { return (int)x; }
 int Body::GetY () { return (int)y; }
 float Body::GetFX () { return x; }
 float Body::GetFY () { return y; }
@@ -26,7 +30,7 @@ int Body::GetHeight () { return height; }
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
 void Body::SetColor (Color c) { color = c; }
-bool Body::SetPosition (int x, int y) { SetPosition((float)x, (float)y); }
+bool Body::SetPosition (int x, int y) { return SetPosition((float)x, (float)y); }
 
 bool Body::SetPosition (float nx, float ny) {
 	float tx = GetFX();
@@ -41,7 +45,7 @@ bool Body::SetPosition (float nx, float ny) {
 	return false;
 }
 
-bool Body::Collide (Body b) {
+bool Body::Collide (Body* b) {
 	float x1, x2, y1, y2 = 0;
 	float bx1, bx2, by1, by2 = 0;
 
@@ -50,10 +54,10 @@ bool Body::Collide (Body b) {
 	x2 = x1 + GetWidth();
 	y2 = y1 + GetHeight();
 
-	bx1 = b.GetFX();
-	by1 = b.GetFY();
-	bx2 = bx1 + b.GetWidth();
-	by2 = by1 + b.GetHeight();
+	bx1 = b->GetFX();
+	by1 = b->GetFY();
+	bx2 = bx1 + b->GetWidth();
+	by2 = by1 + b->GetHeight();
 
 	if (bx2 <= x1 || bx1 >= x2 || by2 <= y1 || by1 >= y2) {
 		return false;
@@ -63,29 +67,29 @@ bool Body::Collide (Body b) {
 
 LinkedList<Body> Body::AllColisions () {
 	LinkedList<Body> ans;
-	Body tmp;
-	Objects.ResetPull();
-	tmp = Objects.Pull();
+	Objects->ResetPull();
+	Body* tmp = Objects->Pull();
+
 	while (tmp != NULL) {
 		if (Collide(tmp)) {
 			ans.Add(tmp);
 		}
-		tmp = Objects.Pull();
+		tmp = Objects->Pull();
 	}
 	return ans;
 }
 
-int Body::CollideNormal (Body b) {
+int Body::CollideNormal (Body* b) {
 	if (!Collide(b)) {
 		return -1;
 	}
-	if (GetFX() > b.GetFX() + b.GetWidth() - 1) {
+	if (GetFX() > b->GetFX() + b->GetWidth() - 1) {
 		return 2;
 	}
-	if (GetFX() + GetWidth() < b.GetFX() + 1) {
+	if (GetFX() + GetWidth() < b->GetFX() + 1) {
 		return 0;
 	}
-	if (GetFY() > b.GetFY() + b.GetHeight() - 1) {
+	if (GetFY() > b->GetFY() + b->GetHeight() - 1) {
 		return 3;
 	}
 	return 1;
@@ -93,15 +97,15 @@ int Body::CollideNormal (Body b) {
 
 void Body::Update () {
 	if (solid) {
-		LinkedList ll = AllColisions();
+		LinkedList<Body> ll = AllColisions();
 		if (ll.Lenght() != 0) {
 			int normal = CollideNormal(ll.Get(0));
 			if (normal == 0 || normal == 2) {
 				SetVelocity(-GetVelX(), GetVelY());
-				ll.Get(0).SetVelocity(-ll.Get(0).GetVelX(), ll.Get(0).GetVelY());
+				ll.Get(0)->SetVelocity(-ll.Get(0)->GetVelX(), ll.Get(0)->GetVelY());
 			} else {
 				SetVelocity(GetVelX(), -GetVelY());
-				ll.Get(0).SetVelocity(ll.Get(0).GetVelX(), -ll.Get(0).GetVelY());
+				ll.Get(0)->SetVelocity(ll.Get(0)->GetVelX(), -ll.Get(0)->GetVelY());
 			}
 		}
 	}

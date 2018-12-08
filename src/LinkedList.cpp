@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "LinkedList.h"
+#include "Body.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ LinkedList<T>::LinkedList(): head(NULL), tail(NULL), current(NULL), len(0) {
 /* Creates a list of lenght 1
 */
 template <typename T>
-LinkedList<T>::LinkedList(T data): len(1) {
+LinkedList<T>::LinkedList(T* data): len(1) {
 	head = (Node<T>*)malloc(sizeof(Node<T>));
 	tail = head;
 	current = head;
@@ -32,7 +33,7 @@ LinkedList<T>::LinkedList(T data): len(1) {
 /* Adds an element to the end of the list.
 */
 template <typename T>
-void LinkedList<T>::Add(T data) {
+void LinkedList<T>::Add(T* data) {
 	Node<T>* newNode = (Node<T>*)malloc(sizeof(Node<T>));
 
 	newNode->prev = tail;
@@ -90,13 +91,14 @@ bool LinkedList<T>::RmAt(int i) {
 		i--;
 	}
 	Rm(current);
+	return true;
 }
 
 /* Removes the first instance of T, if it exists
  * Returns true if an element has been deleted
 */
 template <typename T>
-bool LinkedList<T>::Rm(T data) {
+bool LinkedList<T>::Rm(T* data) {
 	Node<T>* current = head;
 	while (current != NULL) {
 		if (current->data == data) {
@@ -113,7 +115,7 @@ bool LinkedList<T>::Rm(T data) {
  * if you need a sequence of all elements, use Pull() instead !
 */
 template <typename T>
-T LinkedList<T>::Get (int i) {
+T* LinkedList<T>::Get (int i) {
 	if (i > len - 1)
 		return NULL;
 	Node<T>* current = head;
@@ -145,16 +147,16 @@ void LinkedList<T>::Print () {
 	std::cout << "}" << std::endl;
 }
 
-/* Behaves like a pile, get the data of the current element, 
+/* Behaves like a pile, get the data of the current element,
  * then sets the current element as current->next.
  * Used to get all elements sequentially as it is WAY FASTER
  * /!\ Use this instead of Get(i) if you need all elements !!
 */
 template <typename T>
-T LinkedList<T>::Pull () {
+T* LinkedList<T>::Pull () {
 	if (current == NULL)
 		return NULL;
-	T ans = current->data;
+	T* ans = current->data;
 	current = current->next;
 	return ans;
 }
@@ -169,3 +171,4 @@ void LinkedList<T>::ResetPull () {
 
 //*****TEMPLATE CLASSES
 template class LinkedList<int>;
+template class LinkedList<Body>;

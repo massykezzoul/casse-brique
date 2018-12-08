@@ -17,7 +17,7 @@ template <typename T>
 struct Node {
 	Node* next;
 	Node* prev;
-	T data;
+	T* data;
 };
 
 template <typename T>
@@ -29,14 +29,14 @@ class LinkedList {
 	int len;
  public:
 	LinkedList();
-	LinkedList(T data);
-	void Add(T data);
+	LinkedList(T* data);
+	void Add(T* data);
 	bool RmAt(int i);
-	bool Rm(T data);
-	T Get(int i);
+	bool Rm(T* data);
+	T* Get(int i);
 	int Lenght();
 	void Print();
-	T Pull();
+	T* Pull();
 	void ResetPull();
  private:
 	void Rm(Node<T>* n);

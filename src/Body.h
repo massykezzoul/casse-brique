@@ -19,6 +19,8 @@
 #include "window.h"
 #include "LinkedList.h"
 
+using namespace std;
+
 class Body {
 	//Attributes
 private:
@@ -33,10 +35,11 @@ private:
 	Window window;
 	bool solid;
 	bool stationary;
-	static LinkedList<Body> Objects;
+	static LinkedList<Body>* Objects;
 	//Constructors
 public:
-	Body(int x, int y, int heigth, int width, Color color, char ch=' ');
+	Body(int x, int y, int heigth, int width, Color color, char ch, bool solid, bool stationary);
+	//~Body();
 	//Methods
 public:
 	int GetX ();
@@ -48,13 +51,14 @@ public:
 	int GetWidth ();
 	int GetHeight ();
 	void SetVelocity (float, float);
-	void SetPosition (float, float);
-	void SetPosition (int, int);
-	void SetColor (color);
+	bool SetPosition (float, float);
+	bool SetPosition (int, int);
+	void SetColor (Color);
 	LinkedList<Body> AllColisions ();
-	bool Collide (Body);
-	int CollideNormal (Body); //0 Left, 1 Top, 2 Right, 3 Bottom, -1 No collisions
+	bool Collide (Body*);
+	int CollideNormal (Body*); //0 Left, 1 Top, 2 Right, 3 Bottom, -1 No collisions
 	void Update ();
+	void Draw ();
 };
 
 #endif
