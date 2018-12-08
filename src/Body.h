@@ -42,6 +42,7 @@ public:
 	//~Body();
 	//Methods
 public:
+	static void AllUpdate ();
 	int GetX ();
 	int GetY ();
 	float GetFX ();

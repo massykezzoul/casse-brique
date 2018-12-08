@@ -13,7 +13,6 @@ Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid
 		//~Body();
 	}
 	Objects->Add(this);
-	window.setCouleurBordure(color);
 	window.setCouleurFenetre(color);
 }
 
@@ -46,6 +45,9 @@ bool Body::SetPosition (float nx, float ny) {
 }
 
 bool Body::Collide (Body* b) {
+	if (!this->solid || !b->solid) {
+		return false;
+	}
 	float x1, x2, y1, y2 = 0;
 	float bx1, bx2, by1, by2 = 0;
 
@@ -96,7 +98,7 @@ int Body::CollideNormal (Body* b) {
 }
 
 void Body::Update () {
-	if (solid) {
+	if (solid && !stationary) {
 		LinkedList<Body> ll = AllColisions();
 		if (ll.Lenght() != 0) {
 			int normal = CollideNormal(ll.Get(0));
@@ -115,10 +117,17 @@ void Body::Update () {
 	Draw ();
 }
 
+void Body::AllUpdate () {
+	Objects->ResetPull();
+	Body* b;
+	while ((b = Objects->Pull()) != NULL) {
+		b->Update();
+	}
+}
+
 void Body::Draw () {
 	window.~Window();
 	Window w(width, height, x, y, ch);
-	w.setCouleurBordure(color);
-	w.setCouleurFenetre(color);
+	w.setCouleurFenetre(WYELLOW);
 	window = w;
 }
