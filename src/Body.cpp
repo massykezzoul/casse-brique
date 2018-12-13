@@ -35,6 +35,28 @@ int Body::GetHeight () { return height; }
 
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
+void Body::SetVelocity (int normal) {
+	if (normal == 0) { //Left
+		if (GetVelX() > 0) {
+			SetVelocity(-GetVelX(), GetVelY());
+		}
+	}
+	if (normal == 2) { //Right
+		if (GetVelX() < 0) {
+			SetVelocity(-GetVelX(), GetVelY());
+		}
+	}
+	if (normal == 1) { //Top
+		if (GetVelY() > 0) {
+			SetVelocity(GetVelX(), -GetVelY());
+		}
+	}
+	if (normal == 3) { //Bottom
+		if (GetVelY() < 0) {
+			SetVelocity(GetVelX(), -GetVelY());
+		}
+	}
+}
 void Body::SetColor (Color c) { color = c; }
 void Body::SetPosition (int x, int y) { SetPosition((float)x, (float)y); }
 void Body::SetPosition (float nx, float ny) { x = nx; y = ny; }
@@ -105,14 +127,11 @@ int Body::CollideNormal (Body* b) {
 void Body::Update () {
 	if (solid && !stationary) {
 		LinkedList<Body>* ll = AllColisions();
-		if (ll->Lenght() != 0) {
-			int normal = CollideNormal(ll->Get(0));
-			if (normal == 0 || normal == 2) {
-				SetVelocity(-GetVelX(), GetVelY());
-				ll->Get(0)->SetVelocity(-ll->Get(0)->GetVelX(), ll->Get(0)->GetVelY());
-			} else {
-				SetVelocity(GetVelX(), -GetVelY());
-				ll->Get(0)->SetVelocity(ll->Get(0)->GetVelX(), -ll->Get(0)->GetVelY());
+		if (ll->Lenght() != 0) { //sets the velocity based on all collisions
+			Body* current = ll->Pull();
+			while (current != NULL) {
+				SetVelocity(CollideNormal(current));
+				current = ll->Pull();
 			}
 		}
 		delete ll;

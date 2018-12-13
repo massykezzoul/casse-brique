@@ -52,6 +52,7 @@ public:
 	int GetWidth ();
 	int GetHeight ();
 	void SetVelocity (float, float);
+	void SetVelocity (int);
 	void SetPosition (float, float);
 	void SetPosition (int, int);
 	void SetColor (Color);
