@@ -34,12 +34,11 @@ private:
 	char ch;
 	bool solid;
 	bool stationary;
-	bool ball; //Used to print precisely where the ball is using unicode chars (▖ ,▗, ▘, ▝)
 	Window* window;
 	static LinkedList<Body>* Objects;
 	//Constructors
 public:
-	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, bool ball);
+	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, Window* w);
 	//~Body();
 	//Methods
 public:

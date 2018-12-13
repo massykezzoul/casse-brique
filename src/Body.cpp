@@ -1,5 +1,6 @@
 // Author : Romain Fournier romain.fournier.095@gmail.com
 #include <iostream>
+#include <unistd.h>
 
 #include "window.h"
 #include "LinkedList.h"
@@ -12,13 +13,13 @@ LinkedList<Body>* Body::Objects = new LinkedList<Body>();
 
 /* Creates a Body and adds it into the Objects linked list
 */
-Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, bool ball): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary), ball(ball) {
+Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, Window* w): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary)/*, window(w)*/ {
 	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
 	}*/
+	window = w;
 	Objects->Add(this);
-	window = new Window(1, 1, 1, 1, ' ');
 	Draw();
 }
 
@@ -50,8 +51,8 @@ bool Body::Collide (Body* b) {
 	float x1, x2, y1, y2 = 0;
 	float bx1, bx2, by1, by2 = 0;
 
-	x1 = GetFX() + GetVelX();
-	y1 = GetFY() + GetVelY();
+	x1 = GetFX();
+	y1 = GetFY();
 	x2 = x1 + GetWidth();
 	y2 = y1 + GetHeight();
 
@@ -66,7 +67,7 @@ bool Body::Collide (Body* b) {
 	return true;
 }
 
-/* Returns a linked list of all colisions @ the next frame for this body
+/* Returns a linked list of all colisions for this body
 */
 LinkedList<Body>* Body::AllColisions () {
 	LinkedList<Body>* ans = new LinkedList<Body>();
@@ -85,13 +86,13 @@ LinkedList<Body>* Body::AllColisions () {
 /* Returns the normal of the colision, used to calculate the bounce direction
 */
 int Body::CollideNormal (Body* b) {
-	if (GetFX() >= b->GetFX() + b->GetWidth()) {
+	if (GetFX() - GetVelX() >= b->GetFX() + b->GetWidth()) {
 		return 2;
 	}
-	if (GetFX() + GetWidth() <= b->GetFX()) {
+	if (GetFX() - GetVelX() + GetWidth() <= b->GetFX()) {
 		return 0;
 	}
-	if (GetFY() >= b->GetFY() + b->GetHeight()) {
+	if (GetFY() - GetVelY() >= b->GetFY() + b->GetHeight()) {
 		return 3;
 	}
 	return 1;
@@ -136,17 +137,9 @@ void Body::AllUpdate () {
 /* Draws the body based on its dimentions and coordinates
 */
 void Body::Draw () {
-	window->~Window();
-	window = new Window(height, width, x, y, ' ');
-	window->setCouleurFenetre(color);
-	if (ball) {
-		char c;
-		if (y - (int)y > 0.5f) {
-			c = '.';
+	for (int i = GetX(); i < GetX() + GetWidth(); i++) {
+		for (int j = GetY(); j < GetY() + GetHeight(); j++) {
+			window->print(i, j, ' ', color);
 		}
-		if (y - (int)y < 0.5f) {
-			c = '\'';
-		}
-		window->print(0, 0, c);
 	}
 }
