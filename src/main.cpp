@@ -4,15 +4,19 @@
 
 int main () {
   startProgramX();
-  Body b(0, 0, 1, 40, WRED, ' ', true, true, false);
-  Body b2(0, 0, 20, 1, WRED, ' ', true, true, false);
-  Body b3(0, 20, 1, 40, WRED, ' ', true, true, false);
-  Body b4(40, 0, 20, 1, WRED, ' ', true, true, false);
-  Body c(10, 10, 1, 1, WBLACK, ' ', true, false, true);
+  Window* w = new Window(30, 50, 1, 1, '+');
+  w->setCouleurBordure(WBLACK);
+  w->setCouleurFenetre(BWHITE);
+  Body b(5, 5, 1, 40, WRED, ' ', true, true, w);
+  Body b2(5, 5, 20, 1, WRED, ' ', true, true, w);
+  Body b3(5, 25, 1, 40, WRED, ' ', true, true, w);
+  Body b4(45, 5, 20, 1, WRED, ' ', true, true, w);
+  Body c(15, 20, 1, 1, WCYAN, ' ', true, false, w);
   c.SetVelocity(-0.5f, -1);
   while (1) {
-    usleep(10000);
+    w->clear();
     Body::AllUpdate();
+    usleep(100000);
   }
-  //stopProgramX();
+  stopProgramX();
 }
