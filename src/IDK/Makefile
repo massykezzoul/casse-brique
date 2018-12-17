@@ -27,7 +27,8 @@ VERSION  = 'eval\ date\ +%d_%m_%Y'
 all : $(PROG_NAME)
 
 #compilation
-
+GameBoard.o  : GameBoard.cpp
+	$(CC) -c $<  $(FLAGS)
 Body.o       : Body.cpp
 	$(CC) -c $<  $(FLAGS)
 LinkedList.o : LinkedList.cpp

@@ -10,7 +10,7 @@ int main () {
   Body b(5, 5, 1, 40, WRED, ' ', true, true, w);
   Body b2(5, 5, 20, 1, WRED, ' ', true, true, w);
   Body b3(5, 25, 1, 40, WRED, ' ', true, true, w);
-  Body b4(45, 5, 20, 1, WRED, ' ', true, true, w);
+  Body b4(45, 5, 20, 1, WRED, ' ', true, true,  w);
   Body b5(10, 10, 3, 3, WRED, ' ', true, true, w);
   Body c(15, 20, 1, 1, WCYAN, ' ', true, false, w);
   c.SetVelocity(-0.2f, -1);
