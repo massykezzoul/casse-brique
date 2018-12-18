@@ -8,8 +8,7 @@
 using namespace std;
 
 GameBoard::GameBoard(){
-	Body::Body MenuWindow(30,5,10,10,WRED,' ',true,true,w);
-	Body::Body GameWindow(5,5,20,20,BWHITE,' ',true,true,w);
+	Body MenuWindow=mw(5, 5, 1, 40, WRED, ' ', true, true, w);
+	Body GameWindow=gw(5, 5, 20, 1, WRED, ' ', true, true, w);
 	//Window* Frame = new Window(30, 50, 1, 1, '+');
 } 
-

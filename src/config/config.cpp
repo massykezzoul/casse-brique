@@ -7,7 +7,7 @@ using namespace std;
 
 
 
-
+// Cleans the line of comments
 void clean_line(string &s){
   size_t pos=s.find_first_of("#");
   s=s.substr(0,pos);  
@@ -17,43 +17,37 @@ void clean_line(string &s){
   s=s.substr(beg,end-beg+1);
 }
 
-
+//Separates the key from the value
 bool findKeyValue(std::string &s, std::string &s1,std::string &s2){
   clean_line(s);
   if (s==string("")) return false;
   size_t pos=s.find_first_of(":");
   if (pos==string::npos) {
-    cerr << "Le fichier est mal formé" << endl;
+    cerr << "File is badly formatted" << endl;
     terminate();
   }
   s1=s.substr(0,pos);
   s2=s.substr(pos+1);
   clean_line(s1);
   clean_line(s2);
-  cerr<<"Found cle/val -> "<< s1<< " and "<<s2<<endl;
+  cerr<<"Found key/value -> "<< s1<< " and "<<s2<<endl;
   return true;
 }
 
-/*void JeuDeLaVie::TraiteOption(const string &cle, const string &valeur, size_t num_ligne){
-  if (cle == "Dimension") {
-    POP.setDimension(atoi(valeur.c_str()));
-    //POP.reset();
+//Passes the Values to the game
+/*void Game::Option(const string &key, const string &value){
+  if (key == "Shape") {
+    //
   }
-  if (cle == "Probability") {
-    POP.setProbability(atof(valeur.c_str()));
-    //POP.reset();
+  if (key == "Durability") {
+    //
   }
-  if (cle == "Cell") {
+  if (key == "BoardSize") {
     size_t x, y;
-    size_t pos = valeur.find_first_of("x, ");
-    if (pos == string::npos || valeur[pos] == '\0') {
-      cerr << "Le fichier est mal formé. Vérifiez la syntaxe de la ligne "<< num_ligne << endl;
-    }
-    else {
-      x = atoi(valeur.substr(0, pos).c_str());
-      y = atoi(valeur.substr(pos).c_str());
-      POP.birth(x,y);    
-    }
+    size_t pos = value.find_first_of("x");
+    x = atoi(value.substr(0, pos).c_str());
+    y = atoi(value.substr(pos).c_str());
+    //    
   }
 }*/
   
