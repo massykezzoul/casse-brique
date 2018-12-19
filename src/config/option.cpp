@@ -1,6 +1,8 @@
 #include <iostream>
+#include <string>
 #include "option.h"
 
+using namespace std;
 
 // La Classe Option
 
@@ -89,21 +91,18 @@ Option_tab::Option_tab():nb(0){
 	
 	Option opt2(Option::VERSION,"version",'v',Option::NOPE,
 		"Affiche la version du programme"); 
-	
-	Option opt3(Option::DIMENSION,"dimension",'d',Option::INT,
-		"Precisé la dimension du tableau, Doit etre entre 3 et N"); 
-	
-	Option opt4(Option::CONFIG,"config",'c',Option::STR,
-		"Donne le fichier de configuration");
-	
-	Option opt5(Option::PROBABILITY,"probability",'p',Option::FLOAT,
-		"Spécifié le pourcentage de cellule vivante dans la population");
 
-	Option opt6(Option::SPEED,"speed",'s',Option::INT,
-		"Spécifié la vitesse de défilement des generations.(en ms)");
+	Option opt3(Option::CONFIG,"config",'c',Option::STR,
+		"Donne le fichier de configuration");
+
+	Option opt4(Option::SPEED,"speed",'s',Option::INT,
+		"Spécifié la vitesse de la balle.");
+
+    Option opt5(Option::AUTEUR,"auteur",'a',Option::NOPE,
+        "Donne le nom des auteur");
 	/* 
 	Pour l'ajout d'une option : 
-	Option opt7(Option::Id*,"nom de l'option**",'raccourci**',Option::type_argument,
+	Option opt*i*(Option::Id*,"nom de l'option**",'raccourci**',Option::type_argument,
 		"courte description");
 
 		* L'identifiant de l'option (voir 'option.h' ligne:6)
@@ -116,7 +115,6 @@ Option_tab::Option_tab():nb(0){
 	add(opt3);
 	add(opt4);
 	add(opt5);
-	add(opt6);
 }
 
 // Les methodes 
@@ -193,4 +191,71 @@ Option const &Option_tab::get_option(int index) {
 		return tab[index];
 	else 
 		std::cerr << "L'option n'a pas été trouvé" << std::endl;
+}
+
+void Option_tab::gere_parametre(int argc,char const *argv[]) {
+	int i = 1;
+	int j = -1;
+	int vitesse = -1;
+	string config = "";
+	Option::Id id = Option::NB_ID;
+
+	while (i < argc) {
+		j = -1;
+		id = Option::NB_ID;
+		if (is_nom(argv[i])) {
+			// Est une option avec son nom long spécifié
+			j = get_option(cherche(&argv[i][2]));
+		} else if (is_raccourci(argv[i])){
+			// Est une option avec son raccourci spécifié
+			j = get_option(cherche(argv[i][1]));
+		}
+
+		/* j étant l'id de l'option */
+		switch (j) {
+			case 0:
+				/* help */
+				cout << "Afficher l'aide du programme" << endl;
+				break;
+			case 1:
+				/* version */
+				cout << "Version 0.1" << endl;
+				break;
+			case 2:
+				/* config */
+				if ((i + 1 < argc)  &&  (argv[i+1][0] != '-')) {
+					++i; // passe à l'argument de l'option
+					config = argv[i]; // recupere la chaine
+				} else {
+					cerr << "Argument manquant pour '" << argv[i] <<"'"
+						<< endl;
+				}	
+				break;
+			case 3:
+				/* speed */
+				if ((i + 1 < argc)  &&  (argv[i+1][0] != '-')) {
+					++i; // passe à l'argument de l'option
+					vitesse = strtod(argv[i],NULL); // recupere l'entier
+				} else {
+					cerr << "Argument manquant pour '" << argv[i] <<"'"
+						<< endl;
+				}	
+				break;
+			case 4:
+				/* Auteur */
+				cout << "Les auteur sont : " << endl
+					<< "\tKezzoul massili"<< endl
+					<< "\tBoyan"<<endl 
+					<< "\tRomain" << endl
+					<< "\tYann" << endl;
+				break;
+			default:
+				cerr << "L'option \"" << argv[i] 
+					<< "\" n'existe pas" << endl;
+				break;
+			}
+			++i;
+	}
+	cout << "vitesse : " <<  vitesse << endl
+		<< "config : " << config << endl;
 }
