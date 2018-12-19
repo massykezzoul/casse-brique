@@ -13,12 +13,11 @@ LinkedList<Body>* Body::Objects = new LinkedList<Body>();
 
 /* Creates a Body and adds it into the Objects linked list
 */
-Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, Window* w): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary)/*, window(w)*/ {
+Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary)/*, window(w)*/ {
 	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
 	}*/
-	window = w;
 	Objects->Add(this);
 	Draw();
 }
@@ -60,7 +59,7 @@ void Body::SetVelocity (int normal) {
 void Body::SetColor (Color c) { color = c; }
 void Body::SetPosition (int x, int y) { SetPosition((float)x, (float)y); }
 void Body::SetPosition (float nx, float ny) { x = nx; y = ny; }
-
+void Body::SetWindow (Window* w) { window = w; }
 /* Checks if this will collide with b at the next frame
 */
 bool Body::Collide (Body* b) {
@@ -69,7 +68,8 @@ bool Body::Collide (Body* b) {
 	}
 	if (!this->solid || !b->solid) {
 		return false;
-	}
+	}    /* Pour incrementé la valeur de resistance */
+    /* La valeur par défault du paramétre est -1 */
 	float x1, x2, y1, y2 = 0;
 	float bx1, bx2, by1, by2 = 0;
 

@@ -34,11 +34,11 @@ private:
 	char ch;
 	bool solid;
 	bool stationary;
-	Window* window;
+	static Window* window;
 	static LinkedList<Body>* Objects;
 	//Constructors
 public:
-	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary, Window* w);
+	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary);
 	//~Body();
 	//Methods
 public:
@@ -51,6 +51,7 @@ public:
 	float GetVelY ();
 	int GetWidth ();
 	int GetHeight ();
+	static void SetWindow (Window* w);
 	void SetVelocity (float, float);
 	void SetVelocity (int);
 	void SetPosition (float, float);
