@@ -1,5 +1,7 @@
 #include "window.h"
 #include "Body.h"
+#include "player.h"
+#include "brick.h"
 #include <unistd.h>
 
 int main () {
@@ -7,17 +9,18 @@ int main () {
   Window* w = new Window(30, 50, 1, 1, '+');
   w->setCouleurBordure(WBLACK);
   w->setCouleurFenetre(BWHITE);
-  Body b(5, 5, 1, 40, WRED, ' ', true, true, w);
-  Body b2(5, 5, 20, 1, WRED, ' ', true, true, w);
-  Body b3(5, 25, 1, 40, WRED, ' ', true, true, w);
-  Body b4(45, 5, 20, 1, WRED, ' ', true, true,  w);
-  Body b5(10, 10, 3, 3, WRED, ' ', true, true, w);
-  Body c(15, 20, 1, 1, WCYAN, ' ', true, false, w);
-  c.SetVelocity(-0.2f, -1);
+  Body::SetWindow(w);
+  Player* p = new Player();
+  Brick::set_player(p);
+  Brick b1(CARRE, 1, 10, 1, 1);
+  Brick b2(CARRE, 1, 10, 5, 1);
+  Brick b3(CARRE, 1, 10, 9, 1);
   while (1) {
     w->clear();
     Body::AllUpdate();
     usleep(50000);
   }
+  delete w;
+  delete p;
   stopProgramX();
 }
