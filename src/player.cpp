@@ -83,3 +83,46 @@ void Player::print(){
   ss << "Vies: " << get_ball();
   window.print(3, 4, ss.str());
 }
+
+void Player::print(Ball& b){
+  window.clear();
+  stringstream ss;
+  ss.str("");
+  ss << "Niveau: " << get_niveau();
+  window.print(10, 1, ss.str());
+  ss.str("");
+  ss << "Nom: " << get_name();
+  window.print(3, 2, ss.str());
+  ss.str("");
+  ss << "Points: " << get_score();
+  window.print(3, 3, ss.str());
+  ss.str("");
+  ss << "Vies: " << get_ball();
+  window.print(3, 4, ss.str());
+
+  ss.str("");
+  ss << "X: " << b.get_posX();
+  window.print(3, 5, ss.str());
+  ss.str("");
+  ss << "Y: " << b.get_posY();
+  window.print(3, 6, ss.str());
+  ss.str("");
+  ss << "VEL X: " << b.get_velX();
+  window.print(3, 7, ss.str());
+  ss.str("");
+  ss << "VEL Y: " << b.get_velY();
+  window.print(3, 8, ss.str());
+
+  ss.str("");
+  ss << "X: " << b.get_body_posX();
+  window.print(3, 9, ss.str());
+  ss.str("");
+  ss << "Y: " << b.get_body_posY();
+  window.print(3, 10, ss.str());
+  ss.str("");
+  ss << "VEL X: " << b.get_body_velX();
+  window.print(3, 11, ss.str());
+  ss.str("");
+  ss << "VEL Y: " << b.get_body_velY();
+  window.print(3, 12, ss.str());
+}

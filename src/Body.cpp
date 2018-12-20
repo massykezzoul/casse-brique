@@ -28,6 +28,12 @@ Body::Body(int x, int y, int height, int width, Brick* b): x((float)x), y((float
 	Objects->Add(this);
 	Draw();
 }
+Body::Body(int x, int y,float velX, float velY, Color c, Ball* b)
+	:x((float)x), y((float)y), width(1), height(1), velX(velX), velY(velY), color(c), solid(true), stationary(false), ball(b)  {
+	Objects->Add(this);
+	Draw();
+}
+
 
 Body::~Body() {
 	Objects->Rm(this);
@@ -43,6 +49,7 @@ float Body::GetVelY () { return velY; }
 int Body::GetWidth () { return width; }
 int Body::GetHeight () { return height; }
 Brick* Body::GetBrick () { return brick; }
+Ball* Body::GetBall() { return ball;}
 
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
@@ -173,7 +180,7 @@ void Body::AllUpdate () {
 void Body::Draw () {
 	for (int i = GetX(); i < GetX() + GetWidth(); i++) {
 		for (int j = GetY(); j < GetY() + GetHeight(); j++) {
-			window->print(i, j, ' ', color);
+			window->print(i, j,' ', color);
 		}
 	}
 }

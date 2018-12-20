@@ -21,14 +21,11 @@ int main () {
   Brick b6(CARRE, 1, 10, 21, 5);
   //Balle
   Ball ball(10, 10, 1.0, 0.5,WCYAN);
-  /* 
-  Body ball(10, 10, 1, 1, WCYAN, true, false);
-  ball.SetVelocity(1.0f, 0.5f);
-  */
   //Jeu
   while (1) {
     t.Update();
-    p->print();
+    //p->print();
+    p->print(ball);
     usleep(50000);
   }
   stopProgramX();

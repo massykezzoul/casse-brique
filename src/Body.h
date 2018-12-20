@@ -22,6 +22,7 @@
 using namespace std;
 
 class Brick;
+class Ball;
 
 class Body {
 	//Attributes
@@ -36,12 +37,15 @@ private:
 	bool solid;
 	bool stationary;
 	Brick* brick;
+	Ball* ball;
 	static Window* window;
 	static LinkedList<Body>* Objects;
 	//Constructors
 public:
 	Body(int x, int y, int height, int width, Color color, bool solid, bool stationary);
 	Body(int x, int y, int height, int width, Brick* b);
+	/* Une Balle */
+	Body(int x, int y, float velX, float velY, Color c ,Ball*);
 	~Body();
 	//Methods
 public:
@@ -55,6 +59,7 @@ public:
 	int GetWidth ();
 	int GetHeight ();
 	Brick* GetBrick ();
+	Ball* GetBall();
 	static void SetWindow (Window* w);
 	void SetVelocity (float, float);
 	void SetVelocity (int);

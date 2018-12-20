@@ -33,6 +33,12 @@ public:
     float get_velX() const;
     float get_velY() const;
 
+/* */
+    float get_body_posX();
+    float get_body_posY();
+    float get_body_velX();
+    float get_body_velY();
+/* */
 /* Setteurs*/
     void set_posX(float);
     void set_posY(float);
@@ -40,9 +46,11 @@ public:
     void set_velX(float);
     void set_velY(float);
     void set_vel(float,float);
+    void set_vel(int normal);
 
 /* Mise à jour de sa position */
     void update();
+    void print();
 };
 
 #endif
