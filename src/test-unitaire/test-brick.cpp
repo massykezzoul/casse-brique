@@ -1,5 +1,5 @@
 #include <iostream>
-#include "brick.h"
+#include "../brick.h"
 
 using namespace std;
 

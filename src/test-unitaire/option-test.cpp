@@ -1,5 +1,5 @@
 #include <iostream>
-#include "option.h"
+#include "../option/option.h"
 
 int main(int argc, char const *argv[]) {
     /* Declaration du tableau d'option */

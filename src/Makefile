@@ -44,5 +44,16 @@ Terrain.o    : Terrain.cpp
 	$(CC) -c $<  $(FLAGS)
 
 
-$(PROG_NAME) : $(SOURCE:.c=.o)
+$(PROG_NAME) : $(SOURCE:.cpp=.o)
 	$(CC) $^ -o $@ $(FLAGS)
+
+
+.PHONY: clean mrproper
+
+# Delete *.o files 
+clean :
+	@rm $(SOURCE:.cpp=.o) -rvf
+
+# Delete executable
+mrproper: clean
+	@rm $(PROG_NAME) -v
