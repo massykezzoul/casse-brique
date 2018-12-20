@@ -59,6 +59,7 @@ public:
     /* La valeur par défault du paramétre est -1 */
     void increment_resistance(int = -1);
 
+    /* appelée quand la balle touche la brique */
     void on_colision();
 
 };

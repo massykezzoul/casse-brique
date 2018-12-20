@@ -45,7 +45,7 @@ public:
     void set_niveau(int);
     /* Incremente le niveau du joueur */
     void increment_niveau(int);
-
+    /* Print les informations a l'ecran */
     void print ();
 
     /* Getters */

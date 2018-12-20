@@ -66,6 +66,7 @@ int Player::get_niveau(){
     return niveau;
 }
 
+/* Print les informations */
 void Player::print(){
   window.clear();
   stringstream ss;

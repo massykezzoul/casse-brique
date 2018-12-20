@@ -59,6 +59,8 @@ void Brick::increment_resistance(int r){
     resistance = (resistance<0)?0:resistance;
 }
 
+/* Est appelée quand la balle touche la brique */
+/* Enleve 1 de vie a la brique et la détruit si la vie est a 0 */
 void Brick::on_colision () {
   increment_resistance(-1);
   if (get_resistance() <= 0) {
