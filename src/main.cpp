@@ -3,12 +3,13 @@
 #include "player.h"
 #include "brick.h"
 #include "Terrain.h"
+#include "ball.h"
 #include <unistd.h>
 
 int main () {
   startProgramX();
   //Initialisation
-  Terrain t(1, 25, 50, 25);
+  Terrain t(60, 1, 50, 25);
   Player* p = new Player();
   Brick::set_player(p);
   //Niveau
@@ -19,8 +20,11 @@ int main () {
   Brick b5(CARRE, 1, 10, 17, 5);
   Brick b6(CARRE, 1, 10, 21, 5);
   //Balle
+  Ball ball(10, 10, 1.0, 0.5,WCYAN);
+  /* 
   Body ball(10, 10, 1, 1, WCYAN, true, false);
   ball.SetVelocity(1.0f, 0.5f);
+  */
   //Jeu
   while (1) {
     t.Update();
