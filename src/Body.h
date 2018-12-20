@@ -21,6 +21,8 @@
 
 using namespace std;
 
+class Brick;
+
 class Body {
 	//Attributes
 private:
@@ -31,15 +33,16 @@ private:
 	int width;
 	int height;
 	Color color;
-	char ch;
 	bool solid;
 	bool stationary;
+	Brick* brick;
 	static Window* window;
 	static LinkedList<Body>* Objects;
 	//Constructors
 public:
-	Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary);
-	//~Body();
+	Body(int x, int y, int height, int width, Color color, bool solid, bool stationary);
+	Body(int x, int y, int height, int width, Brick* b);
+	~Body();
 	//Methods
 public:
 	static void AllUpdate ();
@@ -51,6 +54,7 @@ public:
 	float GetVelY ();
 	int GetWidth ();
 	int GetHeight ();
+	Brick* GetBrick ();
 	static void SetWindow (Window* w);
 	void SetVelocity (float, float);
 	void SetVelocity (int);
@@ -62,6 +66,7 @@ public:
 	int CollideNormal (Body*); //0 Left, 1 Top, 2 Right, 3 Bottom, -1 No collisions
 	void Update ();
 	void Draw ();
+	static void RmAll (); //frees the whole LinkedList
 };
 
 #endif

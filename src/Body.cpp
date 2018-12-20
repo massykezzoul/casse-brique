@@ -2,24 +2,35 @@
 #include <iostream>
 #include <unistd.h>
 
+#include "Body.h"
 #include "window.h"
 #include "LinkedList.h"
-#include "Body.h"
+#include "brick.h"
 
 using namespace std;
 
 /* List of all Body */
 LinkedList<Body>* Body::Objects = new LinkedList<Body>();
+Window* Body::window;
 
 /* Creates a Body and adds it into the Objects linked list
 */
-Body::Body(int x, int y, int height, int width, Color color, char ch, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), ch(ch), solid(solid), stationary(stationary)/*, window(w)*/ {
+Body::Body(int x, int y, int height, int width, Color color, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), solid(solid), stationary(stationary), brick(NULL)/*, window(w)*/ {
 	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
 	}*/
 	Objects->Add(this);
 	Draw();
+}
+
+Body::Body(int x, int y, int height, int width, Brick* b): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(WRED), solid(true), stationary(true), brick(b)  {
+	Objects->Add(this);
+	Draw();
+}
+
+Body::~Body() {
+	Objects->Rm(this);
 }
 
 //GETTERS
@@ -31,6 +42,7 @@ float Body::GetVelX () { return velX; }
 float Body::GetVelY () { return velY; }
 int Body::GetWidth () { return width; }
 int Body::GetHeight () { return height; }
+Brick* Body::GetBrick () { return brick; }
 
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }
@@ -129,6 +141,9 @@ void Body::Update () {
 		LinkedList<Body>* ll = AllColisions();
 		if (ll->Lenght() != 0) { //sets the velocity based on all collisions
 			Body* current = ll->Pull();
+			if (current->GetBrick() != NULL) {
+				current->GetBrick()->on_colision();
+			}
 			while (current != NULL) {
 				SetVelocity(CollideNormal(current));
 				current = ll->Pull();
@@ -161,4 +176,8 @@ void Body::Draw () {
 			window->print(i, j, ' ', color);
 		}
 	}
+}
+
+void Body::RmAll () {
+ //Todo
 }

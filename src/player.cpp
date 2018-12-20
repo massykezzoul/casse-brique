@@ -1,18 +1,22 @@
 #include <string>
+#include <sstream>
 #include <iostream>
 #include "player.h"
+#include "window.h"
 
 using namespace std;
 
 /* Constructeur par défault     */
-Player::Player():name("Unknown"),ball(3),score(0),niveau(0) {
-    
+Player::Player():name("Unknown"),ball(3),score(0),niveau(0),window(20, 50, 1, 1, ' ') {
+  window.setCouleurBordure(WBLACK);
+  window.setCouleurFenetre(BWHITE);
 }
 
 /* Constructeur parametré   */
 Player::Player(string name,int ball,int score,int niveau)
-    :name(name),ball(ball>0?ball:0),score(score>0?score:0),niveau(niveau>0?niveau:0) {
-    
+    :name(name),ball(ball>0?ball:0),score(score>0?score:0),niveau(niveau>0?niveau:0),window(25, 50, 1, 1, ' ')  {
+      window.setCouleurBordure(WBLACK);
+      window.setCouleurFenetre(BWHITE);
 }
 
 /* Setters */
@@ -26,26 +30,26 @@ void Player::set_ball(int b){
 /* Incremente le nombre de balle du joueur (Si aucun paramètre donné -> 1 par défault)*/
 /* Donnée un nombre négatif pour décrementer */
 void Player::increment_ball(int b){
-    ball = (ball+b < 0) ? 0 : ball+b;  
+    ball = (ball+b < 0) ? 0 : ball+b;
 }
 
 /* Change le score du joueur */
 void Player::set_score(int s){
-    score = (s<0 ? 0 : s);    
+    score = (s<0 ? 0 : s);
 }
 /* Incremente le score du joueur */
 /* Donnée un nombre négatif pour décrementer */
 void Player::increment_score(int s){
-    score = (score < -s) ? 0 : score+s;  
+    score = (score < -s) ? 0 : score+s;
 }
 
 /* Change le niveau du joueur */
 void Player::set_niveau(int n){
-    niveau = (n<0 ? 0 : n);        
+    niveau = (n<0 ? 0 : n);
 }
 /* Incremente le niveau du joueur */
-void Player::increment_niveau(int n){    
-    niveau = (niveau < -n) ? 0 : niveau+n ;    
+void Player::increment_niveau(int n){
+    niveau = (niveau < -n) ? 0 : niveau+n ;
 }
 
 /* Getters */
@@ -53,11 +57,28 @@ string Player::get_name(){
     return name;
 }
 int Player::get_ball(){
-    return ball;    
+    return ball;
 }
 int Player::get_score(){
     return score;
 }
 int Player::get_niveau(){
     return niveau;
+}
+
+void Player::print(){
+  window.clear();
+  stringstream ss;
+  ss.str("");
+  ss << "Niveau: " << get_niveau();
+  window.print(10, 1, ss.str());
+  ss.str("");
+  ss << "Nom: " << get_name();
+  window.print(3, 2, ss.str());
+  ss.str("");
+  ss << "Points: " << get_score();
+  window.print(3, 3, ss.str());
+  ss.str("");
+  ss << "Vies: " << get_ball();
+  window.print(3, 4, ss.str());
 }

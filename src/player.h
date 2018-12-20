@@ -1,10 +1,12 @@
-/* 
+/*
     La class qui va gérer le joueur
     Kezzoul Massili : massili.kezzoul@etu.umontpellier.fr
 */
 
 #ifndef PLAYER_H
 #define PLAYER_H
+
+#include "window.h"
 
 class Player {
 private:
@@ -17,6 +19,7 @@ private:
     int score;
     /* Le niveau actuel du joueur   */
     int niveau;
+    Window window;
 
 public:
     /* Constructeur par défault     */
@@ -37,11 +40,13 @@ public:
     /* Incremente le score du joueur */
     /* Donnée un nombre négatif pour décrementer */
     void increment_score(int);
-    
+
     /* Change le niveau du joueur */
     void set_niveau(int);
     /* Incremente le niveau du joueur */
     void increment_niveau(int);
+
+    void print ();
 
     /* Getters */
     std::string get_name();

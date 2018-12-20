@@ -2,25 +2,30 @@
 #include "Body.h"
 #include "player.h"
 #include "brick.h"
+#include "Terrain.h"
 #include <unistd.h>
 
 int main () {
   startProgramX();
-  Window* w = new Window(30, 50, 1, 1, '+');
-  w->setCouleurBordure(WBLACK);
-  w->setCouleurFenetre(BWHITE);
-  Body::SetWindow(w);
+  //Initialisation
+  Terrain t(1, 25, 50, 25);
   Player* p = new Player();
   Brick::set_player(p);
-  Brick b1(CARRE, 1, 10, 1, 1);
-  Brick b2(CARRE, 1, 10, 5, 1);
-  Brick b3(CARRE, 1, 10, 9, 1);
+  //Niveau
+  Brick b1(CARRE, 1, 10, 25, 5);
+  Brick b2(CARRE, 1, 10, 5, 5);
+  Brick b3(CARRE, 1, 10, 9, 5);
+  Brick b4(CARRE, 1, 10, 13, 5);
+  Brick b5(CARRE, 1, 10, 17, 5);
+  Brick b6(CARRE, 1, 10, 21, 5);
+  //Balle
+  Body ball(10, 10, 1, 1, WCYAN, true, false);
+  ball.SetVelocity(1.0f, 0.5f);
+  //Jeu
   while (1) {
-    w->clear();
-    Body::AllUpdate();
+    t.Update();
+    p->print();
     usleep(50000);
   }
-  delete w;
-  delete p;
   stopProgramX();
 }

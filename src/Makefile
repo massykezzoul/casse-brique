@@ -18,8 +18,8 @@
 CC	 = g++
 FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = Body.cpp LinkedList.cpp main.cpp window.cpp
-VERSION  = 'eval\ date\ +%d_%m_%Y' 
+SOURCE	 = Body.cpp LinkedList.cpp main.cpp window.cpp brick.cpp player.cpp
+VERSION  = 'eval\ date\ +%d_%m_%Y'
 
 #Cibles:
 
@@ -35,6 +35,10 @@ LinkedList.o : LinkedList.cpp
 main.o       : main.cpp
 	$(CC) -c $<  $(FLAGS)
 window.o     : window.cpp
+	$(CC) -c $<  $(FLAGS)
+brick.o      : brick.cpp
+	$(CC) -c $<  $(FLAGS)
+player.o     : player.cpp
 	$(CC) -c $<  $(FLAGS)
 
 

@@ -1,6 +1,7 @@
 // Author : Romain Fournier romain.fournier.095@gmail.com
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 
 #include "LinkedList.h"
 #include "Body.h"
@@ -136,12 +137,15 @@ int LinkedList<T>::Lenght () {
 */
 template <typename T>
 void LinkedList<T>::Print () {
-	Node<T>* current = head;
+	Node<T>* c = head;
 	std::cout << "Length: " << len << "  {";
-	while (current) {
-		std::cout << current->data;
-		current = current->next;
-		if (current)
+	while (c) {
+		if (c == current) {
+			std::cout << "*";
+		}
+		std::cout << c->data;
+		c = c->next;
+		if (c)
 			std::cout << ", ";
 	}
 	std::cout << "}" << std::endl;

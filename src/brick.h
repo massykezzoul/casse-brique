@@ -17,6 +17,8 @@ enum Forme
     NB_FORME
 };
 
+class Body;
+
 /* ------------ LA CLASSE BRICK ----------------- */
 
 class Brick {
@@ -31,7 +33,7 @@ private:
     int x;
     int y;
     Body body;
-    static Player player;
+    static Player* player;
 
 public:
     /* Constructeur par défault */
@@ -50,7 +52,8 @@ public:
     void set_forme(Forme);
     void set_resistance(int);
     void set_point(int);
-    static void set_player(Player p);
+    static void set_player(Player* p);
+    static Player* get_player();
 
     /* Pour incrementé la valeur de resistance */
     /* La valeur par défault du paramétre est -1 */
