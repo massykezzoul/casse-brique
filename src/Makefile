@@ -29,25 +29,27 @@ all : $(PROG_NAME)
 #compilation
 
 Body.o       : Body.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 LinkedList.o : LinkedList.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 main.o       : main.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 window.o     : window.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 brick.o      : brick.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 player.o     : player.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 Terrain.o    : Terrain.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
 ball.o		 : ball.cpp
-	$(CC) -c $<  $(FLAGS)
+	@$(CC) -c $<  $(FLAGS)
+raquette.o 	 : raquette.cpp
+	@$(CC) -c $<  $(FLAGS)
 
 
 $(PROG_NAME) : $(SOURCE:.cpp=.o)
-	$(CC) $^ -o $@ $(FLAGS)
+	@$(CC) $^ -o $@ $(FLAGS) && echo 'Compilation OK' || 'Fail on Compilation'
 
 
 .PHONY: clean mrproper

@@ -15,7 +15,7 @@ Window* Body::window;
 
 /* Creates a Body and adds it into the Objects linked list
 */
-Body::Body(int x, int y, int height, int width, Color color, bool solid, bool stationary): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(color), solid(solid), stationary(stationary), brick(NULL)/*, window(w)*/ {
+Body::Body(int x, int y, int height, int width, Color color, bool solid, bool stationary): x((float)x), y((float)y), velX(0), velY(0), width(width), height(height), color(color), solid(solid), stationary(stationary), brick(NULL), ball(NULL)/*, window(w)*/ {
 	/*if (AllColisions()->Lenght() != 0) {//This object overlaps with something
 		//TODO, Also remove the parent instance
 		//~Body();
@@ -24,13 +24,13 @@ Body::Body(int x, int y, int height, int width, Color color, bool solid, bool st
 	Draw();
 }
 
-Body::Body(int x, int y, int height, int width, Brick* b): x((float)x), y((float)y), width(width), height(height), velX(0), velY(0), color(WRED), solid(true), stationary(true), brick(b)  {
+Body::Body(int x, int y, int height, int width, Brick* b): x((float)x), y((float)y), velX(0), velY(0), width(width), height(height), color(WRED), solid(true), stationary(true), brick(b), ball(NULL)  {
 	Objects->Add(this);
 	Draw();
 }
 
 Body::Body(int x, int y,float velX, float velY, Color c, Ball* b)
-	:x((float)x), y((float)y), width(1), height(1), velX(velX), velY(velY), color(c), solid(true), stationary(false), ball(b)  {
+	:x((float)x), y((float)y), velX(velX), velY(velY), width(1), height(1), color(c), solid(true), stationary(false),brick(NULL), ball(b)  {
 	Objects->Add(this);
 	Draw();
 }
@@ -40,16 +40,16 @@ Body::~Body() {
 }
 
 //GETTERS
-int Body::GetX () { return (int)x; }
-int Body::GetY () { return (int)y; }
-float Body::GetFX () { return x; }
-float Body::GetFY () { return y; }
-float Body::GetVelX () { return velX; }
-float Body::GetVelY () { return velY; }
-int Body::GetWidth () { return width; }
-int Body::GetHeight () { return height; }
-Brick* Body::GetBrick () { return brick; }
-Ball* Body::GetBall() { return ball;}
+int Body::GetX () const { return (int)x; }
+int Body::GetY () const { return (int)y; }
+float Body::GetFX () const { return x; }
+float Body::GetFY () const { return y; }
+float Body::GetVelX () const { return velX; }
+float Body::GetVelY () const { return velY; }
+int Body::GetWidth () const { return width; }
+int Body::GetHeight () const { return height; }
+Brick* Body::GetBrick () const { return brick; }
+Ball* Body::GetBall() const { return ball;}
 
 //SETTERS
 void Body::SetVelocity (float vx, float vy) { velX = vx; velY = vy; }

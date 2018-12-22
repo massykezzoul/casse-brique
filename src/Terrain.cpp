@@ -5,14 +5,16 @@
 #include "brick.h"
 
 Terrain::Terrain(int x, int y, int w, int h): x(x), y(y), w(w), h(h) {
-  window = new Window(h, w, x, y, ' ');
+  window = new Window(h, w, x, y, '+');
   window->setCouleurBordure(WBLACK);
   window->setCouleurFenetre(BWHITE);
   Body::SetWindow(window);
-  Body* ba = new Body(0, 0, 1, w, BRED, true, true);
-  Body* bb = new Body(0, 1, h - 1, 1, BRED, true, true);
-  Body* bc = new Body(w - 1, 1, h - 1, 1, BRED, true, true);
-  Body* bd = new Body(1, h - 1, 1, w - 2, BRED, true, true);
+  /* Les bordures du terrain */
+  new Body(0, 0, 1, w, BRED, true, true);
+  new Body(0, 1, h - 1, 1, BRED, true, true);
+  new Body(w - 1, 1, h - 1, 1, BRED, true, true);
+  /* Bordure du bas */
+  new Body(1, h - 1, 1, w - 2, BRED, true, true);
 }
 
 Terrain::~Terrain () {

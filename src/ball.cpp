@@ -9,13 +9,13 @@ using namespace std;
 
 /* Constructeur */
 
-Ball::Ball():posX(10.0),posY(10.0),velX(1.0),velY(0.5),body(posX, posY, 1, 1, WCYAN, true, false), speed(0.1), angle(45) {
+Ball::Ball():speed(0.1),angle(45),body(10, 10, 1, 1, WCYAN, true, false) {
   apply_velocity();
 }
 
 // on donne la vitesse et l'angle de la balle au constructeur !
 Ball::Ball(int posX,int posY,float spd,float angl,Color c)
-    :posX((float)posX),posY((float)posY),velX(0),velY(0),body(posX, posY, 1, 1, c, true, false),speed(spd),angle(angl){
+    :speed(spd),angle(angl),body(posX, posY, 1, 1, c, true, false){
   apply_velocity();
 }
 
@@ -36,16 +36,16 @@ void Ball::apply_velocity() {
 
 /* Getteurs */
 float Ball::get_posX() const{
-    return posX;
+    return body.GetFX();
 }
 float Ball::get_posY() const{
-    return posY;
+    return body.GetFY();
 }
 float Ball::get_velX() const{
-    return velX;
+    return body.GetVelX();
 }
 float Ball::get_velY() const{
-    return velY;
+    return body.GetVelY();
 }
 float Ball::get_speed() const{
     return speed;
@@ -53,20 +53,7 @@ float Ball::get_speed() const{
 float Ball::get_angle() const{
     return angle;
 }
-/* */
-float Ball::get_body_posX(){
-    return body.GetFX();
-}
-float Ball::get_body_posY(){
-    return body.GetFY();
-}
-float Ball::get_body_velX(){
-    return body.GetVelX();
-}
-float Ball::get_body_velY(){
-    return body.GetVelY();
-}
-/* */
+
 /* Setteurs*/
 void Ball::set_angle(float a) { //Définis l'angle de la balle
     angle = a;
@@ -79,12 +66,10 @@ void Ball::set_speed(float s) { //Definis la vitesse de la balle
 }
 
 void Ball::set_posX(float x){
-    posX = x;
-    body.SetPosition(posX,posY);
+    body.SetPosition(x,body.GetFY());
 }
 void Ball::set_posY(float y){
-    posY = y;
-    body.SetPosition(posX,posY);
+    body.SetPosition(body.GetFX(),y);
 }
 void Ball::set_pos(float x,float y){
     set_posX(x);
@@ -92,12 +77,10 @@ void Ball::set_pos(float x,float y){
 }
 
 void Ball::set_velX(float x){
-    velX = x;
-    body.SetVelocity(velX,velY);
+    body.SetVelocity(x,body.GetVelY());
 }
 void Ball::set_velY(float y){
-    velY = y;
-    body.SetVelocity(velX,velY);
+    body.SetVelocity(body.GetVelX(),y);
 }
 void Ball::set_vel(float x,float y){
     set_velX(x);
@@ -124,10 +107,4 @@ void Ball::set_vel(int normal) {
 			set_vel(get_velX(), -get_velY());
 		}
 	}
-}
-
-/* Mise à jour de sa position */
-void Ball::update() {
-    set_pos(body.GetFX(),body.GetFY());
-    set_vel(body.GetVelX(),body.GetVelY());
 }

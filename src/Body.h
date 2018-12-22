@@ -50,16 +50,16 @@ public:
 	//Methods
 public:
 	static void AllUpdate ();
-	int GetX ();
-	int GetY ();
-	float GetFX ();
-	float GetFY ();
-	float GetVelX ();
-	float GetVelY ();
-	int GetWidth ();
-	int GetHeight ();
-	Brick* GetBrick ();
-	Ball* GetBall();
+	int GetX () const;
+	int GetY () const;
+	float GetFX () const;
+	float GetFY () const;
+	float GetVelX () const;
+	float GetVelY () const;
+	int GetWidth () const;
+	int GetHeight () const;
+	Brick* GetBrick () const;
+	Ball* GetBall() const;
 	static void SetWindow (Window* w);
 	void SetVelocity (float, float);
 	void SetVelocity (int);
