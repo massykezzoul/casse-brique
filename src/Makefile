@@ -18,7 +18,7 @@
 CC	 = g++
 FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = Body.cpp LinkedList.cpp main.cpp window.cpp brick.cpp player.cpp Terrain.cpp ball.cpp
+SOURCE	 = Body.cpp LinkedList.cpp main.cpp window.cpp brick.cpp player.cpp Terrain.cpp ball.cpp raquette.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'
 
 #Cibles:

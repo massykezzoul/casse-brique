@@ -49,7 +49,6 @@ public:
     void increment_niveau(int);
     /* Print les informations a l'ecran */
     void print ();
-    void print (Ball&);
 
     /* Getters */
     std::string get_name();

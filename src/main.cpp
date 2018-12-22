@@ -4,6 +4,7 @@
 #include "brick.h"
 #include "Terrain.h"
 #include "ball.h"
+#include "raquette.h"
 #include <unistd.h>
 
 int main () {
@@ -20,12 +21,13 @@ int main () {
   Brick b5(CARRE, 1, 10, 17, 5);
   Brick b6(CARRE, 1, 10, 21, 5);
   //Balle
-  Ball ball(10, 10, 1.0, 0.5,WCYAN);
+  Ball ball(10, 10, 1.0, 45,WCYAN);
   //Jeu
+  Raquette rq(10,20,1,20,WGREEN);
+
   while (1) {
     t.Update();
-    //p->print();
-    p->print(ball);
+    p->print();
     usleep(50000);
   }
   stopProgramX();
