@@ -2,12 +2,12 @@
 
 using namespace std;
 
-Raquette::Raquette():body(10,5,1,10,WCYAN,true,false){
+Raquette::Raquette():body(10,5,1,10,WCYAN,true,true){
     
 }
 
 Raquette::Raquette(int posX,int posY,int width,int height, Color c):
-    body(posX,posY,width,height,c,true,false) {
+    body(posX,posY,width,height,c,true,true) {
     
 }
 

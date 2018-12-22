@@ -22,8 +22,9 @@ int main () {
   Brick b6(CARRE, 1, 10, 21, 5);
   //Balle
   Ball ball(10, 10, 1.0, 45,WCYAN);
-  //Jeu
+  //Raquette
   Raquette rq(10,20,1,20,WGREEN);
+  //Jeu
 
   while (1) {
     t.Update();
