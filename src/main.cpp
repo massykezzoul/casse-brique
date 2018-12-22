@@ -7,6 +7,12 @@
 #include "raquette.h"
 #include <unistd.h>
 
+/*
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+*/
 int main () {
   startProgramX();
   //Initialisation
@@ -21,15 +27,32 @@ int main () {
   Brick b5(CARRE, 1, 10, 17, 5);
   Brick b6(CARRE, 1, 10, 21, 5);
   //Balle
+  Raquette rq(10,20,1,20,WGREEN);
   Ball ball(10, 10, 1.0, 45,WCYAN);
   //Raquette
-  Raquette rq(10,20,1,20,WGREEN);
   //Jeu
+  int c=0;
 
-  while (1) {
+  while (c != 'q')  {
     t.Update();
     p->print();
+    
+    c=0;
+    c=getch();
+    switch (c)
+    {
+      case KEY_LEFT:
+          rq.mv_letf();
+          break;
+      case KEY_RIGHT:
+          rq.mv_right();
+          break;
+      default:
+          break;
+    }
+    
     usleep(50000);
   }
+
   stopProgramX();
 }
