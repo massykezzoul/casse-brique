@@ -15,17 +15,27 @@
 class Terrain {
   //Attributes
 private:
-  int x;
-  int y;
-  int w;
-  int h;
+  int posX;
+  int posY;
+  int width;
+  int height;
   Window* window;
   //Constructors
 public:
   Terrain(int, int, int, int);
   ~Terrain();
+
   //Methods
-public:
+  int get_posX() const;
+  int get_posY() const;
+  int get_width() const;
+  int get_height() const;
+
+  void set_posX(int);
+  void set_posY(int);
+  void set_width(int);
+  void set_height(int);
+
   Window GetWindow ();
   void Clear ();
   void Update ();

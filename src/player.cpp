@@ -7,17 +7,29 @@
 using namespace std;
 
 /* Constructeur par défault     */
-Player::Player():name("Unknown"),ball(3),score(0),niveau(0),window(20, 50, 1, 1, ' ') {
+Player::Player():name("Unknown"),ball(3),score(0),niveau(0),window(25, 25, 51, 0, ' ') {
   window.setCouleurBordure(WBLACK);
   window.setCouleurFenetre(BWHITE);
 }
 
 /* Constructeur parametré   */
 Player::Player(string name,int ball,int score,int niveau)
-    :name(name),ball(ball>0?ball:0),score(score>0?score:0),niveau(niveau>0?niveau:0),window(25, 50, 1, 1, ' ')  {
+    :name(name),ball(ball>0?ball:0),score(score>0?score:0),niveau(niveau>0?niveau:0),window(25, 25, 51, 0, ' ')  {
       window.setCouleurBordure(WBLACK);
       window.setCouleurFenetre(BWHITE);
 }
+
+Player::Player(int x,int y,int width,int height,Color bord,Color fenetre):name("Unknown"),ball(3),score(0),niveau(0),window(height, width, x, y, ' ') {
+    window.setCouleurBordure(bord);
+    window.setCouleurFenetre(fenetre);
+}
+
+Player::Player(std::string name,int ball,int score,int niveau,int x,int y,int width,int height,Color bord,Color fenetre)
+    :name(name),ball(ball>0?ball:0),score(score>0?score:0),niveau(niveau>0?niveau:0),window(height, width, x, y, ' ') {
+    window.setCouleurBordure(bord);
+    window.setCouleurFenetre(fenetre);
+}
+
 
 /* Setters */
 void Player::set_name(string n){

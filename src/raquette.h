@@ -29,7 +29,7 @@ public:
     void set_height(int);
 
     /* Change la position de X (X--) ce qui la fait bouger vers la gauche */
-    void mv_letf();
+    void mv_left();
     /* Change la position de X (X++) ce qui la fait bouger vers la Droite */
     void mv_right();
 };

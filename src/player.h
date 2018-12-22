@@ -21,6 +21,7 @@ private:
     int score;
     /* Le niveau actuel du joueur   */
     int niveau;
+    /* Affichage des stats du joureur*/
     Window window;
 
 public:
@@ -28,6 +29,10 @@ public:
     Player();
     /* Constructeur parametré       */
     Player(std::string,int,int,int);
+
+    Player(int x,int y,int width,int height,Color = WBLACK,Color = BWHITE);
+
+    Player(std::string,int,int,int,int x,int y,int width,int height,Color = WBLACK,Color = BWHITE);
 
     /* Setters */
     void set_name(std::string);

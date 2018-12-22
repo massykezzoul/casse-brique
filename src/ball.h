@@ -40,6 +40,8 @@ public:
     void set_speed(float);
     void set_angle(float);
 
+    void mv_left();
+    void mv_right();
 };
 
 #endif

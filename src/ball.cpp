@@ -108,3 +108,12 @@ void Ball::set_vel(int normal) {
 		}
 	}
 }
+
+/* Change la position de X (X--) ce qui la fait bouger vers la gauche */
+void Ball::mv_left(){
+    set_pos(get_posX()-1,get_posY());
+}
+/* Change la position de X (X++) ce qui la fait bouger vers la Droite */
+void Ball::mv_right(){
+    set_pos(get_posX()+1,get_posY());
+}

@@ -60,7 +60,7 @@ void Raquette::set_height(int h){
 /* -------------------- */
 
 /* Change la position de X (X--) ce qui la fait bouger vers la gauche */
-void Raquette::mv_letf(){
+void Raquette::mv_left(){
     body.SetPosition(get_posX()-1,get_posY());
 }
 /* Change la position de X (X++) ce qui la fait bouger vers la Droite */
