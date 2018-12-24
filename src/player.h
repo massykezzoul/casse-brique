@@ -55,6 +55,8 @@ public:
     /* Print les informations a l'ecran */
     void print ();
 
+    void clear();
+
     /* Getters */
     std::string get_name();
     int get_ball();

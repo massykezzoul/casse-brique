@@ -95,3 +95,7 @@ void Player::print(){
   ss << "Vies: " << get_ball();
   window.print(3, 4, ss.str());
 }
+
+void Player::clear(){
+    window.clear();
+}
