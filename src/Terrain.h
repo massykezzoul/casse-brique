@@ -37,7 +37,7 @@ public:
   void set_height(int);
 
   Window GetWindow ();
-  void Clear ();
+  void clear ();
   void Update ();
 };
 

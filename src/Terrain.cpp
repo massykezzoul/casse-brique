@@ -49,11 +49,11 @@ void Terrain::set_height(int h) {
 	height = (h>=0)?h:10;
 }
 
-void Terrain::Clear () {
+void Terrain::clear () {
   window->clear();
 }
 
 void Terrain::Update () {
-  Clear();
+  clear();
   Body::AllUpdate();
 }

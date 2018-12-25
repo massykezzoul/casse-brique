@@ -15,7 +15,7 @@
 using namespace std;
 
 #define KEY_SPACE ' '
-#define KEY_ENTER '\n'
+#define KEY_ETR '\n'
 
 int menu(Color fond,Color bordure){
     Window win(25,50,0,0,' ');
@@ -39,7 +39,7 @@ int menu(Color fond,Color bordure){
             case KEY_UP:
                 tab.up();
                 break;
-            case KEY_ENTER:
+            case KEY_ETR:
                 sel = tab.get_selected();
                 break;
             default:
@@ -97,8 +97,7 @@ void jouer(){
         }
         usleep(50000);
     }
-
-    t.Clear();
+    t.clear();
     p->clear();
   
 }

@@ -34,6 +34,7 @@ public:
 
     Player(std::string,int,int,int,int x,int y,int width,int height,Color = WBLACK,Color = BWHITE);
 
+    ~Player();
     /* Setters */
     void set_name(std::string);
     /* Change le nombre de balle du joueur */
