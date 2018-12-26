@@ -1,4 +1,3 @@
-#include "Body.h"
 #include "ball.h"
 
 #include <math.h>
@@ -9,13 +8,13 @@ using namespace std;
 
 /* Constructeur */
 
-Ball::Ball():speed(0.1),angle(45),body(10, 10, 1, 1, WCYAN, true, false) {
+Ball::Ball():posX(10),posY(10),speed(0.1),angle(45),velX(0),velY(0),color(WCYAN),c(' ') {
   apply_velocity();
 }
 
 // on donne la vitesse et l'angle de la balle au constructeur !
-Ball::Ball(int posX,int posY,float spd,float angl,Color c)
-    :speed(spd),angle(angl),body(posX, posY, 1, 1, c, true, false){
+Ball::Ball(float posX,float posY,float spd,float angl,Color color,char c)
+    :posX(posX), posY(posY),speed(spd),angle(angl),velX(0),velY(0),color(color),c(c){
   apply_velocity();
 }
 
@@ -26,7 +25,7 @@ Ball::~Ball(){
 //Grace a l'angle on récupere la velocité x et y avec cos et sin
 //on multiplie vx et vy par speed pour avoir la vitesse de la balle.
 void Ball::apply_velocity() {
-  float vx, vy = 0;
+  float vx = 0, vy = 0;
   vx = (float)cos(angle*PI/180);
   vy = (float)sin(angle*PI/180);
   vx *= speed;
@@ -36,16 +35,16 @@ void Ball::apply_velocity() {
 
 /* Getteurs */
 float Ball::get_posX() const{
-    return body.GetFX();
+    return posX;
 }
 float Ball::get_posY() const{
-    return body.GetFY();
+    return posY;
 }
 float Ball::get_velX() const{
-    return body.GetVelX();
+    return velX;
 }
 float Ball::get_velY() const{
-    return body.GetVelY();
+    return velY;
 }
 float Ball::get_speed() const{
     return speed;
@@ -53,6 +52,8 @@ float Ball::get_speed() const{
 float Ball::get_angle() const{
     return angle;
 }
+
+
 
 /* Setteurs*/
 void Ball::set_angle(float a) { //Définis l'angle de la balle
@@ -66,54 +67,123 @@ void Ball::set_speed(float s) { //Definis la vitesse de la balle
 }
 
 void Ball::set_posX(float x){
-    body.SetPosition(x,body.GetFY());
+    posX = x;
 }
 void Ball::set_posY(float y){
-    body.SetPosition(body.GetFX(),y);
+    posY = y;
 }
 void Ball::set_pos(float x,float y){
     set_posX(x);
     set_posY(y);
 }
 
+void Ball::set_pos(const Raquette &rq){
+    set_posX((2*rq.get_posX()+rq.get_width())/2);
+    set_posY(rq.get_posY()-1);
+}
+
 void Ball::set_velX(float x){
-    body.SetVelocity(x,body.GetVelY());
+    velX = x;
 }
 void Ball::set_velY(float y){
-    body.SetVelocity(body.GetVelX(),y);
+    velY = y;
 }
 void Ball::set_vel(float x,float y){
     set_velX(x);
     set_velY(y);
 }
 void Ball::set_vel(int normal) {
-	if (normal == 0) { //Left
-		if (get_velX() > 0) {
-			set_vel(-get_velX(), get_velY());
+	if (normal == 4 || normal == 2) { //Left && Right
+		if (velX != 0) {
+			set_vel(-velX, velY);
 		}
 	}
-	if (normal == 2) { //Right
-		if (get_velX() < 0) {
-			set_vel(-get_velX(), get_velY());
-		}
-	}
-	if (normal == 1) { //Top
-		if (get_velY() > 0) {
-			set_vel(get_velX(), -get_velY());
-		}
-	}
-	if (normal == 3) { //Bottom
-		if (get_velY() < 0) {
-			set_vel(get_velX(), -get_velY());
+	if (normal == 1 || normal == 3) { //Top && Bottom
+		if (velY != 0) {
+			set_vel(velX, -velY);
 		}
 	}
 }
 
-/* Change la position de X (X--) ce qui la fait bouger vers la gauche */
-void Ball::mv_left(){
-    set_pos(get_posX()-1,get_posY());
+
+void Ball::print(const Window* w) const{
+	w->print(posX, posY,c);
 }
-/* Change la position de X (X++) ce qui la fait bouger vers la Droite */
-void Ball::mv_right(){
-    set_pos(get_posX()+1,get_posY());
+
+void Ball::clear(const Window* w) const {
+    w->print(posX, posY,' ');
+}
+
+void Ball::update(Tab_brick& tab,const Raquette& r,const Window* w){
+    clear(w);
+    allCollision(tab,r,w);
+    print(w);
+}
+
+void Ball::allCollision(Tab_brick& tab,const Raquette& r,const Window* w){
+    set_pos(posX+velX,posY+velY);
+    int brick = collideBrick(tab,w);
+    int bord = collideBord(w);
+    int raquette = collideRaquette(r);
+    set_pos(posX-velX,posY-velY);
+    if (brick != 0)
+        set_vel(brick);
+    else if (bord != 0)
+        set_vel(bord);
+    else if (raquette != 0)
+        set_vel(raquette);
+    
+    set_pos(posX+velX,posY+velY);
+
+}
+/* Prend un tableau de brick en parametre */
+int Ball::collideBrick(Tab_brick& tab,const Window* w) const{
+    int i = 0;
+    int normal = 0;
+    while ( i < tab.get_size() && normal==0 ) {
+        normal = collideBrick(*tab.get_brick(i));
+        if (normal == 0) ++i;
+    }
+    if (i >= tab.get_size()) return 0;
+    else {
+        tab.get_brick(i)->increment_resistance();
+        tab.get_player()->increment_score(tab.get_brick(i)->get_point());
+        if (tab.get_brick(i)->get_resistance() == 0) tab.del(i,w);
+        return normal;   
+    }
+}
+
+int Ball::collideBrick(Brick& b) const{
+    if ( (posX) >= b.get_posX() && (posX) < (b.get_posX()+b.get_width()) && (int)(posY) == b.get_posY() )
+        return 1;
+    else if ( (posY) >= b.get_posY() && (posY) <= (b.get_posY()+b.get_height()) && (int)(posX) == (b.get_posX() + b.get_width()))
+        return 2;
+    else if( (posX) >= b.get_posX() && (posX) < b.get_posX()+b.get_width() && (int)(posY-velY) == (b.get_posY() + b.get_height()))
+        return 3;
+    else if ( (posY)>= b.get_posY() && (posY) <= b.get_posY()+b.get_height() && (int)(posX-velX) == b.get_posX())
+        return 4;
+    else return 0;
+
+}
+int Ball::collideRaquette(const Raquette& r) const{
+    if ( posX >= r.get_posX() && posX <= r.get_posX()+r.get_width() && (int)posY == r.get_posY() )
+        return 1;
+    else if (posY >= r.get_posY() && posY <= r.get_posY()+r.get_height() && (int)posX == r.get_posX() + r.get_width())
+        return 2;
+    else if(posX >= r.get_posX() && posX <= r.get_posX()+r.get_width() && (int)(posY-velY) == r.get_posY() + r.get_height())
+        return 3;
+    else if (posY >= r.get_posY() && posY <= r.get_posY()+r.get_height() && (int)(posX-velX) == r.get_posX())
+        return 4;
+    else return 0;
+}
+int Ball::collideBord(const Window* w) const{
+    if ( (posX >= w->getX()) && (posX <= w->getX()+w->getLargeur()) && ((int)posY == (w->getY() + w->getHauteur())) )
+        return 1;
+    else if (posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)posX == w->getX() + w->getLargeur())
+        return 2;
+    else if( (posX >= w->getX()) && (posX <= (w->getX()+w->getLargeur())) && ((int)(posY-velY) == w->getY()))
+        return 3;
+    else if ( posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)(posX-velX) == w->getX())
+        return 4;
+    else return 0;
 }

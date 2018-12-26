@@ -1,8 +1,6 @@
 #include "window.h"
-#include "Body.h"
 #include "player.h"
 #include "brick.h"
-#include "Terrain.h"
 #include "ball.h"
 #include "raquette.h"
 #include "menu.h"

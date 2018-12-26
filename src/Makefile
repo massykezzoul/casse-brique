@@ -5,6 +5,7 @@
 #
 #− BECHEV Boyan <boyan.b.2012@feg.bg>
 #  FOURNIER Romain <>
+#  KEZZOUL Massili < massili.kezzoul@etu.umontpellier.fr >
 #
 #
 #− Casse-brique
@@ -18,20 +19,14 @@
 CC	 = g++
 FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = Body.cpp LinkedList.cpp main.cpp window.cpp brick.cpp player.cpp Terrain.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp
+SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'
-
-#Cibles:
 
 #usuelles
 all : $(PROG_NAME)
 
 #compilation
 
-Body.o       : Body.cpp
-	@$(CC) -c $<  $(FLAGS)
-LinkedList.o : LinkedList.cpp
-	@$(CC) -c $<  $(FLAGS)
 main.o       : main.cpp
 	@$(CC) -c $<  $(FLAGS)
 window.o     : window.cpp
@@ -39,8 +34,6 @@ window.o     : window.cpp
 brick.o      : brick.cpp
 	@$(CC) -c $<  $(FLAGS)
 player.o     : player.cpp
-	@$(CC) -c $<  $(FLAGS)
-Terrain.o    : Terrain.cpp
 	@$(CC) -c $<  $(FLAGS)
 ball.o		 : ball.cpp
 	@$(CC) -c $<  $(FLAGS)

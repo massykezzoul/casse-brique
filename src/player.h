@@ -8,8 +8,6 @@
 
 #include "window.h"
 
-#include "ball.h"
-
 class Player {
 private:
     /* data */
@@ -30,9 +28,9 @@ public:
     /* Constructeur parametré       */
     Player(std::string,int,int,int);
 
-    Player(int x,int y,int width,int height,Color = WBLACK,Color = BWHITE);
+    Player(int x,int y,int width,int height,Color = BWHITE,Color = WBLACK);
 
-    Player(std::string,int,int,int,int x,int y,int width,int height,Color = WBLACK,Color = BWHITE);
+    Player(std::string,int,int,int,int x,int y,int width,int height,Color = BWHITE,Color = WBLACK);
 
     ~Player();
     /* Setters */

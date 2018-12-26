@@ -5,8 +5,8 @@
 #ifndef BRICK_H
 #define BRICK_H
 
+#include "window.h"
 #include "player.h"
-#include "Body.h"
 
 enum Forme
 {
@@ -32,38 +32,73 @@ private:
     int point;
     int x;
     int y;
-    Body body;
-    static Player* player;
+    int width;
+    int height;
+    Color c;
 
 public:
     /* Constructeur par défault */
     Brick();
     /* Constructeur parametré*/
-    Brick(Forme,int,int,int,int);
+    Brick(Forme,int resistance,int point,int x,int y,int w,int h,Color = WRED);
+    
+    Brick(Brick&);
     /* Destructeur */
     ~Brick();
+
+    /* Operateur d'affectation*/
+    Brick& operator=(const Brick&);
 
     /* Les getteurs */
     Forme get_forme() const;
     int get_resistance() const;
     int get_point() const;
 
+    int get_posX() const;
+    int get_posY() const;
+    int get_width() const;
+    int get_height() const;
+
     /*  Les setteurs */
     void set_forme(Forme);
     void set_resistance(int);
     void set_point(int);
-    static void set_player(Player* p);
-    static Player* get_player();
 
     /* Pour incrementé la valeur de resistance */
     /* La valeur par défault du paramétre est -1 */
     void increment_resistance(int = -1);
 
-    /* appelée quand la balle touche la brique */
-    void on_colision();
-
+    void clear(const Window*) const;
+    void print(const Window*) const;
 };
 
+/* ------------------- LA CLASSE TAB_BRICK --------------------- */
 
+class Tab_brick {
+private:
+    Brick* tab;
+    /* Nombre de Brique dans le tableau */
+    int size;
+    /* Espace mémoire alloué*/
+    int alloc;
+
+    static Player* player;
+public:
+    Tab_brick();
+    
+    ~Tab_brick();
+
+    /* Ajoute une brique au tableau */
+    void add(Forme,int resistance,int point,int x,int y,int w,int h,Color c = WRED);
+    void del(int i,const Window* w);
+    /* Retourn la brique à la position i*/
+    Brick* get_brick(int i);
+    int get_size();
+    void print(const Window*) const;
+
+    static Player* get_player();
+    static void set_player(Player*);
+
+};
 
 #endif
