@@ -25,11 +25,14 @@ int menu(Color fond,Color bordure){
 
     Tab_boutton tab(fond,on_focus);
     int sel = -1;
-    int c;
+    int c=0;
     while (sel == -1) {
         tab.print(&win);
         c=0;
-        c=getch();
+        do {
+            c=getch();
+        } while ( c == 0 );
+
         switch (c)
         {
             case KEY_DOWN:
@@ -56,10 +59,7 @@ void jouer(){
     Player* p = new Player("Phase de Dev",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
     //Niveau
     Tab_brick tab;
-
-    
     tab.set_player(p);
-
     tab.add(CARRE, 1, 10, 5, 5,4,2);
     //tab.add(CARRE, 1, 10, 9, 5,4,2);
     tab.add(CARRE, 1, 10, 13, 5,4,2);
@@ -72,17 +72,10 @@ void jouer(){
     //Raquette
     Raquette rq(10,20,15,1,3);
     
-    //Balle  (Les arguments compliqué c'est juste pour positionné la Balle au dessu de la raquette en debut de partie)
     Tab_ball tab_ball;
-
     tab_ball.set_player(p);
-
     for (int i = 0 ; i < p->get_ball() ;++i) 
         tab_ball.add(rq,WBLACK);
-    //Ball ball(10 , 15 , 1, 45,WCYAN);
-    //Jeu
-    int c;
-
     Ball ball(*tab_ball.get_ball());
 
     tab.print(&terrain);
@@ -90,6 +83,8 @@ void jouer(){
     rq.print(&terrain);
     p->print();
 
+    //Jeu
+    int c = 0;
     while (c != 'q' && c != 'Q')  {
         c=0;
         c=getch();
@@ -152,7 +147,13 @@ void jouer(){
         }
         usleep(50000);
     }
-  
+    /* Destruction de tout les objets */
+    delete p;
+    tab.~Tab_brick();
+    tab_ball.~Tab_ball();
+    rq.~Raquette();
+    terrain.clear();
+
 }
 
 void score(){

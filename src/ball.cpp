@@ -25,9 +25,6 @@ Ball::Ball(const Ball& b)
   apply_velocity();
 }
 
-Ball::~Ball(){
-
-}
 
 
 Ball& Ball::operator=(const Ball &b) {
@@ -219,7 +216,7 @@ Tab_ball::Tab_ball():tab(new Ball[3]),size(0),alloc(3) {
 }
     
 Tab_ball::~Tab_ball(){
-    if (tab != NULL ) delete[] tab;
+    if (tab != NULL  && size > 0) delete[] tab;
 }
 
 /* Ajoute une brique au tableau */

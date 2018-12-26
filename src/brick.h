@@ -43,8 +43,6 @@ public:
     Brick(Forme,int resistance,int point,int x,int y,int w,int h,Color = WRED);
     
     Brick(const Brick&);
-    /* Destructeur */
-    ~Brick();
 
     /* Operateur d'affectation*/
     Brick& operator=(const Brick&);

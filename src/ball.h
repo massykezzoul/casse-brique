@@ -26,7 +26,6 @@ public:
     Ball(const Raquette&,Color = WCYAN,char = 'O');
     Ball(float posX,float posY,float spd,float angl,Color = WCYAN, char = 'O');
     Ball(const Ball&);
-    ~Ball();
     Ball& operator=(const Ball&);
 
     void apply_velocity();

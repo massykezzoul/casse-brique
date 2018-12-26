@@ -19,11 +19,6 @@ Brick::Brick(const Brick& b)
 
 }
 
-/* Destructeur */
-Brick::~Brick() {
-
-}
-
 Brick& Brick::operator=(const Brick &b) {
     if (&b != this) {
         forme = b.forme;

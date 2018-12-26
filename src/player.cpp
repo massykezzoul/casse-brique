@@ -30,12 +30,6 @@ Player::Player(std::string name,int ball,int score,int niveau,int x,int y,int wi
     window.setCouleurFenetre(fenetre);
 }
 
-
-Player::~Player() {
-    window.clear();
-    window.~Window();
-}
-
 /* Setters */
 void Player::set_name(string n){
     name = n;
