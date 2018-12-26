@@ -19,7 +19,7 @@
 CC	 = g++
 FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp
+SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'
 
 #usuelles
@@ -43,6 +43,8 @@ menu.o: menu.cpp
 	@$(CC) -c $<  $(FLAGS)
 boutton/boutton.o: boutton/boutton.cpp
 	@$(CC) -o boutton/boutton.o -c $<  $(FLAGS)
+score.o: score.cpp
+	@$(CC) -c $<  $(FLAGS)
 
 $(PROG_NAME) : $(SOURCE:.cpp=.o)
 	@$(CC) $^ -o $@ $(FLAGS) && echo 'Compilation OK' || 'Fail on Compilation'

@@ -71,11 +71,11 @@ void Raquette::clear(const Window* w) const {
 	}
 }
 void Raquette::print(const Window* w) const {
-    w->print(posX, posY,'/');
-    for (int i = posX+1; i < posX-1 + width; i++) {
+    //w->print(posX, posY,'/');
+    for (int i = posX/*+1*/; i < posX/*-1*/ + width; i++) {
 		for (int j = posY; j < posY + height; j++) {
-			w->print(i, j,car);
+			w->print(i, j,car,c);
 		}
 	}
-    w->print(posX-1+width, posY,'\\');
+    //w->print(posX-1+width, posY,'\\');
 }

@@ -10,6 +10,7 @@
 #include "raquette.h"
 #include "menu.h"
 #include "boutton/boutton.h"
+#include "score.h"
 
 using namespace std;
 
@@ -70,14 +71,14 @@ void jouer(){
     //tab.add(CARRE, 1, 10, 33, 5,4,2);
 
     //Raquette
-    Raquette rq(10,20,15,1,3);
+    Raquette rq(10,20,15,1,3,terrain.getCouleurBordure(),'-');
     
     Tab_ball tab_ball;
     tab_ball.set_player(p);
     for (int i = 0 ; i < p->get_ball() ;++i) 
         tab_ball.add(rq,WBLACK);
     Ball ball(*tab_ball.get_ball());
-
+    float spd = 1.2;
     tab.print(&terrain);
     ball.print(&terrain);
     rq.print(&terrain);
@@ -112,7 +113,7 @@ void jouer(){
             break;
         case KEY_SPACE:
             if (ball.get_speed() == 0) {
-                ball.set_speed(1.0);
+                ball.set_speed(spd);
                 ball.set_angle(-45);
             }
         default:
@@ -147,6 +148,17 @@ void jouer(){
         }
         usleep(50000);
     }
+    /* Sauvgarde du score */
+    Score s("hightScore.txt");
+    s.add(*p);
+    s.print(&terrain);
+    c = 0;
+    while (c != KEY_ETR ) {
+        c = 0;
+        c = getch();
+    }
+    s.write("hightScore.txt");
+
     /* Destruction de tout les objets */
     delete p;
     tab.~Tab_brick();
