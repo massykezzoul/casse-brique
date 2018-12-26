@@ -23,8 +23,11 @@ private:
 public:
 /* Constructeur */
     Ball();
-    Ball(float posX,float posY,float spd,float angl,Color = WCYAN, char = '@');
+    Ball(const Raquette&,Color = WCYAN,char = 'O');
+    Ball(float posX,float posY,float spd,float angl,Color = WCYAN, char = 'O');
+    Ball(const Ball&);
     ~Ball();
+    Ball& operator=(const Ball&);
 
     void apply_velocity();
 /* Getteurs */
@@ -75,4 +78,33 @@ public:
 
 };
 
+/* ------------------------ CLASSE TAB_BALL ------------------------------*/
+
+class Tab_ball {
+    private:
+    Ball* tab;
+    /* Nombre de Brique dans le tableau */
+    int size;
+    /* Espace mémoire alloué*/
+    int alloc;
+
+    static Player* player;
+public:
+    Tab_ball();
+    
+    ~Tab_ball();
+
+    /* Ajoute une brique au tableau */
+    void add(float posX,float posY,float spd,float angl,Color = WCYAN, char = '@');
+    void add(const Raquette&,Color = WCYAN, char = 'O');
+    void del(int i,const Window* w);
+    /* Retourn la brique à la position i*/
+    Ball* get_ball(int i = 0);
+    int get_size();
+    void print(const Window*) const;
+
+    static Player* get_player();
+    static void set_player(Player*);
+
+};
 #endif

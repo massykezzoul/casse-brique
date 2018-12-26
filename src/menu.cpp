@@ -53,7 +53,7 @@ void jouer(){
     //Initialisation
     Window terrain(25, 50, 0, 0);
     /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Phase de test",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
+    Player* p = new Player("Phase de Dev",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
     //Niveau
     Tab_brick tab;
 
@@ -73,13 +73,17 @@ void jouer(){
     Raquette rq(10,20,15,1,3);
     
     //Balle  (Les arguments compliqué c'est juste pour positionné la Balle au dessu de la raquette en debut de partie)
-    Ball ball((2*rq.get_posX()+rq.get_width())/2 , rq.get_posY()-1 , 0, 0,WBLACK,'O');
+    Tab_ball tab_ball;
+
+    tab_ball.set_player(p);
+
+    for (int i = 0 ; i < p->get_ball() ;++i) 
+        tab_ball.add(rq,WBLACK);
     //Ball ball(10 , 15 , 1, 45,WCYAN);
     //Jeu
     int c;
 
-    stringstream s;
-    s.str("");
+    Ball ball(*tab_ball.get_ball());
 
     tab.print(&terrain);
     ball.print(&terrain);
@@ -119,6 +123,29 @@ void jouer(){
         default:
             break;
         }
+        if (ball.get_posY()> rq.get_posY()+rq.get_height()) {
+            // Kill the ball
+            // Affichage de ball en moin 
+            ball.clear(&terrain);
+            p->increment_ball();
+            tab_ball.del(0,&terrain);
+            if (tab_ball.get_ball() == NULL) {
+                //affiche msg fin de partie
+                // Stockage des point tout ça tout ça
+                c= 'q';
+            } else {
+                ball = *tab_ball.get_ball();
+                ball.set_pos(rq);
+                ball.print(&terrain);
+                p->print();
+            }
+        }
+        if (tab.get_brick() == NULL) {
+            //Fin de partie toute les brick on été detruite
+            // Stockage des point tout ça tout ça
+            c = 'q';
+        }
+
         if (ball.get_speed() != 0) {    
             ball.update(tab,rq,&terrain);
             p->print();

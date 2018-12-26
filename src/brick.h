@@ -42,7 +42,7 @@ public:
     /* Constructeur parametré*/
     Brick(Forme,int resistance,int point,int x,int y,int w,int h,Color = WRED);
     
-    Brick(Brick&);
+    Brick(const Brick&);
     /* Destructeur */
     ~Brick();
 
@@ -92,7 +92,7 @@ public:
     void add(Forme,int resistance,int point,int x,int y,int w,int h,Color c = WRED);
     void del(int i,const Window* w);
     /* Retourn la brique à la position i*/
-    Brick* get_brick(int i);
+    Brick* get_brick(int i = 0);
     int get_size();
     void print(const Window*) const;
 

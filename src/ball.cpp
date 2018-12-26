@@ -18,9 +18,33 @@ Ball::Ball(float posX,float posY,float spd,float angl,Color color,char c)
   apply_velocity();
 }
 
+Ball::Ball(const Raquette& rq,Color color,char c):posX((2*rq.get_posX()+rq.get_width())/2),posY(rq.get_posY()-1 ),speed(0),angle(0),velX(0),velY(0),color(color),c(c) {}
+
+Ball::Ball(const Ball& b)
+    :posX(b.posX), posY(b.posY),speed(b.speed),angle(b.angle),velX(b.velX),velY(b.velY),color(b.color),c(b.c){
+  apply_velocity();
+}
+
 Ball::~Ball(){
 
 }
+
+
+Ball& Ball::operator=(const Ball &b) {
+    if (&b != this) {
+        posX = b.posX;
+        posY = b.posY;
+        speed = b.speed;
+        angle = b.angle;
+        velX = b.velX;
+        velY = b.velY;
+        color = b.color;
+        c = b.c;
+        apply_velocity();
+    } 
+    return *this;
+}
+
 
 //Grace a l'angle on récupere la velocité x et y avec cos et sin
 //on multiplie vx et vy par speed pour avoir la vitesse de la balle.
@@ -186,4 +210,92 @@ int Ball::collideBord(const Window* w) const{
     else if ( posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)(posX-velX) == w->getX())
         return 4;
     else return 0;
+}
+
+/* ------------------- LA CLASSE TAB_BRICK --------------------- */
+
+Tab_ball::Tab_ball():tab(new Ball[3]),size(0),alloc(3) {
+
+}
+    
+Tab_ball::~Tab_ball(){
+    if (tab != NULL ) delete[] tab;
+}
+
+/* Ajoute une brique au tableau */
+void Tab_ball::add(float posX,float posY,float spd,float angl,Color c, char car){
+    if (size >= alloc) {
+        /* Réallouer 2 fois plus de mémoire */
+        if (alloc ==0) alloc = 2; else alloc *= 2;
+        Ball* tmp = new Ball[alloc];
+        if (tmp == NULL ) exit(1);
+        /* Copie des elements précedent */
+        for (int i= 0 ; i < size;i++) 
+            tmp[i] = tab[i];
+        tmp[size] = Ball(posX,posY,spd,angl,c,car);
+        ++size;
+        Ball* del = tab;
+        tab = tmp;
+        delete[] del;
+
+    } else {
+        /* Il reste encore de l'espace en mémoire */
+        tab[size] = Ball(posX,posY,spd,angl,c,car);
+        ++size;
+    }
+}
+
+void Tab_ball::add(const Raquette& rq,Color color,char car){
+    if (size >= alloc) {
+        /* Réallouer 2 fois plus de mémoire */
+        if (alloc ==0) alloc = 2; else alloc *= 2;
+        Ball* tmp = new Ball[alloc];
+        if (tmp == NULL ) exit(1);
+        /* Copie des elements précedent */
+        for (int i= 0 ; i < size;i++) 
+            tmp[i] = tab[i];
+        tmp[size] = Ball(rq,color,car);
+        ++size;
+        Ball* del = tab;
+        tab = tmp;
+        delete[] del;
+
+    } else {
+        /* Il reste encore de l'espace en mémoire */
+        tab[size] = Ball(rq,color,car);
+        ++size;
+    }
+}
+void Tab_ball::del(int i,const Window* w){
+    if (i>=size) return;
+    else {
+        tab[i].clear(w);
+        for ( ; i<size-1 ; i++ )
+            tab[i] = tab[i+1];
+        --size;
+    }
+}
+/* Retourn la brique à la position i*/
+Ball* Tab_ball::get_ball(int i){
+    if ((i>=size) || (i < 0)) return NULL;
+    else return tab+i;
+}
+int Tab_ball::get_size(){
+    return size;
+}
+
+void Tab_ball::print(const Window* w) const {
+    for (int i=0;i<size;++i) {
+        tab[i].print(w);
+    }
+}
+
+Player* Tab_ball::player;
+
+Player* Tab_ball::get_player() {
+    return player;
+}
+
+void Tab_ball::set_player(Player* p) {
+    player = p;
 }

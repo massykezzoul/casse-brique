@@ -39,7 +39,7 @@ public:
     void set_ball(int);
     /* Incremente le nombre de balle du joueur (Si aucun paramètre donné -> 1 par défault)*/
     /* Donnée un nombre négatif pour décrementer */
-    void increment_ball(int = 1);
+    void increment_ball(int = -1);
 
     /* Change le score du joueur */
     void set_score(int);

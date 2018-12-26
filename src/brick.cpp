@@ -14,7 +14,7 @@ Brick::Brick(Forme f,int r,int p, int x, int y,int w,int h,Color c):forme(f),res
 
 }
 
-Brick::Brick(Brick& b)
+Brick::Brick(const Brick& b)
     :forme(b.forme),resistance(b.resistance),point(b.point),x(b.x),y(b.y),width(b.width),height(b.height),c(b.c){
 
 }
