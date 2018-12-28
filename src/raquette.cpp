@@ -55,12 +55,12 @@ void Raquette::set_height(int h){
 
 /* Change la position de X (X--) ce qui la fait bouger vers la gauche */
 void Raquette::mv_left(int limite){
-    posX -= ((posX-1<limite)?0:(1*vitesse));
+    posX = ((posX-vitesse<limite)?limite:(posX-vitesse));
     
 }
 /* Change la position de X (X++) ce qui la fait bouger vers la Droite */
 void Raquette::mv_right(int limite){
-    posX += ((posX+1+width>limite)?0:(1*vitesse));
+    posX = ((posX+vitesse+width>limite)?limite-width:(posX+vitesse));
 }
 
 void Raquette::clear(const Window* w) const {
@@ -71,11 +71,11 @@ void Raquette::clear(const Window* w) const {
 	}
 }
 void Raquette::print(const Window* w) const {
-    //w->print(posX, posY,'/');
-    for (int i = posX/*+1*/; i < posX/*-1*/ + width; i++) {
+    for (int i = posX; i < posX + width; i++) {
 		for (int j = posY; j < posY + height; j++) {
 			w->print(i, j,car,c);
 		}
 	}
-    //w->print(posX-1+width, posY,'\\');
+    w->print(posX, posY,'/');
+    w->print(posX+width-1, posY,'\\');
 }

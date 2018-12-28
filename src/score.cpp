@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <unistd.h>
 #include <cstdlib>
 
 #include "score.h"
@@ -17,7 +18,7 @@ Score::Score(string name):size(0){
     /* Syntaxe du fichier : NOM,SCORE;  */
     ifstream f(name.c_str());
     
-    if (!f.fail()){
+    if (f){
         string line("");
         string name("");
         int point,i=0;
@@ -26,7 +27,7 @@ Score::Score(string name):size(0){
             name = get_nom(line);
             if (name != "") {
                 point = get_point(line);
-                if (i < 5) {
+                if (i < MAX_SCORE) {
                     nom[i] = name;
                     scores[i] = point;
                     ++i;
@@ -34,6 +35,7 @@ Score::Score(string name):size(0){
                 }
             }
         }
+    f.close();
     }
 }
 
@@ -45,14 +47,14 @@ void Score::add(Player& p){
         scores[0] = p.get_score();
         size++;
     } else {
-        size = (size>=5?5:size+1);
+        size = (size>=MAX_SCORE?MAX_SCORE:size+1);
         int i = 0;
         string n("");
         int s = 0;
-        while (i<size && scores[i]>p.get_score()){
+        while (i<size && scores[i]>=p.get_score()){
             ++i;
         }
-        if (i < 5) {
+        if (i < MAX_SCORE) {
             string tmpn("");
             int tmps = 0 ;
             n = nom[i];
@@ -63,7 +65,7 @@ void Score::add(Player& p){
             while (i < size) {
                 tmpn = nom[i];
                 tmps = scores[i];
-                
+
                 nom[i] = n;
                 scores[i] = s;
 
@@ -74,11 +76,6 @@ void Score::add(Player& p){
             }
         }
     }
-}
-
-/* suprimme un score du tableau */
-void Score::del(int){
-    /* j'ai vraiment besoin de ça ? */
 }
 
 int Score::get_size() const{
@@ -108,29 +105,30 @@ void Score::print(const Window* w) const{
         ss.str("");
     }
 
-    win.print(0,size+3,separateur);
+    win.print(0,MAX_SCORE+3,separateur);
     /* Le boutton OK */
     Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
-    ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),size+4);
+    ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),MAX_SCORE+4);
 
-    win.print(0,size+5,separateur);
+    win.print(0,MAX_SCORE+5,separateur);
 
     int car = 0;
     while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
         car = 0;
         car = getch();
+        usleep(50000);
     }
 }
 
-void Score::write(string nom) const {
+void Score::write(string name) const {
     ofstream f(".TMPhightscoreTMP.tmp");
-    if (!f.fail()) {
-        f.seekp(ios::beg);
+    if (f) {
         for(int i = 0;i<size;++i) {
-            f << nom[i] <<","<< scores[i] << ";" << endl;
+            f << nom[i]<< ","<< scores[i] <<";" << endl;
         }
+    rename(".TMPhightscoreTMP.tmp",name.c_str());
+    f.close();
     }
-    rename(".TMPhightscoreTMP.tmp",nom.c_str());
 }
 
 

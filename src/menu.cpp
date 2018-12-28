@@ -58,7 +58,7 @@ void jouer(){
     //Initialisation
     Window terrain(25, 50, 0, 0);
     /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Phase de Dev",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
+    Player* p = new Player("Massy",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
     //Niveau
     Tab_brick tab;
     tab.set_player(p);
@@ -153,7 +153,6 @@ void jouer(){
     Score s("hightScore.txt");
     s.add(*p);
     s.print(&terrain);
-    
     s.write("hightScore.txt");
 
     /* Destruction de tout les objets */
@@ -166,7 +165,13 @@ void jouer(){
 }
 
 void score(){
-
+    Window win(25,50,0,0,' ');
+    win.setCouleurBordure(BWHITE);
+    win.setCouleurFenetre(WBLACK);
+    Score s("hightScore.txt");
+    s.print(&win);
+    s.~Score();
+    win.clear();
 }
  
 void option(){

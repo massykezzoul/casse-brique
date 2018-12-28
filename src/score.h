@@ -4,14 +4,13 @@
 #include <fstream>
 #include "player.h"
 
+#define MAX_SCORE 6
+
 class Score {
 private:
-    std::string nom[5];
-    int scores[5];
+    std::string nom[MAX_SCORE];
+    int scores[MAX_SCORE];
     int size;
-
-    /* suprimme un score du tableau */
-    void del(int);
 public:
     /* Lis le fichier ou sont stocké les meilleurs scores */
     /* Si le fichier est inéxistant il sera crée */
