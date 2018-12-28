@@ -45,7 +45,7 @@ class Window {
   // constructeur d'un fenetre de hauteur=h, largeur=w dont le coin superieur gauche
   // a pour coordonnée (x,y), le caractère c est utilisé pour définir la bordure
   Window(int h,int w, int x, int y, char c='+');
-
+  Window();
   ~Window();
 
   // fonction permettant d'afficher une variable s de type (string ou char)
@@ -73,13 +73,8 @@ class Window {
 };
 
 
-
-
-
-
-
-
-
+Color IntToColor(int i);
+int ColorToInt(Color);
 
 
 #endif

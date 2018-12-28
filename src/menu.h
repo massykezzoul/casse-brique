@@ -17,9 +17,10 @@ int menu(Color fond = WBLACK,Color bordure = BWHITE);
     Retourne un entier entre 0 et 4 :
         0 : ERREUR
         1 : vers jouer
-        2 : vers Options
-        3 : vers Scores
-        4 : Quitter
+        2 : vers charger
+        3 : vers Options
+        4 : vers Scores
+        5 : Quitter
 */
 
 void jouer();
@@ -27,6 +28,10 @@ void jouer();
     La Partie commence ici
 */  
 
+void charger();
+/* 
+    Charger une partie sauvgarder
+*/
 void score();
 /* 
     Affiche les scores sauvgarder

@@ -56,6 +56,10 @@ int Brick::get_height() const {
     return height;
 }
 
+Color Brick::get_color()const {
+    return c;
+}
+
 /*  Les setteurs */
 void Brick::set_forme(Forme f){
     forme = f;
@@ -156,4 +160,31 @@ Player* Tab_brick::get_player() {
 
 void Tab_brick::set_player(Player* p) {
     player = p;
+}
+
+
+/*---------------------------------------------------------*/
+
+int FormeToInt(Forme f) {
+    return (int)f;
+}
+
+Forme IntToForme(int i) {
+    switch(i) {
+        case 0:
+            return CARRE;
+            break;
+        case 1:
+            return TRIANGLE;
+            break;
+        case 2:
+            return CREUSE;
+            break;
+        case 3:
+            return RONDE;
+            break;
+        default:
+            return NB_FORME;
+            break;
+    } 
 }

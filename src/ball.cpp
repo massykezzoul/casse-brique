@@ -73,6 +73,13 @@ float Ball::get_speed() const{
 float Ball::get_angle() const{
     return angle;
 }
+Color Ball::get_color() const {
+    return color;
+}
+
+char Ball::get_char() const {
+    return c;
+}
 
 
 

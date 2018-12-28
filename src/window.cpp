@@ -62,6 +62,10 @@ Window::Window(int h,int w, int x, int y, char c)
   update();
 }
 
+Window::Window():win(NULL),frame(NULL) {
+
+}
+
 Window::~Window(){
   wborder(frame, ' ', ' ', ' ',' ',' ',' ',' ',' ');
   wattroff(win,COLOR_PAIR(colorwin));
@@ -114,3 +118,58 @@ void Window::setCouleurFenetre(Color c){
 }
 
 void Window::clear() const{  werase(win); update(); }
+
+
+
+Color IntToColor(int i){
+  switch(i) {
+      case 1:
+          return WBLACK;
+          break;
+      case 2:
+          return WCYAN;
+          break;
+      case 3:
+          return WBLUE;
+          break;
+      case 4:
+          return WYELLOW;
+          break;
+      case 5:
+          return WGREEN;
+          break;
+      case 6:
+          return WMAGENTA;
+          break;
+      case 7:
+          return WRED;
+          break;
+      case 8:
+          return BWHITE;
+          break;
+      case 9:
+          return BCYAN;
+          break;
+      case 10:
+          return BBLUE;
+          break;
+      case 11:
+          return BYELLOW;
+          break;
+      case 12:
+          return BGREEN;
+          break;
+      case 13:
+          return BMAGENTA;
+          break;
+      case 14:
+          return BRED;
+          break;
+      default:
+          return BWHITE;
+      break;
+    } 
+}
+int ColorToInt(Color c) {
+  return (int)c;
+}

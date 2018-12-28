@@ -37,7 +37,7 @@ public:
 
 class Tab_boutton {
 private:
-    Boutton tab[4];
+    Boutton tab[5];
     int selected;
 public:
     Tab_boutton();

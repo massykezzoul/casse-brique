@@ -25,6 +25,10 @@ public:
     int get_width()const;
     int get_height()const;
 
+    int get_speed()const;
+    Color get_color()const;
+    char get_char()const;
+
     /* Changer la position du coin supérieur gauche de la raquette */
     void set_posX(int);
     void set_posY(int);

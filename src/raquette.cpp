@@ -31,6 +31,17 @@ int Raquette::get_height()const {
     return height;
 }
 
+int Raquette::get_speed() const {
+    return vitesse;
+}
+
+Color Raquette::get_color()const{
+    return c;
+}
+char Raquette::get_char()const{
+    return car;
+}
+
 /* Changer la position du coin supérieur gauche de la raquette */
 void Raquette::set_posX(int x){
     posX = (x>0)?x:0;

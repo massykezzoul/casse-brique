@@ -17,8 +17,6 @@ enum Forme
     NB_FORME
 };
 
-class Body;
-
 /* ------------ LA CLASSE BRICK ----------------- */
 
 class Brick {
@@ -56,6 +54,8 @@ public:
     int get_posY() const;
     int get_width() const;
     int get_height() const;
+
+    Color get_color() const;
 
     /*  Les setteurs */
     void set_forme(Forme);
@@ -98,5 +98,9 @@ public:
     static void set_player(Player*);
 
 };
+
+int FormeToInt(Forme f);
+
+Forme IntToForme(int i);
 
 #endif

@@ -13,8 +13,9 @@ int main () {
   int i = menu();
   while (i != 4) {
     if (i==1) jouer();
-    else if (i == 2) option();
-    else if (i == 3) score();
+    else if (i == 2) charger();
+    else if (i == 3) option();
+    else if (i == 4) score();
     else exit(1);
 
     i = menu();

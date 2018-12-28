@@ -36,7 +36,7 @@ public:
     int get_score() const;
     int get_ball() const;
     int get_niveau() const;
-
+    Window get_window() const;
     /* Setters */
     void set_name(std::string);
     /* Change le nombre de balle du joueur */

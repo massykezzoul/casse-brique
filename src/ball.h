@@ -36,6 +36,9 @@ public:
     float get_velY() const;
     float get_speed() const;
     float get_angle() const;
+    Color get_color() const;
+    char get_char() const;
+
 
 /* Setteurs*/
     void set_posX(float);

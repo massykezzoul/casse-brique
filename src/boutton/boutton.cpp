@@ -63,25 +63,26 @@ Tab_boutton::Tab_boutton():selected(0){}
 
 Tab_boutton::Tab_boutton(Color fond, Color on_focus) {
     tab[0] = Boutton("Jouer",1,fond,on_focus,true);
-    tab[1] = Boutton("Options",2,fond,on_focus);
-    tab[2] = Boutton("Scores",3,fond,on_focus);
-    tab[3] = Boutton("Quitter",4,fond,on_focus);
+    tab[1] = Boutton("Charger",2,fond,on_focus);
+    tab[2] = Boutton("Options",3,fond,on_focus);
+    tab[3] = Boutton("Scores",4,fond,on_focus);
+    tab[4] = Boutton("Quitter",5,fond,on_focus);
     selected = 0;
 }
 
 void Tab_boutton::print(Window* win) const{
-    for(int i =0 ; i < 4; i++) {
+    for(int i =0 ; i < 5; i++) {
         tab[i].print(win);
     }    
 }
 void Tab_boutton::down(){
     tab[selected].set_focused(false);
-    selected = (selected < 3 ? selected+1 : 0);
+    selected = (selected < 4 ? selected+1 : 0);
     tab[selected].set_focused(true);
 }
 void Tab_boutton::up(){
     tab[selected].set_focused(false);
-    selected = ( selected > 0 ?selected-1:3);
+    selected = ( selected > 0 ?selected-1:4);
     tab[selected].set_focused(true);
 }
 

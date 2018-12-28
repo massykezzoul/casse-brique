@@ -11,11 +11,13 @@
 #include "menu.h"
 #include "boutton/boutton.h"
 #include "score.h"
+#include "sauvgarde.h"
 
 using namespace std;
 
 #define KEY_SPACE ' '
 #define KEY_ETR '\n'
+#define FICHIER_SAUVGARDE ".savedGames"
 
 int menu(Color fond,Color bordure){
     Window win(25,50,0,0,' ');
@@ -104,7 +106,7 @@ void jouer(){
             break;
         case KEY_RIGHT:
             rq.clear(&terrain);
-            rq.mv_right(terrain.getLargeur() + terrain.getX()); // Le 50 c'est la largeur du terrain + posX
+            rq.mv_right(terrain.getLargeur() + terrain.getX());
             rq.print(&terrain);
             if (ball.get_speed() == 0) {                
                 ball.clear(&terrain);
@@ -164,6 +166,14 @@ void jouer(){
     rq.~Raquette();
     terrain.clear();
 
+}
+
+void charger() {
+    Window win(25,50,0,0,' ');
+    win.setCouleurBordure(BWHITE);
+    win.setCouleurFenetre(WBLACK);
+    Sauvgarde save(FICHIER_SAUVGARDE);
+    save.print(&win);
 }
 
 void score(){

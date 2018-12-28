@@ -45,6 +45,10 @@ int Player::get_ball() const {
 int Player::get_niveau() const {
     return niveau;
 }
+Window Player::get_window() const{
+    return window;
+}
+
 /* Setters */
 void Player::set_name(string n){
     name = n;
