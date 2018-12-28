@@ -81,7 +81,7 @@ void jouer(){
     
     Ball ball(rq,terrain.getCouleurBordure());
 
-    float speed = 1.3;
+    float speed = 1.0;
     tab.print(&terrain);
     ball.print(&terrain);
     rq.print(&terrain);
