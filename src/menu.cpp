@@ -47,7 +47,8 @@ int menu(Color fond,Color bordure){
                 break;
             default:
                 break;
-        }   
+        }  
+        usleep(50000);
     }   
     win.clear();
     return sel;
@@ -152,11 +153,7 @@ void jouer(){
     Score s("hightScore.txt");
     s.add(*p);
     s.print(&terrain);
-    c = 0;
-    while (c != KEY_ETR ) {
-        c = 0;
-        c = getch();
-    }
+    
     s.write("hightScore.txt");
 
     /* Destruction de tout les objets */

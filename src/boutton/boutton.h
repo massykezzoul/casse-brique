@@ -31,6 +31,8 @@ public:
     void set_focused(bool = true);
 
     void print(Window*) const;
+
+    void print(Window*,int,int) const;
 };
 
 class Tab_boutton {

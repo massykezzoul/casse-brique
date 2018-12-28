@@ -51,6 +51,11 @@ void Boutton::print(Window* win) const{
     win->print( (win->getX()+win->getLargeur()) / 2  - 6, 8 + position,text,(focused?on_focus:no_focus));
 }
 
+void Boutton::print(Window* w,int x,int y) const {
+    w->print(x,y,text,(focused?on_focus:no_focus));
+}
+
+
 /* ---------------------- Tableau de Boutton ---------------------------- */
 
 Tab_boutton::Tab_boutton():selected(0){}

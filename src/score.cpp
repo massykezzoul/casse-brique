@@ -1,8 +1,11 @@
-#include "score.h"
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
+
+#include "score.h"
+#include "window.h"
+#include "boutton/boutton.h"
 
 using namespace std;
 
@@ -49,24 +52,26 @@ void Score::add(Player& p){
         while (i<size && scores[i]>p.get_score()){
             ++i;
         }
-        string tmpn("");
-        int tmps = 0 ;
-        n = nom[i];
-        s = scores[i];
-        nom[i] = p.get_name();
-        scores[i] = p.get_score();
-        ++i;
-        while (i < size) {
-            tmpn = nom[i];
-            tmps = scores[i];
-            
-            nom[i] = n;
-            scores[i] = s;
-
-            n = tmpn;
-            s = tmps;
-
+        if (i < 5) {
+            string tmpn("");
+            int tmps = 0 ;
+            n = nom[i];
+            s = scores[i];
+            nom[i] = p.get_name();
+            scores[i] = p.get_score();
             ++i;
+            while (i < size) {
+                tmpn = nom[i];
+                tmps = scores[i];
+                
+                nom[i] = n;
+                scores[i] = s;
+
+                n = tmpn;
+                s = tmps;
+
+                ++i;
+            }
         }
     }
 }
@@ -81,15 +86,39 @@ int Score::get_size() const{
 }
 
 void Score::print(const Window* w) const{
-    int x = w->getX()+10;
-    int y = w->getY()+5;
-    stringstream ss("");
+    int x = (int)(0.15*(w->getX()+w->getLargeur()));
+    int y = (int)(0.15*(w->getY()+w->getHauteur()));
     Color c = BWHITE;
-    for (int i = 0;i<20;++i) w->print(x+i+1,y,' ',c);
+    stringstream ss("");
+    Window win(11,35,x,y,' ');
+
+    win.setCouleurBordure(c);
+    win.setCouleurFenetre(WBLACK);
+
+    string separateur(win.getLargeur(),'-');
+    /* Affichage de titre */
+    win.print(0,0,separateur);
+    win.print(0,1,"Les Meilleurs Scores :");
+    win.print(0,2,separateur);
+
+    /* Affichages des scores */
     for(int i = 0;i<size;++i ){
-        w->print(x,y+i+1,' ',c);
-        ss << nom[i] << " : " << scores[i] << " Points   " << endl; ;
-        w->print(x+1,y+i+1,ss.str(),c);
+        ss << nom[i] << " : " << scores[i] << " Points" << endl;
+        win.print(1,i+3,ss.str());
+        ss.str("");
+    }
+
+    win.print(0,size+3,separateur);
+    /* Le boutton OK */
+    Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
+    ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),size+4);
+
+    win.print(0,size+5,separateur);
+
+    int car = 0;
+    while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
+        car = 0;
+        car = getch();
     }
 }
 
@@ -105,6 +134,7 @@ void Score::write(string nom) const {
 }
 
 
+/* Utiliser pour la lecture du fichier */ 
 string get_nom(const string &line){
 	string nom("");
     unsigned int i = line.find_first_of(",");

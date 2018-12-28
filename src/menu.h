@@ -5,7 +5,7 @@
 #include <string>
 
 
-int menu(Color fond = WBLACK,Color bordure = WBLACK);
+int menu(Color fond = WBLACK,Color bordure = BWHITE);
 /*   
     Affiche le Menu principal en debut de partie
     Contient les boutton suivant :
