@@ -74,12 +74,9 @@ void jouer(){
     //Raquette
     Raquette rq(10,20,15,1,3,terrain.getCouleurBordure(),'-');
     
-    Tab_ball tab_ball;
-    tab_ball.set_player(p);
-    for (int i = 0 ; i < p->get_ball() ;++i) 
-        tab_ball.add(rq,WBLACK);
-    Ball ball(*tab_ball.get_ball());
-    float spd = 1.2;
+    Ball ball(rq,terrain.getCouleurBordure());
+
+    float speed = 1.2;
     tab.print(&terrain);
     ball.print(&terrain);
     rq.print(&terrain);
@@ -114,7 +111,7 @@ void jouer(){
             break;
         case KEY_SPACE:
             if (ball.get_speed() == 0) {
-                ball.set_speed(spd);
+                ball.set_speed(speed);
                 ball.set_angle(-45);
             }
         default:
@@ -125,21 +122,19 @@ void jouer(){
             // Affichage de ball en moin 
             ball.clear(&terrain);
             p->increment_ball();
-            tab_ball.del(0,&terrain);
-            if (tab_ball.get_ball() == NULL) {
-                //affiche msg fin de partie
-                // Stockage des point tout ça tout ça
+            if (p->get_ball() == 0) {
+                //affiche msg fin de partie PERDU
                 c= 'q';
             } else {
-                ball = *tab_ball.get_ball();
                 ball.set_pos(rq);
+                ball.set_speed(0);
                 ball.print(&terrain);
                 p->print();
             }
         }
         if (tab.get_brick() == NULL) {
-            //Fin de partie toute les brick on été detruite
-            // Stockage des point tout ça tout ça
+            //Fin de partie toute les brick on été detruite GAGNÉ
+            // Passer au niveau suivant
             c = 'q';
         }
 
@@ -158,7 +153,7 @@ void jouer(){
     /* Destruction de tout les objets */
     delete p;
     tab.~Tab_brick();
-    tab_ball.~Tab_ball();
+    ball.~Ball();
     rq.~Raquette();
     terrain.clear();
 

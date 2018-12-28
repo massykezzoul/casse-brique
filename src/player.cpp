@@ -38,6 +38,13 @@ int Player::get_score() const {
     return score;
 }
 
+int Player::get_ball() const {
+    return ball;
+}
+
+int Player::get_niveau() const {
+    return niveau;
+}
 /* Setters */
 void Player::set_name(string n){
     name = n;
@@ -69,20 +76,6 @@ void Player::set_niveau(int n){
 /* Incremente le niveau du joueur */
 void Player::increment_niveau(int n){
     niveau = (niveau < -n) ? 0 : niveau+n ;
-}
-
-/* Getters */
-string Player::get_name(){
-    return name;
-}
-int Player::get_ball(){
-    return ball;
-}
-int Player::get_score(){
-    return score;
-}
-int Player::get_niveau(){
-    return niveau;
 }
 
 /* Print les informations */

@@ -245,7 +245,7 @@ void Tab_ball::add(float posX,float posY,float spd,float angl,Color c, char car)
 void Tab_ball::add(const Raquette& rq,Color color,char car){
     if (size >= alloc) {
         /* Réallouer 2 fois plus de mémoire */
-        if (alloc ==0) alloc = 2; else alloc *= 2;
+        alloc *= 2;
         Ball* tmp = new Ball[alloc];
         if (tmp == NULL ) exit(1);
         /* Copie des elements précedent */

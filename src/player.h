@@ -34,6 +34,8 @@ public:
 
     std::string get_name() const;
     int get_score() const;
+    int get_ball() const;
+    int get_niveau() const;
 
     /* Setters */
     void set_name(std::string);
@@ -59,10 +61,6 @@ public:
     void clear();
 
     /* Getters */
-    std::string get_name();
-    int get_ball();
-    int get_score();
-    int get_niveau();
 };
 
 #endif
