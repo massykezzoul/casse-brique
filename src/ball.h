@@ -53,7 +53,7 @@ public:
     void clear(const Window*) const;
 
     //
-    void update(Tab_brick&,const Raquette&,const Window*);
+    void update(Tab_brick&,const Raquette&,Window*);
 /* Gestion des colisions */
 
     /*
@@ -68,7 +68,7 @@ public:
             0 : pas de colision
     
     */
-   void allCollision(Tab_brick&,const Raquette&,const Window*);
+   void allCollision(Tab_brick&,const Raquette&,Window*);
    /* Prend un tableau de brick en parametre */
    int collideBrick(Tab_brick&,const Window*) const;
    int collideBrick(Brick&) const;

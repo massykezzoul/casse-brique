@@ -1,5 +1,5 @@
 #include "ball.h"
-
+#include <unistd.h>
 #include <math.h>
 
 #define PI 3.14159265
@@ -135,25 +135,35 @@ void Ball::clear(const Window* w) const {
     w->print(posX, posY,' ');
 }
 
-void Ball::update(Tab_brick& tab,const Raquette& r,const Window* w){
+void Ball::update(Tab_brick& tab,const Raquette& r,Window* w){
     clear(w);
     allCollision(tab,r,w);
     print(w);
 }
 
-void Ball::allCollision(Tab_brick& tab,const Raquette& r,const Window* w){
+void Ball::allCollision(Tab_brick& tab,const Raquette& r,Window* w){
+    int brick; 
+    int bord;
+    int raquette;
+    bord = collideBord(w);
     set_pos(posX+velX,posY+velY);
-    int brick = collideBrick(tab,w);
-    int bord = collideBord(w);
-    int raquette = collideRaquette(r);
+    brick = collideBrick(tab,w);
+    raquette = collideRaquette(r);
     set_pos(posX-velX,posY-velY);
-    if (brick != 0)
+
+    if (brick != 0) {
+        w->setCouleurBordure(BGREEN);
         set_vel(brick);
-    else if (bord != 0)
+        usleep(50000);
+        w->setCouleurBordure(BWHITE);
+    }
+        
+    if (bord != 0)
         set_vel(bord);
-    else if (raquette != 0)
+            
+    if (raquette != 0)
         set_vel(raquette);
-    
+            
     set_pos(posX+velX,posY+velY);
 
 }
@@ -179,34 +189,35 @@ int Ball::collideBrick(Brick& b) const{
         return 1;
     else if ( (posY) >= b.get_posY() && (posY) <= (b.get_posY()+b.get_height()) && (int)(posX) == (b.get_posX() + b.get_width()))
         return 2;
-    else if( (posX) >= b.get_posX() && (posX) < b.get_posX()+b.get_width() && (int)(posY-velY) == (b.get_posY() + b.get_height()))
+    else if( (posX) >= b.get_posX() && (posX) < b.get_posX()+b.get_width() && (int)(posY) == (b.get_posY() + b.get_height()))
         return 3;
-    else if ( (posY)>= b.get_posY() && (posY) <= b.get_posY()+b.get_height() && (int)(posX-velX) == b.get_posX())
+    else if ( (posY)>= b.get_posY() && (posY) <= b.get_posY()+b.get_height() && (int)(posX) == b.get_posX())
         return 4;
     else return 0;
 
 }
 int Ball::collideRaquette(const Raquette& r) const{
-    if ( posX >= r.get_posX() && posX <= r.get_posX()+r.get_width() && (int)posY == r.get_posY() )
+    if ( posX >= r.get_posX() && posX <= r.get_posX()+r.get_width()+1 && (int)posY == r.get_posY())
         return 1;
     else if (posY >= r.get_posY() && posY <= r.get_posY()+r.get_height() && (int)posX == r.get_posX() + r.get_width())
         return 2;
-    else if(posX >= r.get_posX() && posX <= r.get_posX()+r.get_width() && (int)(posY-velY) == r.get_posY() + r.get_height())
+    else if(posX >= r.get_posX() && posX <= r.get_posX()+r.get_width() && (int)(posY) == r.get_posY() + r.get_height())
         return 3;
-    else if (posY >= r.get_posY() && posY <= r.get_posY()+r.get_height() && (int)(posX-velX) == r.get_posX())
+    else if (posY >= r.get_posY() && posY <= r.get_posY()+r.get_height() && (int)(posX) == r.get_posX())
         return 4;
     else return 0;
 }
 int Ball::collideBord(const Window* w) const{
-    if ( (posX >= w->getX()) && (posX <= w->getX()+w->getLargeur()) && ((int)posY == (w->getY() + w->getHauteur())) )
+    if ( (posX >= w->getX()) && (posX <= w->getX()+w->getLargeur()) && ((int)posY >= (w->getY() + w->getHauteur()) -1 ) )
         return 1;
-    else if (posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)posX == w->getX() + w->getLargeur())
+    else if (posY >= w->getY() && posY < w->getY()+w->getHauteur() && (int)posX <= w->getX())
         return 2;
-    else if( (posX >= w->getX()) && (posX <= (w->getX()+w->getLargeur())) && ((int)(posY-velY) == w->getY()))
+    else if( (posX >= w->getX()) && (posX < (w->getX()+w->getLargeur())) && ((int)(posY) <= w->getY()))
         return 3;
-    else if ( posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)(posX-velX) == w->getX())
+    else if ( posY >= w->getY() && posY <= w->getY()+w->getHauteur() && (int)(posX) >= w->getX() + w->getLargeur() - 1)
         return 4;
     else return 0;
+
 }
 
 /* ------------------- LA CLASSE TAB_BRICK --------------------- */

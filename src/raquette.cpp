@@ -76,6 +76,6 @@ void Raquette::print(const Window* w) const {
 			w->print(i, j,car,c);
 		}
 	}
-    w->print(posX, posY,'/');
-    w->print(posX+width-1, posY,'\\');
+    w->print(posX, posY,'/',c);
+    w->print(posX+width-1, posY,'\\',c);
 }

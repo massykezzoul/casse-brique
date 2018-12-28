@@ -31,24 +31,25 @@ int menu(Color fond,Color bordure){
         tab.print(&win);
         c=0;
         do {
-            c=getch();
-        } while ( c == 0 );
+            c = getch(); 
+            switch (c)
+            {
+                case KEY_DOWN:
+                    tab.down();
+                    break;
+                case KEY_UP:
+                    tab.up();
+                    break;
+                case KEY_ETR:
+                    sel = tab.get_selected();
+                    break;
+                default:
+                    c = ERR;
+                    usleep(50000);
+                    break;
+            }
 
-        switch (c)
-        {
-            case KEY_DOWN:
-                tab.down();
-                break;
-            case KEY_UP:
-                tab.up();
-                break;
-            case KEY_ETR:
-                sel = tab.get_selected();
-                break;
-            default:
-                break;
-        }  
-        usleep(50000);
+        } while ( c == ERR );
     }   
     win.clear();
     return sel;
@@ -57,8 +58,10 @@ int menu(Color fond,Color bordure){
 void jouer(){
     //Initialisation
     Window terrain(25, 50, 0, 0);
+    terrain.setCouleurBordure(BWHITE);
+    terrain.setCouleurFenetre(WBLACK);
     /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Massy",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),25,terrain.getHauteur());
+    Player* p = new Player("Massy",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),23,terrain.getHauteur());
     //Niveau
     Tab_brick tab;
     tab.set_player(p);
@@ -72,11 +75,11 @@ void jouer(){
     //tab.add(CARRE, 1, 10, 33, 5,4,2);
 
     //Raquette
-    Raquette rq(10,20,15,1,3,terrain.getCouleurBordure(),'-');
+    Raquette rq(10,20,15,1,3,terrain.getCouleurFenetre(),'-');
     
     Ball ball(rq,terrain.getCouleurBordure());
 
-    float speed = 1.2;
+    float speed = 1.3;
     tab.print(&terrain);
     ball.print(&terrain);
     rq.print(&terrain);
@@ -101,7 +104,7 @@ void jouer(){
             break;
         case KEY_RIGHT:
             rq.clear(&terrain);
-            rq.mv_right(50); // Le 50 c'est la largeur du terrain + posX
+            rq.mv_right(terrain.getLargeur() + terrain.getX()); // Le 50 c'est la largeur du terrain + posX
             rq.print(&terrain);
             if (ball.get_speed() == 0) {                
                 ball.clear(&terrain);
@@ -120,6 +123,7 @@ void jouer(){
         if (ball.get_posY()> rq.get_posY()+rq.get_height()) {
             // Kill the ball
             // Affichage de ball en moin 
+            terrain.setCouleurBordure(BRED);
             ball.clear(&terrain);
             p->increment_ball();
             if (p->get_ball() == 0) {
@@ -131,7 +135,10 @@ void jouer(){
                 ball.print(&terrain);
                 p->print();
             }
+            usleep(50000);
+            terrain.setCouleurBordure(BWHITE);
         }
+
         if (tab.get_brick() == NULL) {
             //Fin de partie toute les brick on été detruite GAGNÉ
             // Passer au niveau suivant
