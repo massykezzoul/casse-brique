@@ -63,7 +63,7 @@ void jouer(){
     terrain.setCouleurBordure(BWHITE);
     terrain.setCouleurFenetre(WBLACK);
     /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Massy",5,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),23,terrain.getHauteur());
+    Player* p = new Player("Massy",50,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),23,terrain.getHauteur());
     //Niveau
     Tab_brick tab;
     tab.set_player(p);
@@ -153,17 +153,24 @@ void jouer(){
         }
         usleep(50000);
     }
-    /* Sauvgarde du score */
-    Score s("hightScore.txt");
-    s.add(*p);
-    s.print(&terrain);
-    s.write("hightScore.txt");
-
+    /*
+    if (p->get_ball() != 0 && tab.get_brick() != NULL) {
+        // Partie non términé proposé de sauvgarder
+        Sauvgarde save(FICHIER_SAUVGARDE);
+        save.sauvgarder(0,terrain,*p,ball,rq,tab);
+        save.print(&terrain);
+        save.write(FICHIER_SAUVGARDE);
+    }
+    else {
+    */    // Partie términé pas de sauvgarde possible
+        /* Sauvgarde du score */
+        Score s("hightScore.txt");
+        s.add(*p);
+        s.print(&terrain);
+        s.write("hightScore.txt");
+    //}
     /* Destruction de tout les objets */
     delete p;
-    tab.~Tab_brick();
-    ball.~Ball();
-    rq.~Raquette();
     terrain.clear();
 
 }
@@ -174,6 +181,7 @@ void charger() {
     win.setCouleurFenetre(WBLACK);
     Sauvgarde save(FICHIER_SAUVGARDE);
     save.print(&win);
+    win.clear();
 }
 
 void score(){

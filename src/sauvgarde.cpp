@@ -53,7 +53,7 @@ Sauvgarde::Sauvgarde(string f):size(0){
     string name("");
     ifstream file(f.c_str());
     if (file) {
-        while (!file.eof()) {
+        while (!file.eof() && size < NB_SAUVGARDE) {
             /* Lecture du terrain */
             getline(file,line);
             fin = 0;
@@ -128,6 +128,7 @@ Sauvgarde::Sauvgarde(string f):size(0){
             }
             size++;
         }
+        file.close();
     }
 }
 
@@ -170,7 +171,7 @@ void Sauvgarde::del(int i){
 }
 
 /* sauvgarde dans le fichier donnée en paramètre (si la sauvgarde existe déja elle sera ecrasé) */
-void Sauvgarde::sauvgader(int numero_sauvgarde,const Window& w,const Player& p,const Ball& b,const Raquette& r,const Tab_brick& t){
+void Sauvgarde::sauvgarder(int numero_sauvgarde,const Window& w,const Player& p,const Ball& b,const Raquette& r,const Tab_brick& t){
     del(numero_sauvgarde);
     if (size < NB_SAUVGARDE) {
         terrain[size] = w;

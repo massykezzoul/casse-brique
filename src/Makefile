@@ -17,7 +17,7 @@
 #Variables:
 
 CC	 = g++
-FLAGS    = -Wall -lncurses
+FLAGS    = -Wall -lncurses -g
 PROG_NAME= casse-brique
 SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp sauvgarde.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'

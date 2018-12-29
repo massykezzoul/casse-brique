@@ -98,12 +98,37 @@ void Brick::print(const Window* w)const {
 
 /* ------------------- LA CLASSE TAB_BRICK --------------------- */
 
-Tab_brick::Tab_brick():tab(new Brick[10]),size(0),alloc(10) {
+Tab_brick::Tab_brick():tab(NULL),size(0),alloc(0) {
 
 }
+
+Tab_brick::Tab_brick(const Tab_brick& b)
+    :tab(new Brick[b.alloc]),size(b.size),alloc(b.alloc){
+    for(int i = 0; i < size; i++) {
+        tab[i] = b.tab[i];
+    }
+    
+}
+
+Tab_brick& Tab_brick::operator=(const Tab_brick &b) {
+    if (&b != this) {
+        size = b.size;
+        alloc = b.alloc;
+        delete[] tab;
+        tab = new Brick[b.alloc];
+        if (tab == NULL) exit(1);
+        for(int i =0; i < size ; ++i) {
+            tab[i] = b.tab[i];
+        }
+    } 
+    return *this;
+}
+
+
+
     
 Tab_brick::~Tab_brick(){
-    if (tab != NULL ) delete[] tab;
+    if (alloc > 0) delete[] tab;
 }
 
 /* Ajoute une brique au tableau */
@@ -111,17 +136,15 @@ void Tab_brick::add(Forme f,int resistance,int point,int x,int y,int w,int h,Col
     if (size >= alloc) {
         /* Réallouer 2 fois plus de mémoire */
         if (alloc ==0) alloc = 2; else alloc *= 2;
+        /* Copie des elements précedent */
         Brick* tmp = new Brick[alloc];
         if (tmp == NULL ) exit(1);
-        /* Copie des elements précedent */
         for (int i= 0 ; i < size;i++) 
             tmp[i] = tab[i];
-        tmp[size] = Brick(f,resistance,point,x,y,w,h,c);
-        ++size;
-        Brick* del = tab;
+        delete[] tab;
         tab = tmp;
-        delete[] del;
-
+        tab[size] = Brick(f,resistance,point,x,y,w,h,c);
+        ++size;
     } else {
         /* Il reste encore de l'espace en mémoire */
         tab[size] = Brick(f,resistance,point,x,y,w,h);

@@ -84,6 +84,10 @@ private:
 public:
     Tab_brick();
     
+    Tab_brick(const Tab_brick&);
+
+    Tab_brick& operator=(const Tab_brick&);
+
     ~Tab_brick();
 
     /* Ajoute une brique au tableau */

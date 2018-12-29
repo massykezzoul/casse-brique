@@ -1,11 +1,12 @@
 #ifndef SAUVGARDE_H
 #define SAUVGARDE_H
 
-class Window;
-class Player;
-class Ball;
-class Raquette;
-class Tab_brick;
+#include "window.h"
+#include "player.h"
+#include "ball.h"
+#include "raquette.h"
+#include "brick.h"
+
 
 #define NB_SAUVGARDE 6
 
@@ -37,7 +38,7 @@ public:
     void del(int i);
 
     /* sauvgarde dans le fichier donnée en paramètre (si la sauvgarde existe déja elle sera ecrasé) */
-    void sauvgader(int numero_sauvgarde,const Window&,const Player&,const Ball&,const Raquette&,const Tab_brick&);
+    void sauvgarder(int numero_sauvgarde,const Window&,const Player&,const Ball&,const Raquette&,const Tab_brick&);
 
     /* retourne les infomarion pour chargé la partie dont le numéro est donnée en paramètre */
     void charger(int numero_sauvgarde,Window&,Player&,Ball&,Raquette&,Tab_brick&) const;
