@@ -117,46 +117,46 @@ void Window::clear() const{  werase(win); update(); }
 
 Color IntToColor(int i){
   switch(i) {
-      case 1:
+      case 0:
           return WBLACK;
           break;
-      case 2:
+      case 1:
           return WCYAN;
           break;
-      case 3:
+      case 2:
           return WBLUE;
           break;
-      case 4:
+      case 3:
           return WYELLOW;
           break;
-      case 5:
+      case 4:
           return WGREEN;
           break;
-      case 6:
+      case 5:
           return WMAGENTA;
           break;
-      case 7:
+      case 6:
           return WRED;
           break;
-      case 8:
+      case 7:
           return BWHITE;
           break;
-      case 9:
+      case 8:
           return BCYAN;
           break;
-      case 10:
+      case 9:
           return BBLUE;
           break;
-      case 11:
+      case 10:
           return BYELLOW;
           break;
-      case 12:
+      case 11:
           return BGREEN;
           break;
-      case 13:
+      case 12:
           return BMAGENTA;
           break;
-      case 14:
+      case 13:
           return BRED;
           break;
       default:

@@ -115,7 +115,6 @@ Tab_brick& Tab_brick::operator=(const Tab_brick &b) {
         size = b.size;
         alloc = b.alloc;
         if (tab != NULL) delete[] tab;
-        delete tab;
         tab = new Brick[b.alloc];
         for(int i =0; i < size ; ++i) {
             tab[i] = b.tab[i];
@@ -165,7 +164,7 @@ Brick* Tab_brick::get_brick(int i){
     if (i>=size) return NULL;
     else return tab+i;
 }
-int Tab_brick::get_size(){
+int Tab_brick::get_size() const{
     return size;
 }
 

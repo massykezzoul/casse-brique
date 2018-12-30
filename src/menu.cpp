@@ -154,16 +154,10 @@ void jouer(){
     }
     if (p->get_ball() != 0 && tab.get_brick() != NULL) {
         // Partie non términé proposé de sauvgarder
-/*
-        Sauvgarde save(FICHIER_SAUVGARDE);
-
-        save.sauvgarder(terrain,*p,ball,rq,tab);
-
-        save.print(terrain.GetWindow());
-*/
-        /*
+        Tab_save save(FICHIER_SAUVGARDE);
+        save.add(p->get_name(),p->get_ball(),p->get_score(),tab);
         save.write(FICHIER_SAUVGARDE);
-        */
+        save.print(terrain.GetWindow());
     }
     else {
         // Partie términé pas de sauvgarde possible
@@ -182,8 +176,8 @@ void charger() {
     Window win(25,50,0,0,' ');
     win.setCouleurBordure(BWHITE);
     win.setCouleurFenetre(WBLACK);
-    Sauvgarde save(FICHIER_SAUVGARDE);
-    save.print(/*&win*/);
+    Tab_save save(FICHIER_SAUVGARDE);
+    save.print(&win);
     win.clear();
 }
 

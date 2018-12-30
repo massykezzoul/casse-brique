@@ -6,9 +6,6 @@
 #include <cstdlib>
 
 #include "window.h"
-#include "player.h"
-#include "ball.h"
-#include "raquette.h"
 #include "brick.h"
 #include "boutton/boutton.h"
 
@@ -16,192 +13,145 @@
 
 using namespace std;
 
-/* Les methodes privés */
-void Sauvgarde::add_terrain(int x,int y,int w,int h){
-    if (size < NB_SAUVGARDE ) {
-        terrain[size] = Terrain(h,w,x,y);
-    }
-}
-void Sauvgarde::add_player(string nom,int ball,int score,int niveau,int x,int y,int w,int h){
-    if (size < NB_SAUVGARDE ) {
-        player[size] = Player(nom,ball,score,niveau,x,y,w,h);
-    }
-}
-void Sauvgarde::add_ball(float x,float y,float speed,float angle,Color c,char car){
-    if (size < NB_SAUVGARDE ) {
-        ball[size] = Ball(x,y,speed,angle,c,car);
-    }
-}
-void Sauvgarde::add_raquette(int x,int y,int w,int h,int vitesse,Color c,char car){
-    if (size < NB_SAUVGARDE ) {
-        raquette[size] = Raquette(x,y,w,h,vitesse,c,car);
-    }
-}
-void Sauvgarde::add_tab_btick(){
-    if (size < NB_SAUVGARDE ) {
-        tab_brick[size] = Tab_brick();
-    }
+Save::Save():name(""),vie(0),score(0),tab_brick() {
+
 }
 
-/* On donne au constructeur le nom (ou le chemin) du fichier où sont stocké les partie */
-Sauvgarde::Sauvgarde(string f):size(0){
-    int x[10];
-    float y[10];
-    char c;
-    int deb,fin;
-    string line("");
-    string name("");
-    ifstream file(f.c_str(),ios::in);
-    if (!file.fail() && file.good()) {
-        getline(file,line);
-        while (!file.eof() && size < NB_SAUVGARDE) {
-            /* Lecture du terrain */
-            fin = -1;
-            for (int j = 0; j <= 3;++j) {
-                deb = fin;
-                fin = line.find_first_of(",",deb+1);
-                x[j] = atoi(line.substr(deb+1,fin).c_str());
-            }
-            add_terrain(x[0],x[1],x[2],x[3]);
-            /*---------------------------------------*/
-            
-            /* Lecture Player */
-            getline(file,line);
-            deb = line.find_first_of(",");
-            name = line.substr(0,deb);
-            fin = line.find_first_of(",",deb);
-            for (int j = 0; j <= 6;++j) {
-                deb = fin;
-                fin = line.find_first_of(",",deb+1);
-                x[j] = atoi(line.substr(deb+1,fin).c_str());
-            }
-            add_player(name,x[0],x[1],x[2],x[3],x[4],x[5],x[6]);
-            /*---------------------------------------*/
-            
-            /* Lecture Ball */
-            getline(file,line);
-            fin = -1;
-            for (int j = 0; j <= 4;++j) {
-                deb = fin;
-                fin = line.find_first_of(",",deb+1);
-                y[j] = atof(line.substr(deb+1,fin).c_str());
-            }
+Save::Save(string name,int vie,int score,const Tab_brick& t)
+    :name(name),vie(vie),score(score),tab_brick(t) {
 
-            deb = fin;
-            fin = line.find_first_of(",",deb+1);
-            x[0] = atoi(line.substr(deb+1,fin).c_str());
+}
 
-            deb = fin;
-            fin = line.find_first_of(",",deb+1);
-            c = line.substr(deb+1,fin).c_str()[0];
+string Save::get_name() const {return name;}
+int Save::get_vie() const {return vie;}
+int Save::get_score() const {return score;}
+const Tab_brick& Save::get_brick() const{return tab_brick;}
 
-            add_ball(y[0],y[1],y[2],y[3],IntToColor(x[0]),c);
-            /*---------------------------------------*/
+void Save::set_name(const std::string s){
+    name = s;
+}
+void Save::set_vie(const int v){
+    vie = v;
+}
+void Save::set_score(const int s){
+    score = s;
+}
+void Save::set_brick(const Tab_brick& t){
+    tab_brick = t;
+}
 
-            /* Lecture Raquette */
-            getline(file,line);
-            fin = -1;
-            for (int j = 0; j <= 5;++j) {
-                deb = fin;
-                fin = line.find_first_of(",",deb+1);
-                x[j] = atoi(line.substr(deb+1,fin).c_str());
+
+void Save::print(const Window* w) const {
+
+}
+
+
+
+/* ******************************************************** */
+
+Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
+    /*
+        syntaxe du fichier de sauvgarde :
+            name vie score nombre_brick
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+    */
+   string line("");
+   string name("");
+   int vie,score,nb_brick;
+   /* Tableau de bricks */
+   Tab_brick tab_brick;
+   /* les attributs de bricks */
+   int forme,resistance,point,x,y,w,h,c;
+
+   int taille,i=0;
+   ifstream file(nom_fichier.c_str());
+   ofstream test("test.txt");
+   if (file) {
+       file >> taille;
+       while(!file.eof() && i< taille) {
+            file >> name >> vie >> score >> nb_brick;
+            test << name << " v: " << vie << " s: " << score << " b: " << nb_brick << endl;
+            /* Lecture des brick */
+            for(int i = 0 ; i < nb_brick ; ++i) {
+                file >> forme >> resistance >> point >> x >> y >> w >> h >> c;
+                tab_brick.add(IntToForme(forme),resistance,point,x,y,w,h,IntToColor(c));
+                test << " f: "<<forme <<" r: "<<resistance<<" p: "<<point<<" x: " <<x << " y: "<<y<<" w: "<<w<<" h: "<<h<<" c: "<<c<<endl;
             }
-            
-            deb = fin;
-            fin = line.find_first_of(",",deb+1);
-            c = line.substr(deb+1,fin).c_str()[0];
-            
-            add_raquette(x[0],x[1],x[2],x[3],x[4],IntToColor(x[5]),c);
-            /*---------------------------------------*/
-            /* lecture des brick */
-            getline(file,line);
-            x[0] = atoi(line.substr(0,line.find_first_of(",")).c_str());
-            for(int i = 0 ; i < x[0] ; ++i) {
-                getline(file,line);
-                fin = -1;
-                for (int j = 1; j <= 8;++j) {
-                    deb = fin;
-                    fin = line.find_first_of(",",deb+1);
-                    x[j] = atoi(line.substr(deb+1,fin).c_str());
-                }
-                tab_brick[size].add(IntToForme(x[1]),x[2],x[3],x[4],x[5],x[6],x[7],IntToColor(x[8]));
+            add(name,vie,score,tab_brick);
+            ++i;
+       }
+       file.close();
+   }
+
+}
+
+Tab_save::~Tab_save() {
+    if (save != NULL) delete[] save;
+}
+
+void Tab_save::write(std::string nom_fichier)const {
+   /* Ecrire les element de la classe dans le fichier */
+
+    /*
+        syntaxe du fichier de sauvgarde :
+            name vie score nombre_brick
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+            forme resistance point x y w h color
+    */
+    Tab_brick tab;
+    Brick b;
+    ofstream file(nom_fichier.c_str());
+    if (file) {
+        file << size << endl;
+        for(int i = 0; i < size; i++) {
+            file << save[i].get_name() << " " << save[i].get_vie() << " " << save[i].get_score() 
+                << " " << save[i].get_brick().get_size() <<endl;
+            tab = save[i].get_brick();
+            for(int j = 0; j < tab.get_size() ; j++) {
+                b = *tab.get_brick(j);
+                file << b.get_forme() << " " << b.get_resistance() << " " << b.get_point() 
+                    << " " << b.get_posX() << " " << b.get_posY() << " " << b.get_width()
+                    << " " << b.get_height() << " " << b.get_color() << endl;
             }
-            size++;
-            getline(file,line);
         }
-        file.clear();
         file.close();
     }
 }
 
-/* Ecrire dans le fichier */
-void Sauvgarde::write(string name){
-    ofstream file(name.c_str(),ios::out | ios::trunc);
-    Brick* b = NULL;
-    if (!file.fail() && file.good()) {
-        for (int i = 0; i < size ; ++i) {
-            file<<terrain[i].get_posX()<<","<<terrain[i].get_posY()<<","<<terrain[i].get_width()<<","<<terrain[i].get_height()<<","<<endl;
-            file<<player[i].get_name()<<","<<player[i].get_ball()<<","<<player[i].get_score()<<","<<player[i].get_niveau()<<","<<player[i].get_window().getX()<<","<<player[i].get_window().getY()<<","<<player[i].get_window().getLargeur()<<","<<player[i].get_window().getHauteur()<<","<<endl;
-            file<<ball[i].get_posX()<<","<<ball[i].get_posY()<<","<<ball[i].get_speed()<<","<<ball[i].get_angle()<<","<<ball[i].get_color()<<","<<ball[i].get_char()<<","<<endl;
-            file<<raquette[i].get_posX()<<","<<raquette[i].get_posY()<<","<<raquette[i].get_width()<<","<<raquette[i].get_height()<<","<<raquette[i].get_speed()<<","<<raquette[i].get_color()<<","<<raquette[i].get_char()<<","<<endl;
-            file<<tab_brick[i].get_size()<<","<<endl;
-            for (int j=0 ; j < tab_brick[i].get_size() ; ++j) {
-                b = tab_brick[i].get_brick(j);
-                file<<b->get_forme()<<","<<b->get_resistance()<<","<<b->get_point()<<","<<b->get_posX()<<","<<b->get_posY()<<","<<b->get_width()<<","<<b->get_height()<<","<<b->get_color()<<","<<endl;
-            }
-        }
-        file.clear();
-        file.close();
-    }
-}
-
-/* Supprime la sauvgarde numéro i */
-void Sauvgarde::del(int i){
-    if (i < size) {
-        --size;
-        for (int j = i ; j < size;j++) {
-            terrain[j] = terrain[j+1];
-            player[j] = player[j+1];
-            ball[j] = ball[j+1];
-            raquette[j] = raquette[j+1];
-            tab_brick[j] = tab_brick[j+1];
-        }
-    }
-}
-
-/* sauvgarde dans le fichier donnée en paramètre (si la sauvgarde existe déja elle sera ecrasé) */
-void Sauvgarde::sauvgarder(const Terrain& w,const Player& p,const Ball& b,const Raquette& r,const Tab_brick& t,int numero_sauvgarde){
-    /* On suprimme l'element 'numero_sauvgarde' si il n'y a plus d'espace */
-    if (size >= NB_SAUVGARDE)
-        del(numero_sauvgarde);
-
-    terrain[size] = w;
-    player[size] = p;
-    ball[size] = b;
-    raquette[size] = r;
-    tab_brick[size] = t;
+void Tab_save::add(string name,int vie,int score, const Tab_brick& tab) {
+    /* copie */
+    Save* tmp = new Save[size+1];
+    for (int i = 0 ; i < size ; i++)
+        tmp[i] = save[i];
+    if (save != NULL) delete[] save;
+    save = tmp;
+    save[size] = Save(name,vie,score,tab);
     size++;
 }
 
-/* retourne les infomarion pour chargé la partie dont le numéro est donnée en paramètre */
-void Sauvgarde::charger(int numero_sauvgarde,Terrain& w,Player& p,Ball& b,Raquette& r,Tab_brick& t) const{
-    if (numero_sauvgarde < size) {
-        w = terrain[numero_sauvgarde];
-        p = player[numero_sauvgarde];
-        b = ball[numero_sauvgarde];
-        r = raquette[numero_sauvgarde];
-        t = tab_brick[numero_sauvgarde];
+
+
+
+/* Supprime la sauvgarde numéro i */
+void Tab_save::del(int i){
+    if (i < size) {
+        --size;
+        for (int j = i ; j < size;j++) {
+            save[j] = save[j+1];
+        }
     }
 }
 
+
 /* Affiche les partie sauvgardé */
-void Sauvgarde::print(/*const Window* w*/) const{
-    /*
+void Tab_save::print(const Window* w) const{
     int x = (int)(0.15*(w->getX()+w->getLargeur()));
     int y = (int)(0.15*(w->getY()+w->getHauteur()));
-    */
-    int x = 10;
-    int y = 10;
     Color c = BWHITE;
     stringstream ss("");
     
@@ -243,16 +193,16 @@ void Sauvgarde::print(/*const Window* w*/) const{
         ss.str("");
         /* Affichages des scores */
         for(int i = 0;i<size;++i ){
-            ss << i+1<<"- " <<player[i].get_name() << " : " << player[i].get_score() << " Points" << endl;
+            ss << i+1<<"- " <<save[i].get_name() << " : " << save[i].get_score() << " Points et " << save[i].get_vie()<< " Balles." << endl;
             win.print(1,i+3,ss.str());
             ss.str("");
         }
-        win.print(0,NB_SAUVGARDE+3,separateur);
+        win.print(0,size+3,separateur);
         /* Le boutton OK */
         Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
-        ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),NB_SAUVGARDE+4);
+        ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),size+4);
 
-        win.print(0,NB_SAUVGARDE+5,separateur);
+        win.print(0,size+5,separateur);
 
         int car = 0;
         while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
@@ -261,5 +211,14 @@ void Sauvgarde::print(/*const Window* w*/) const{
             usleep(50000);
         }
         win.clear();
+    }
+}
+
+
+void nextline(ifstream &file) {
+    if (file) {
+        char c;
+        do file.get(c); while(c != '\n' && !file.eof());
+        if (!file.eof()) file.get(c);
     }
 }

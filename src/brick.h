@@ -95,7 +95,7 @@ public:
     void del(int i,const Window* w);
     /* Retourn la brique à la position i*/
     Brick* get_brick(int i = 0);
-    int get_size();
+    int get_size() const;
     void print(const Window*) const;
 
     static Player* get_player();

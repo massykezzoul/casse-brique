@@ -15,12 +15,13 @@ Terrain::Terrain(int x, int y, int w, int h): posX(x), posY(y), width(w), height
   window.setCouleurFenetre(WBLACK);
 
 }
-
+/*
 Terrain::Terrain(const Terrain& t): posX(t.posX), posY(t.posY), width(t.width), height(t.height),window(height,width,posX,posY) {
   window.setCouleurBordure(BWHITE);
   window.setCouleurFenetre(WBLACK);
 }
-
+*/
+/*
 Terrain& Terrain::operator=(const Terrain& t) {
   if (this != &t) {
     posX = t.posX;
@@ -33,10 +34,10 @@ Terrain& Terrain::operator=(const Terrain& t) {
   }
   return *this;
 }
-
 Terrain::~Terrain () {
 
 }
+*/
 
 int Terrain::get_posX() const {
   	return posX;

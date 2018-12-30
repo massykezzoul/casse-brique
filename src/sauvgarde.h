@@ -2,51 +2,58 @@
 #define SAUVGARDE_H
 
 #include "window.h"
-#include "Terrain.h"
-#include "player.h"
-#include "ball.h"
-#include "raquette.h"
 #include "brick.h"
 
 
-#define NB_SAUVGARDE 6
-
-class Sauvgarde {
+class Save {
 private:
     /* Nombre de partie sauvgardé */
-    int size;
-    
-    Terrain terrain[NB_SAUVGARDE];
-    Player player[NB_SAUVGARDE];
-    Ball ball[NB_SAUVGARDE];
-    Raquette raquette[NB_SAUVGARDE];
-    Tab_brick tab_brick[NB_SAUVGARDE];
-
-    void add_terrain(int x,int y,int w,int h);
-    void add_player(std::string,int ball,int score,int niveau,int x,int y,int w,int h);
-    void add_ball(float x,float y,float speed,float angle,Color c,char car);
-    void add_raquette(int x,int y,int w,int h,int vitesse,Color c,char car);
-    void add_tab_btick();
+    std::string name;
+    int vie;
+    int score;
+    Tab_brick tab_brick;
 
 public:
+    Save();
     /* On donne au constructeur le nom (ou le chemin) du fichier où sont stocké les partie */
-    Sauvgarde(std::string);
-
-    /* Ecrire dans le fichier */
-    void write(std::string);
-
-    /* Supprime la sauvgarde numéro i*/
-    void del(int i);
-
-    /* sauvgarde dans la classe (si la sauvgarde existe déja elle sera ecrasé) */
-    void sauvgarder(const Terrain&,const Player&,const Ball&,const Raquette&,const Tab_brick&,int numero_sauvgarde = -1);
+    Save(std::string name,int vie,int score,const Tab_brick&);
 
     /* retourne les infomarion pour chargé la partie dont le numéro est donnée en paramètre */
-    void charger(int numero_sauvgarde,Terrain&,Player&,Ball&,Raquette&,Tab_brick&) const;
+    std::string get_name() const;
+    int get_vie() const;
+    int get_score() const;
+    const Tab_brick& get_brick() const;
+
+    void set_name(const std::string);
+    void set_vie(const int);
+    void set_score(const int);
+    void set_brick(const Tab_brick&);
 
     /* Affiche les partie sauvgardé */
-    void print(/*const Window**/) const;
+    void print(const Window*) const;
 };
 
+class Tab_save{
+private:
+    Save* save;
+    int size;
+
+public:
+    Tab_save(std::string file);
+    ~Tab_save();
+
+
+    void write(std::string file) const;
+
+    void add(std::string,int vie,int score,const Tab_brick&);
+
+    void del(int i);
+
+    void print(const Window*) const;
+
+};
+
+/* Fonction pour avancer jusqu'a la ligne suivante */
+void nextline(std::ifstream&);
 
 #endif

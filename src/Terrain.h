@@ -24,9 +24,9 @@ private:
 public:
   Terrain();
   Terrain(int, int, int, int);
-  Terrain(const Terrain&);
-  Terrain& operator=(const Terrain&);
-  ~Terrain();
+  //Terrain(const Terrain&);
+  //Terrain& operator=(const Terrain&);
+  //~Terrain();
 
   //Methods
   int get_posX() const;
