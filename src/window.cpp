@@ -55,15 +55,10 @@ Window::Window(int h,int w, int x, int y, char c)
   win=subwin(frame,h,w,y+1,x+1);
   wbkgd(frame,COLOR_PAIR(colorwin));
   wbkgd(win,COLOR_PAIR(colorframe));
-  //wborder(frame, c,c,c,c,c,c,c,c);
-  wborder(frame, '|', '|', '-', '-', '|', '|', '|', '|');
+  wborder(frame, c,c,c,c,c,c,c,c);
   wattron(win,COLOR_PAIR(colorwin));
   wattron(frame,COLOR_PAIR(colorframe));
   update();
-}
-
-Window::Window():win(NULL),frame(NULL) {
-
 }
 
 Window::~Window(){
@@ -106,8 +101,7 @@ Color Window::getCouleurFenetre() const{ return colorwin;}
 void Window::setCouleurBordure(Color c){
   colorframe=c;
   wattron(frame,COLOR_PAIR(colorframe));
-  //wborder(frame, bord,bord,bord,bord,bord,bord,bord,bord);
-  wborder(frame, '|', '|', '-', '-', '|', '|', '|', '|');
+  wborder(frame, bord,bord,bord,bord,bord,bord,bord,bord);
   update();
 }
 void Window::setCouleurFenetre(Color c){

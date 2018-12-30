@@ -7,7 +7,7 @@
 using namespace std;
 
 /* Constructeur par défault     */
-Player::Player():name("Unknown"),ball(3),score(0),niveau(0),window(25, 25, 51, 0, ' ') {
+Player::Player():name("Unknown"),ball(3),score(0),niveau(0),window(1, 1, 0, 0, ' ') {
   window.setCouleurBordure(WBLACK);
   window.setCouleurFenetre(BWHITE);
 }

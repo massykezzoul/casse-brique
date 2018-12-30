@@ -8,6 +8,7 @@
 #include "brick.h"
 #include "ball.h"
 #include "raquette.h"
+#include "Terrain.h"
 #include "menu.h"
 #include "boutton/boutton.h"
 #include "score.h"
@@ -59,11 +60,9 @@ int menu(Color fond,Color bordure){
 
 void jouer(){
     //Initialisation
-    Window terrain(25, 50, 0, 0);
-    terrain.setCouleurBordure(BWHITE);
-    terrain.setCouleurFenetre(WBLACK);
+    Terrain terrain(0,0, 50, 25);
     /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Massy",50,0,2,terrain.getLargeur()+terrain.getX()+2,terrain.getY(),23,terrain.getHauteur());
+    Player* p = new Player("Massy",3,0,2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
     //Niveau
     Tab_brick tab;
     tab.set_player(p);
@@ -77,14 +76,14 @@ void jouer(){
     //tab.add(CARRE, 1, 10, 33, 5,4,2);
 
     //Raquette
-    Raquette rq(10,20,15,1,3,terrain.getCouleurFenetre(),'-');
+    Raquette rq(10,20,15,1,3,WBLACK,'-');
     
-    Ball ball(rq,terrain.getCouleurBordure());
+    Ball ball(rq,WBLACK);
 
     float speed = 1.0;
-    tab.print(&terrain);
-    ball.print(&terrain);
-    rq.print(&terrain);
+    tab.print(terrain.GetWindow());
+    ball.print(terrain.GetWindow());
+    rq.print(terrain.GetWindow());
     p->print();
 
     //Jeu
@@ -95,23 +94,23 @@ void jouer(){
         switch (c)
         {
         case KEY_LEFT:
-            rq.clear(&terrain);
+            rq.clear(terrain.GetWindow());
             rq.mv_left(0);
-            rq.print(&terrain);
+            rq.print(terrain.GetWindow());
             if (ball.get_speed() == 0) {
-                ball.clear(&terrain);
+                ball.clear(terrain.GetWindow());
                 ball.set_pos(rq);
-                ball.print(&terrain);
+                ball.print(terrain.GetWindow());
             }
             break;
         case KEY_RIGHT:
-            rq.clear(&terrain);
-            rq.mv_right(terrain.getLargeur() + terrain.getX());
-            rq.print(&terrain);
+            rq.clear(terrain.GetWindow());
+            rq.mv_right(terrain.get_width() + terrain.get_posX());
+            rq.print(terrain.GetWindow());
             if (ball.get_speed() == 0) {                
-                ball.clear(&terrain);
+                ball.clear(terrain.GetWindow());
                 ball.set_pos(rq);
-                ball.print(&terrain);
+                ball.print(terrain.GetWindow());
             }
             break;
         case KEY_SPACE:
@@ -125,8 +124,8 @@ void jouer(){
         if (ball.get_posY()> rq.get_posY()+rq.get_height()) {
             // Kill the ball
             // Affichage de ball en moin 
-            terrain.setCouleurBordure(BRED);
-            ball.clear(&terrain);
+            terrain.GetWindow()->setCouleurBordure(BRED);
+            ball.clear(terrain.GetWindow());
             p->increment_ball();
             if (p->get_ball() == 0) {
                 //affiche msg fin de partie PERDU
@@ -134,11 +133,11 @@ void jouer(){
             } else {
                 ball.set_pos(rq);
                 ball.set_speed(0);
-                ball.print(&terrain);
+                ball.print(terrain.GetWindow());
                 p->print();
             }
-            usleep(50000);
-            terrain.setCouleurBordure(BWHITE);
+            usleep(30000);
+            terrain.GetWindow()->setCouleurBordure(BWHITE);
         }
 
         if (tab.get_brick() == NULL) {
@@ -148,31 +147,35 @@ void jouer(){
         }
 
         if (ball.get_speed() != 0) {    
-            ball.update(tab,rq,&terrain);
+            ball.update(tab,rq,terrain.GetWindow());
             p->print();
         }
-        usleep(50000);
+        usleep(30000);
     }
-    /*
     if (p->get_ball() != 0 && tab.get_brick() != NULL) {
         // Partie non términé proposé de sauvgarder
+/*
         Sauvgarde save(FICHIER_SAUVGARDE);
-        save.sauvgarder(0,terrain,*p,ball,rq,tab);
-        save.print(&terrain);
+
+        save.sauvgarder(terrain,*p,ball,rq,tab);
+
+        save.print(terrain.GetWindow());
+*/
+        /*
         save.write(FICHIER_SAUVGARDE);
+        */
     }
     else {
-    */    // Partie términé pas de sauvgarde possible
+        // Partie términé pas de sauvgarde possible
         /* Sauvgarde du score */
         Score s("hightScore.txt");
         s.add(*p);
-        s.print(&terrain);
+        s.print(terrain.GetWindow());
         s.write("hightScore.txt");
-    //}
+    }
     /* Destruction de tout les objets */
     delete p;
     terrain.clear();
-
 }
 
 void charger() {
@@ -180,7 +183,7 @@ void charger() {
     win.setCouleurBordure(BWHITE);
     win.setCouleurFenetre(WBLACK);
     Sauvgarde save(FICHIER_SAUVGARDE);
-    save.print(&win);
+    save.print(/*&win*/);
     win.clear();
 }
 
@@ -190,7 +193,6 @@ void score(){
     win.setCouleurFenetre(WBLACK);
     Score s("hightScore.txt");
     s.print(&win);
-    s.~Score();
     win.clear();
 }
  

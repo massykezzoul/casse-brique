@@ -17,9 +17,9 @@
 #Variables:
 
 CC	 = g++
-FLAGS    = -Wall -lncurses -g
+FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp sauvgarde.cpp
+SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp sauvgarde.cpp Terrain.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'
 
 #usuelles
@@ -47,7 +47,8 @@ score.o: score.cpp
 	@$(CC) -c $<  $(FLAGS)
 sauvgarde.o: sauvgarde.cpp
 	@$(CC) -c $<  $(FLAGS)
-
+Terrain.o: Terrain.cpp
+	@$(CC) -c $<  $(FLAGS)
 $(PROG_NAME) : $(SOURCE:.cpp=.o)
 	@$(CC) $^ -o $@ $(FLAGS) && echo 'Compilation OK' || 'Fail on Compilation'
 

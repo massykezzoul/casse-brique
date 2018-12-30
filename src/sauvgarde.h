@@ -2,6 +2,7 @@
 #define SAUVGARDE_H
 
 #include "window.h"
+#include "Terrain.h"
 #include "player.h"
 #include "ball.h"
 #include "raquette.h"
@@ -15,7 +16,7 @@ private:
     /* Nombre de partie sauvgardé */
     int size;
     
-    Window terrain[NB_SAUVGARDE];
+    Terrain terrain[NB_SAUVGARDE];
     Player player[NB_SAUVGARDE];
     Ball ball[NB_SAUVGARDE];
     Raquette raquette[NB_SAUVGARDE];
@@ -37,14 +38,14 @@ public:
     /* Supprime la sauvgarde numéro i*/
     void del(int i);
 
-    /* sauvgarde dans le fichier donnée en paramètre (si la sauvgarde existe déja elle sera ecrasé) */
-    void sauvgarder(int numero_sauvgarde,const Window&,const Player&,const Ball&,const Raquette&,const Tab_brick&);
+    /* sauvgarde dans la classe (si la sauvgarde existe déja elle sera ecrasé) */
+    void sauvgarder(const Terrain&,const Player&,const Ball&,const Raquette&,const Tab_brick&,int numero_sauvgarde = -1);
 
     /* retourne les infomarion pour chargé la partie dont le numéro est donnée en paramètre */
-    void charger(int numero_sauvgarde,Window&,Player&,Ball&,Raquette&,Tab_brick&) const;
+    void charger(int numero_sauvgarde,Terrain&,Player&,Ball&,Raquette&,Tab_brick&) const;
 
     /* Affiche les partie sauvgardé */
-    void print(const Window*) const;
+    void print(/*const Window**/) const;
 };
 
 

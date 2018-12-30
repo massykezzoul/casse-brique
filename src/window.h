@@ -19,7 +19,7 @@ enum Color {
   BCYAN,   // couleur fond = cyan,    couleur texte = noir
   BBLUE,   // couleur fond = bleu,    couleur texte = noir
   BYELLOW, // couleur fond = jaune,   couleur texte = noir
-  BGREEN,  // couleur fond = vert,    couleur texte = noir
+  BGREEN,  // couleur fond = vert,    couleur texte = noir 
   BMAGENTA,// couleur fond = magenta, couleur texte = noir
   BRED,    // couleur fond = rouge,   couleur texte = noir
 };
@@ -45,7 +45,7 @@ class Window {
   // constructeur d'un fenetre de hauteur=h, largeur=w dont le coin superieur gauche
   // a pour coordonnée (x,y), le caractère c est utilisé pour définir la bordure
   Window(int h,int w, int x, int y, char c='+');
-  Window();
+
   ~Window();
 
   // fonction permettant d'afficher une variable s de type (string ou char)
@@ -54,12 +54,12 @@ class Window {
   void print(int x, int y, std::string s, Color c) const;
   void print(int x, int y, char s, Color c) const;
   void print(int x, int y, std::string s) const;
-  void print(int x, int y, char s) const;
+  void print(int x, int y, char s) const; 
 
-
+  
   // accesseurs
-  int getX() const;        // récupère l'abscisse du coin supérieur gauche de la fenêtre
-  int getY() const;        // récupère l'ordonnée du coin supérieur gauche de la fenêtre
+  int getX() const;        // récupère l'abscisse du coin supérieur gauche de la fenêtre 
+  int getY() const;        // récupère l'ordonnée du coin supérieur gauche de la fenêtre 
   int getHauteur() const ; // récupère la hauteur de la fenêtre
   int getLargeur() const ; // récupère la largeur de la fenêtre
 

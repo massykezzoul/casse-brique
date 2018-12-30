@@ -114,9 +114,9 @@ Tab_brick& Tab_brick::operator=(const Tab_brick &b) {
     if (&b != this) {
         size = b.size;
         alloc = b.alloc;
-        delete[] tab;
+        if (tab != NULL) delete[] tab;
+        delete tab;
         tab = new Brick[b.alloc];
-        if (tab == NULL) exit(1);
         for(int i =0; i < size ; ++i) {
             tab[i] = b.tab[i];
         }
