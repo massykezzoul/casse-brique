@@ -14,25 +14,6 @@ Brick::Brick(Forme f,int r,int p, int x, int y,int w,int h,Color c):forme(f),res
 
 }
 
-Brick::Brick(const Brick& b)
-    :forme(b.forme),resistance(b.resistance),point(b.point),x(b.x),y(b.y),width(b.width),height(b.height),c(b.c){
-
-}
-
-Brick& Brick::operator=(const Brick &b) {
-    if (&b != this) {
-        forme = b.forme;
-        resistance = b.resistance;
-        point = b.point;
-        x = b.x;
-        y = b.y;
-        width = b.width;
-        height = b.height;
-        c = b.c;
-    } 
-    return *this;
-}
-
 /* Les getteurs */
 Forme Brick::get_forme() const{
     return forme;

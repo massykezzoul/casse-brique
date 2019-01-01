@@ -22,7 +22,7 @@ public:
     std::string get_name() const;
     int get_vie() const;
     int get_score() const;
-    const Tab_brick& get_brick() const;
+    Tab_brick get_brick() const;
 
     void set_name(const std::string);
     void set_vie(const int);
@@ -32,6 +32,8 @@ public:
     /* Affiche les partie sauvgardé */
     void print(const Window*) const;
 };
+
+#define NB_SAUVGARDE_MAX 10
 
 class Tab_save{
 private:
@@ -47,13 +49,16 @@ public:
 
     void add(std::string,int vie,int score,const Tab_brick&);
 
+    Save get_save(int i) const;
+
+    int get_size() const;
+ 
     void del(int i);
 
-    void print(const Window*) const;
+    int print(const Window*) const;
+
+    //int charger(const Window*) const;
 
 };
-
-/* Fonction pour avancer jusqu'a la ligne suivante */
-void nextline(std::ifstream&);
 
 #endif

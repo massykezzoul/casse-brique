@@ -11,9 +11,13 @@ int main () {
   startProgramX();
   
   int i = menu();
+  int save = -1;
   while (i != 5) {
     if (i==1) jouer();
-    else if (i == 2) charger();
+    else if (i == 2) {
+      save = charger();
+      if (save != -1) jouer(save);
+    }
     else if (i == 3) option();
     else if (i == 4) score();
     else if (i == 5) break;

@@ -25,7 +25,7 @@ Save::Save(string name,int vie,int score,const Tab_brick& t)
 string Save::get_name() const {return name;}
 int Save::get_vie() const {return vie;}
 int Save::get_score() const {return score;}
-const Tab_brick& Save::get_brick() const{return tab_brick;}
+Tab_brick Save::get_brick() const{return tab_brick;}
 
 void Save::set_name(const std::string s){
     name = s;
@@ -68,17 +68,15 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
 
    int taille,i=0;
    ifstream file(nom_fichier.c_str());
-   ofstream test("test.txt");
    if (file) {
        file >> taille;
        while(!file.eof() && i< taille) {
             file >> name >> vie >> score >> nb_brick;
-            test << name << " v: " << vie << " s: " << score << " b: " << nb_brick << endl;
             /* Lecture des brick */
-            for(int i = 0 ; i < nb_brick ; ++i) {
+            tab_brick = Tab_brick();
+            for(int j = 0 ; j < nb_brick ; ++j) {
                 file >> forme >> resistance >> point >> x >> y >> w >> h >> c;
                 tab_brick.add(IntToForme(forme),resistance,point,x,y,w,h,IntToColor(c));
-                test << " f: "<<forme <<" r: "<<resistance<<" p: "<<point<<" x: " <<x << " y: "<<y<<" w: "<<w<<" h: "<<h<<" c: "<<c<<endl;
             }
             add(name,vie,score,tab_brick);
             ++i;
@@ -105,6 +103,7 @@ void Tab_save::write(std::string nom_fichier)const {
     */
     Tab_brick tab;
     Brick b;
+    int s;
     ofstream file(nom_fichier.c_str());
     if (file) {
         file << size << endl;
@@ -112,7 +111,8 @@ void Tab_save::write(std::string nom_fichier)const {
             file << save[i].get_name() << " " << save[i].get_vie() << " " << save[i].get_score() 
                 << " " << save[i].get_brick().get_size() <<endl;
             tab = save[i].get_brick();
-            for(int j = 0; j < tab.get_size() ; j++) {
+            s = tab.get_size();
+            for(int j = 0; j < s ; j++) {
                 b = *tab.get_brick(j);
                 file << b.get_forme() << " " << b.get_resistance() << " " << b.get_point() 
                     << " " << b.get_posX() << " " << b.get_posY() << " " << b.get_width()
@@ -134,6 +134,19 @@ void Tab_save::add(string name,int vie,int score, const Tab_brick& tab) {
     size++;
 }
 
+Save Tab_save::get_save(int i) const {
+    if (i < size && i >= 0 )
+        return save[i];
+    else  {
+        Save s;
+        s.set_name("Erreur");
+        return s;
+    }
+}
+
+int Tab_save::get_size() const{
+    return size;
+}
 
 
 
@@ -149,76 +162,75 @@ void Tab_save::del(int i){
 
 
 /* Affiche les partie sauvgardé */
-void Tab_save::print(const Window* w) const{
+int Tab_save::print(const Window* w) const{
     int x = (int)(0.15*(w->getX()+w->getLargeur()));
     int y = (int)(0.15*(w->getY()+w->getHauteur()));
     Color c = BWHITE;
     stringstream ss("");
+    Tab_boutton selection;
+    
+    Window win(size+5,35,x,y,' ');
+    string separateur(win.getLargeur(),'-');
+    win.setCouleurBordure(c);
+    win.setCouleurFenetre(WBLACK);
     
     if (size == 0 ){
         /* Aucune partie sauvgarder */
-        Window win(5,35,x,y,' ');
-        string separateur(win.getLargeur(),'-');
 
-        win.setCouleurBordure(c);
-        win.setCouleurFenetre(WBLACK);
         /* Affichage du msg */
         win.print(0,0,separateur);
         win.print(0,1,"Aucune Partie Sauvgardé");
         win.print(0,2,separateur);
         /* Le boutton OK */
-        Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
-        ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),3);
+        selection.add(" [  OK  ] ",(int)(0.30*(win.getX()+win.getLargeur())),size+4,WBLACK ,c ,true);
+        selection.print(&win);
+        win.print(0,size+5,separateur);
 
-        win.print(0,4,separateur);
-
-        int car = 0;
-        while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
-            car = 0;
-            car = getch();
-            usleep(50000);
-        }    
-        win.clear();
     } else {
-        Window win(size+5,35,x,y,' ');
-        string separateur(win.getLargeur(),'-');
-
-        win.setCouleurBordure(c);
-        win.setCouleurFenetre(WBLACK);
         /* Affichage du msg */
-        ss << "nb : " << size;
         win.print(0,0,separateur);
-        win.print(0,1,ss.str());
+        win.print(0,1,"Partes sauvgardés :");
         win.print(0,2,separateur);
-        ss.str("");
         /* Affichages des scores */
         for(int i = 0;i<size;++i ){
-            ss << i+1<<"- " <<save[i].get_name() << " : " << save[i].get_score() << " Points et " << save[i].get_vie()<< " Balles." << endl;
-            win.print(1,i+3,ss.str());
+            ss <<i+1<<"-"<<save[i].get_name() << " : " << save[i].get_score() << " Points et " << save[i].get_vie()<< " Balles." << endl;
+            selection.add(ss.str(),1,i+3,WBLACK,c,false);
             ss.str("");
+            selection.print(&win);
         }
         win.print(0,size+3,separateur);
         /* Le boutton OK */
-        Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
-        ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),size+4);
-
+        selection.add(" [  OK  ] ",(int)(0.30*(win.getX()+win.getLargeur())),size+4,WBLACK ,c ,true);
+        selection.print(&win);
         win.print(0,size+5,separateur);
-
-        int car = 0;
-        while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
-            car = 0;
-            car = getch();
-            usleep(50000);
-        }
-        win.clear();
     }
-}
 
-
-void nextline(ifstream &file) {
-    if (file) {
-        char c;
-        do file.get(c); while(c != '\n' && !file.eof());
-        if (!file.eof()) file.get(c);
+    int car = 0;
+    int sel;
+    while (car != '\n' && car != 'q' && car != 'Q' && car != ' ' ) {
+        car=0;
+        do {
+            car = getch(); 
+            switch (car)
+            {
+                case KEY_DOWN:
+                    selection.down();
+                    selection.print(&win);
+                    break;
+                case KEY_UP:
+                    selection.up();
+                    selection.print(&win);
+                    break;
+                case '\n':
+                    sel = selection.get_selected();
+                    break;
+                default:
+                    car = ERR;
+                    usleep(50000);
+                    break;
+            }
+        } while (c == ERR);
     }
+    win.clear();
+    return (sel==size+1?-1:sel-1);
 }

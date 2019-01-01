@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <fstream>
 #include <unistd.h>
 #include "window.h"
 
@@ -27,7 +28,17 @@ int menu(Color fond,Color bordure){
 
     Color on_focus = BWHITE;
 
-    Tab_boutton tab(fond,on_focus);
+    Tab_boutton tab;
+
+    int x = (win.getX() + win.getLargeur()) / 2 - 3;
+    int y = win.getY() + 8;
+
+    tab.add("Jouer",x,y,fond,on_focus,true);
+    tab.add("Charger",x,y+1,fond,on_focus);
+    tab.add("Options",x,y+2,fond,on_focus);
+    tab.add("Scores",x,y+3,fond,on_focus);
+    tab.add("Quitter",x,y+4,fond,on_focus);
+
     int sel = -1;
     int c=0;
     while (sel == -1) {
@@ -58,22 +69,34 @@ int menu(Color fond,Color bordure){
     return sel;
 }
 
-void jouer(){
+void jouer(int i){
     //Initialisation
     Terrain terrain(0,0, 50, 25);
-    /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-    Player* p = new Player("Massy",3,0,2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
-    //Niveau
     Tab_brick tab;
+    Player* p;
+    if (i == -1) {
+        /* Les arguments c'est pour placé les stats à droite du Terrain */ 
+        p = new Player("Massy",3,0,2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        //Niveau
+        tab.add(CARRE, 2, 20, 2, 1,6,2,WGREEN);
+        tab.add(CARRE, 2, 20, 15, 1,6,2,WGREEN);
+        tab.add(CARRE, 2, 20, 30, 1,6,2,WGREEN);
+        tab.add(CARRE, 2, 20, 43, 1,6,2,WGREEN);
+
+        tab.add(CARRE, 1, 10, 2, 5,6,2);
+        tab.add(CARRE, 1, 10, 15, 5,6,2);
+        tab.add(CARRE, 1, 10, 30, 5,6,2);
+        tab.add(CARRE, 1, 10, 43, 5,6,2);
+
+    } else {
+        /* Charger une partie depuis la sauvgarde */
+        Tab_save saves(FICHIER_SAUVGARDE);
+        Save save = saves.get_save(i);
+        p = new Player(save.get_name(),save.get_vie(),save.get_score(),2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        tab = save.get_brick();
+    }
+    
     tab.set_player(p);
-    tab.add(CARRE, 1, 10, 5, 5,4,2);
-    //tab.add(CARRE, 1, 10, 9, 5,4,2);
-    tab.add(CARRE, 1, 10, 13, 5,4,2);
-    //tab.add(CARRE, 1, 10, 17, 5,4,2);
-    tab.add(CARRE, 1, 10, 21, 5,4,2);
-    //tab.add(CARRE, 1, 10, 25, 5,4,2);
-    tab.add(CARRE, 1, 10, 29, 5,4,2);
-    //tab.add(CARRE, 1, 10, 33, 5,4,2);
 
     //Raquette
     Raquette rq(10,20,15,1,3,WBLACK,'-');
@@ -172,13 +195,12 @@ void jouer(){
     terrain.clear();
 }
 
-void charger() {
+int charger() {
     Window win(25,50,0,0,' ');
     win.setCouleurBordure(BWHITE);
     win.setCouleurFenetre(WBLACK);
     Tab_save save(FICHIER_SAUVGARDE);
-    save.print(&win);
-    win.clear();
+    return save.print(&win);
 }
 
 void score(){

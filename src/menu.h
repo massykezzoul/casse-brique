@@ -23,12 +23,12 @@ int menu(Color fond = WBLACK,Color bordure = BWHITE);
         5 : Quitter
 */
 
-void jouer();
+void jouer(int i = -1);
 /*   
     La Partie commence ici
 */  
 
-void charger();
+int charger();
 /* 
     Charger une partie sauvgarder
 */

@@ -107,8 +107,8 @@ void Score::print(const Window* w) const{
 
     win.print(0,MAX_SCORE+3,separateur);
     /* Le boutton OK */
-    Boutton ok(" [  OK  ] ",0,WBLACK ,c ,true);
-    ok.print(&win,(int)(0.30*(win.getX()+win.getLargeur())),MAX_SCORE+4);
+    Boutton ok(" [  OK  ] ",(int)(0.30*(win.getX()+win.getLargeur())),MAX_SCORE+4,WBLACK ,c ,true);
+    ok.print(&win);
 
     win.print(0,MAX_SCORE+5,separateur);
 

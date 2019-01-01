@@ -39,11 +39,6 @@ public:
     Brick();
     /* Constructeur parametré*/
     Brick(Forme,int resistance,int point,int x,int y,int w,int h,Color = WRED);
-    
-    Brick(const Brick&);
-
-    /* Operateur d'affectation*/
-    Brick& operator=(const Brick&);
 
     /* Les getteurs */
     Forme get_forme() const;
