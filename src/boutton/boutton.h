@@ -6,7 +6,8 @@
 
 class Boutton {
 private:   
-    int position;
+    int posX;
+    int posY;
     std::string text;
     Color no_focus;
     Color on_focus;
@@ -14,17 +15,20 @@ private:
 
 public:
     Boutton();
-    Boutton(std::string,int x,Color no_f,Color on_f,bool = false);
+    Boutton(std::string,int x,int y,Color no_f,Color on_f,bool = false);
 
     /* Les getteurs */
-    int get_pos() const;
+    int get_posX() const;
+    int get_posY() const;
     std::string get_text() const;
     Color get_no_focus() const;
     Color get_on_focus() const;
     bool get_focused() const;
 
     /* Les setteurs */
-    void set_pos(int);
+    void set_posX(int);
+    void set_posY(int);
+    void set_pos(int,int);
     void set_text(std::string);
     void set_no_focus(Color);
     void set_on_focus(Color);
@@ -37,12 +41,13 @@ public:
 
 class Tab_boutton {
 private:
-    Boutton tab[5];
+    Boutton tab[10];
+    int size;
     int selected;
 public:
     Tab_boutton();
-    Tab_boutton(Color,Color);
 
+    void add(std::string,int x,int y,Color,Color,bool = false);
     void print(Window*) const;
     void down();
     void up();
