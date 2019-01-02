@@ -17,14 +17,15 @@ Save::Save():name(""),vie(0),score(0),tab_brick() {
 
 }
 
-Save::Save(string name,int vie,int score,const Tab_brick& t)
-    :name(name),vie(vie),score(score),tab_brick(t) {
+Save::Save(string name,int vie,int score,int niveau,const Tab_brick& t)
+    :name(name),vie(vie),score(score),niveau(niveau),tab_brick(t) {
 
 }
 
 string Save::get_name() const {return name;}
 int Save::get_vie() const {return vie;}
 int Save::get_score() const {return score;}
+int Save::get_niveau() const {return niveau;}
 Tab_brick Save::get_brick() const{return tab_brick;}
 
 void Save::set_name(const std::string s){
@@ -36,6 +37,10 @@ void Save::set_vie(const int v){
 void Save::set_score(const int s){
     score = s;
 }
+void Save::set_niveau(const int n){
+    niveau = n;
+}
+
 void Save::set_brick(const Tab_brick& t){
     tab_brick = t;
 }
@@ -52,7 +57,7 @@ void Save::print(const Window* w) const {
 Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
     /*
         syntaxe du fichier de sauvgarde :
-            name vie score nombre_brick
+            name vie score niveau nombre_brick
             forme resistance point x y w h color
             forme resistance point x y w h color
             forme resistance point x y w h color
@@ -60,7 +65,7 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
     */
    string line("");
    string name("");
-   int vie,score,nb_brick;
+   int vie,score,niveau,nb_brick;
    /* Tableau de bricks */
    Tab_brick tab_brick;
    /* les attributs de bricks */
@@ -71,14 +76,14 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
    if (file) {
        file >> taille;
        while(!file.eof() && i< taille) {
-            file >> name >> vie >> score >> nb_brick;
+            file >> name >> vie >> score >> niveau >> nb_brick;
             /* Lecture des brick */
             tab_brick = Tab_brick();
             for(int j = 0 ; j < nb_brick ; ++j) {
                 file >> forme >> resistance >> point >> x >> y >> w >> h >> c;
                 tab_brick.add(IntToForme(forme),resistance,point,x,y,w,h,IntToColor(c));
             }
-            add(name,vie,score,tab_brick);
+            add(name,vie,score,niveau,tab_brick);
             ++i;
        }
        file.close();
@@ -109,7 +114,7 @@ void Tab_save::write(std::string nom_fichier)const {
         file << size << endl;
         for(int i = 0; i < size; i++) {
             file << save[i].get_name() << " " << save[i].get_vie() << " " << save[i].get_score() 
-                << " " << save[i].get_brick().get_size() <<endl;
+                <<" " << save[i].get_niveau() << " " << save[i].get_brick().get_size() <<endl;
             tab = save[i].get_brick();
             s = tab.get_size();
             for(int j = 0; j < s ; j++) {
@@ -123,14 +128,14 @@ void Tab_save::write(std::string nom_fichier)const {
     }
 }
 
-void Tab_save::add(string name,int vie,int score, const Tab_brick& tab) {
+void Tab_save::add(string name,int vie,int score,int niveau, const Tab_brick& tab) {
     /* copie */
     Save* tmp = new Save[size+1];
     for (int i = 0 ; i < size ; i++)
         tmp[i] = save[i];
     if (save != NULL) delete[] save;
     save = tmp;
-    save[size] = Save(name,vie,score,tab);
+    save[size] = Save(name,vie,score,niveau,tab);
     size++;
 }
 
@@ -152,7 +157,7 @@ int Tab_save::get_size() const{
 
 /* Supprime la sauvgarde numéro i */
 void Tab_save::del(int i){
-    if (i < size) {
+    if (i >= 0 && i < size) {
         --size;
         for (int j = i ; j < size;j++) {
             save[j] = save[j+1];
@@ -179,7 +184,7 @@ int Tab_save::print(const Window* w) const{
 
         /* Affichage du msg */
         win.print(0,0,separateur);
-        win.print(0,1,"Aucune Partie Sauvgardé");
+        win.print(0,1,"Aucune Partie Sauvgardée");
         win.print(0,2,separateur);
         /* Le boutton OK */
         selection.add(" [  OK  ] ",(int)(0.30*(win.getX()+win.getLargeur())),size+4,WBLACK ,c ,true);
@@ -189,7 +194,7 @@ int Tab_save::print(const Window* w) const{
     } else {
         /* Affichage du msg */
         win.print(0,0,separateur);
-        win.print(0,1,"Partes sauvgardés :");
+        win.print(0,1,"Parties sauvgardées :");
         win.print(0,2,separateur); 
         /* Affichages des scores */
         for(int i = 0;i<size;++i ){

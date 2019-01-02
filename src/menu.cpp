@@ -2,7 +2,9 @@
 #include <sstream>
 #include <string>
 #include <fstream>
-#include <unistd.h>
+#include <unistd.h> // usleep()
+#include <cstdlib> // srand() , rand()
+#include <ctime> // time()
 #include "window.h"
 
 #include "player.h"
@@ -76,7 +78,7 @@ void jouer(int i){
     Player* p;
     if (i == -1) {
         /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-        p = new Player("Massy",3,0,2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        p = new Player("Massy",10,0,3,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
         //Niveau
         tab.add(CARRE, 2, 20, 2, 1,6,2,WGREEN);
         tab.add(CARRE, 2, 20, 15, 1,6,2,WGREEN);
@@ -92,7 +94,7 @@ void jouer(int i){
         /* Charger une partie depuis la sauvgarde */
         Tab_save saves(FICHIER_SAUVGARDE);
         Save save = saves.get_save(i);
-        p = new Player(save.get_name(),save.get_vie(),save.get_score(),2,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        p = new Player(save.get_name(),save.get_vie(),save.get_score(),save.get_niveau(),terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
         tab = save.get_brick();
     }
     
@@ -102,7 +104,9 @@ void jouer(int i){
     Raquette rq(10,20,15,1,3,WBLACK,'-');
     
     Ball ball(rq,WBLACK);
-
+    /* angle random */
+    srand(time(NULL));
+    float angle = -45;
     float speed = 1.0;
     tab.print(terrain.GetWindow());
     ball.print(terrain.GetWindow());
@@ -139,7 +143,12 @@ void jouer(int i){
         case KEY_SPACE:
             if (ball.get_speed() == 0) {
                 ball.set_speed(speed);
-                ball.set_angle(-45);
+                /* random angle */
+                do{
+                    angle = rand() % 180;
+                } while ((angle > 155 || (angle < 110 && angle > 70 ) || (angle < 25)) );
+                angle = -angle;
+                ball.set_angle(angle);
             }
         default:
             break;
@@ -210,7 +219,7 @@ void jouer(int i){
         }
         if (sel == 1) {
             Tab_save save(FICHIER_SAUVGARDE);
-            save.add(p->get_name(),p->get_ball(),p->get_score(),tab);
+            save.add(p->get_name(),p->get_ball(),p->get_score(),p->get_niveau(),tab);
             save.write(FICHIER_SAUVGARDE);
             save.print(terrain.GetWindow());
         }
