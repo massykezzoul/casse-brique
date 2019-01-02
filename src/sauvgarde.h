@@ -33,7 +33,7 @@ public:
     void print(const Window*) const;
 };
 
-#define NB_SAUVGARDE_MAX 10
+#define NB_SAUVGARDE_MAX 100
 
 class Tab_save{
 private:
@@ -56,8 +56,6 @@ public:
     void del(int i);
 
     int print(const Window*) const;
-
-    //int charger(const Window*) const;
 
 };
 

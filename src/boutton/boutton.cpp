@@ -68,6 +68,7 @@ Tab_boutton::Tab_boutton():size(0),selected(0){}
 
 void Tab_boutton::add(string name,int x,int y,Color fond,Color on_focus,bool select) {
     if (size < 10){
+        if (select) selected = size;
         tab[size] = Boutton(name,x,y,fond,on_focus,select);
         ++size;
     }

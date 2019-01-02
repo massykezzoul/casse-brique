@@ -190,7 +190,7 @@ int Tab_save::print(const Window* w) const{
         /* Affichage du msg */
         win.print(0,0,separateur);
         win.print(0,1,"Partes sauvgardés :");
-        win.print(0,2,separateur);
+        win.print(0,2,separateur); 
         /* Affichages des scores */
         for(int i = 0;i<size;++i ){
             ss <<i+1<<"-"<<save[i].get_name() << " : " << save[i].get_score() << " Points et " << save[i].get_vie()<< " Balles." << endl;
@@ -232,5 +232,5 @@ int Tab_save::print(const Window* w) const{
         } while (c == ERR);
     }
     win.clear();
-    return (sel==size+1?-1:sel-1);
+    return (sel>size?-1:sel-1);
 }

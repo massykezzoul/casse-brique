@@ -177,10 +177,43 @@ void jouer(int i){
     }
     if (p->get_ball() != 0 && tab.get_brick() != NULL) {
         // Partie non términé proposé de sauvgarder
-        Tab_save save(FICHIER_SAUVGARDE);
-        save.add(p->get_name(),p->get_ball(),p->get_score(),tab);
-        save.write(FICHIER_SAUVGARDE);
-        save.print(terrain.GetWindow());
+        Window boite(3,25,(int)(0.25*(terrain.get_posX()+terrain.get_width())),(int)(0.15*(terrain.get_posY()+terrain.get_height())),' ');
+        Tab_boutton boutton_tab;
+        boutton_tab.add("[ SAVE ]",2,1,WBLACK,BWHITE,true);
+        boutton_tab.add("[ QUIT ]",14,1,WBLACK,BWHITE,false);
+
+        int car = 0;
+        int sel = -1;
+        boutton_tab.print(&boite);
+        while (car != '\n') {
+            do {
+                car = getch(); 
+                switch (car)
+                {
+                    case KEY_RIGHT:
+                        boutton_tab.down();
+                        boutton_tab.print(&boite);
+                        break;
+                    case KEY_LEFT:
+                        boutton_tab.up();
+                        boutton_tab.print(&boite);
+                        break;
+                    case '\n':
+                        sel = boutton_tab.get_selected();
+                        break;
+                    default:
+                        car = ERR;
+                        usleep(50000);
+                        break;
+                }
+            } while (car == ERR);
+        }
+        if (sel == 1) {
+            Tab_save save(FICHIER_SAUVGARDE);
+            save.add(p->get_name(),p->get_ball(),p->get_score(),tab);
+            save.write(FICHIER_SAUVGARDE);
+            save.print(terrain.GetWindow());
+        }
     }
     else {
         // Partie términé pas de sauvgarde possible
@@ -200,7 +233,50 @@ int charger() {
     win.setCouleurBordure(BWHITE);
     win.setCouleurFenetre(WBLACK);
     Tab_save save(FICHIER_SAUVGARDE);
-    return save.print(&win);
+    int selection = save.print(&win);
+    if (selection == -1 )
+        return -1;
+    else {
+        /* Proposé de charger ou supprimer */
+        Window boite(3,27,(int)(0.25*(win.getX()+win.getLargeur())),(int)(0.15*(win.getY()+win.getHauteur())),' ');
+        Tab_boutton tab;
+        tab.add("[ CHARGER ]",2,1,WBLACK,BWHITE,true);
+        tab.add("[ SUPPRIMER ]",14,1,WBLACK,BWHITE,false);
+
+        int car = 0;
+        int sel = -1;
+        tab.print(&boite);
+        while (car != '\n') {
+            do {
+                car = getch(); 
+                switch (car)
+                {
+                    case KEY_RIGHT:
+                        tab.down();
+                        tab.print(&boite);
+                        break;
+                    case KEY_LEFT:
+                        tab.up();
+                        tab.print(&boite);
+                        break;
+                    case '\n':
+                        sel = tab.get_selected();
+                        break;
+                    default:
+                        car = ERR;
+                        usleep(50000);
+                        break;
+                }
+            } while (car == ERR);
+        }
+        if  (sel == 1) return selection; // Charger
+        else if (sel == 2 ) {
+            // Supprimer
+            save.del(selection);
+            save.write(FICHIER_SAUVGARDE);
+            return -1;
+        } else return -1;
+    }
 }
 
 void score(){
