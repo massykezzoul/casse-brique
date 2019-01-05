@@ -64,8 +64,9 @@ void Brick::set_color() {
             break;
         case 4:
             c = WBLUE;
+            break;
         default:
-            c = WBLACK;
+            c = BWHITE;
             break;
     }
 }
