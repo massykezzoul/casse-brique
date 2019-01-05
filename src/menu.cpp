@@ -23,6 +23,7 @@ using namespace std;
 
 #define KEY_SPACE ' '
 #define KEY_ETR '\n'
+#define FICHIER_SCORES "hightScore.txt"
 #define FICHIER_SAUVGARDE ".savedGames"
 #define FICHIER_CONFIG "config/config.cfg"
 
@@ -278,10 +279,10 @@ void jouer(int i){
     else {
         // Partie términé pas de sauvgarde possible
         /* Sauvgarde du score */
-        Score s("hightScore.txt");
+        Score s(FICHIER_SCORES);
         s.add(*p);
         s.print(terrain.GetWindow());
-        s.write("hightScore.txt");
+        s.write(FICHIER_SCORES);
     }
     /* Destruction de tout les objets */
     delete p;
@@ -349,5 +350,48 @@ void score(){
 }
  
 void option(){
+    Window win(25,50,0,0,' ');
+    win.setCouleurBordure(BWHITE);
+    win.setCouleurFenetre(WBLACK);
 
+    Tab_boutton tab;
+
+    ofstream file;
+
+    int x = (win.getX() + win.getLargeur()) / 2 - 4;
+    int y = win.getY() + 8;
+
+    tab.add("Réinitialiser les Scores",x-8,y+2,WBLACK,BWHITE);
+    tab.add("Réinitialiser les Sauvgardes",x-10,y+3,WBLACK,BWHITE);
+    tab.add("Retour",x,y+4,WBLACK,BWHITE);
+
+    int sel = -1;
+    int c=0;
+    while (sel == -1) {
+        tab.print(&win);
+        c=0;
+        do {
+            c = getch(); 
+            switch (c)
+            {
+                case KEY_DOWN:
+                    tab.down();
+                    break;
+                case KEY_UP:
+                    tab.up();
+                    break;
+                case KEY_ETR:
+                    sel = tab.get_selected();
+                    break;
+                default:
+                    c = ERR;
+                    usleep(50000);
+                    break;
+            }
+
+        } while ( c == ERR );
+    } 
+    if (sel == 3) { file.open(FICHIER_SCORES);file.close(); sel = 5;}
+    else if (sel == 4) { file.open(FICHIER_SAUVGARDE);file.close(); sel = 5;}
+    win.clear();
 }

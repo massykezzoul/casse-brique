@@ -42,4 +42,8 @@ void option();
     Pour changer les options du programme
 */
 
+void option_ball();
+
+void option_raquette();
+
 #endif

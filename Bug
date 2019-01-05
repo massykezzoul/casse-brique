@@ -1,5 +1,0 @@
-Body.cpp
--appel à LinkedList.ResetPull() dans AllColisions() ce qui cause les
-objets apres le premier body non static et solid (la premiere balle) dans la
-liste a ne pas etre affichés, l'appel à LinkedList.Get(i) dans AllUpdate() peut
-résoudre le bug.
