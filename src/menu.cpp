@@ -99,10 +99,10 @@ void jouer(int i){
         p = new Player("Massy",3,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
 
         if (conf.get_size() == 0) { 
-            tab.add(2, 20, 2, 1,6,2,WGREEN);
-            tab.add(2, 20, 15, 1,6,2,WGREEN);
-            tab.add(2, 20, 30, 1,6,2,WGREEN);
-            tab.add(2, 20, 43, 1,6,2,WGREEN);
+            tab.add(2, 20, 2, 1,6,2);
+            tab.add(2, 20, 15, 1,6,2);
+            tab.add(2, 20, 30, 1,6,2);
+            tab.add(2, 20, 43, 1,6,2);
 
             tab.add(1, 10, 2, 5,6,2);
             tab.add(1, 10, 15, 5,6,2);

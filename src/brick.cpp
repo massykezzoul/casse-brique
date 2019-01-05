@@ -10,8 +10,9 @@ Brick::Brick():resistance(1),point(10), x(0),y(0), width(2), height(3),c(WRED) {
 
 }
 
-Brick::Brick(int r,int p, int x, int y,int w,int h,Color c):resistance(r>0?r:0),point(p>0?p:0), x(x),y(y) ,width(w), height(h),c(c) {
-
+Brick::Brick(int r,int p, int x, int y,int w,int h):resistance(r>0?r:0),point(p>0?p:0), x(x),y(y) ,width(w), height(h) {
+    set_color();
+    
 }
 
 /* Les getteurs */
@@ -43,9 +44,30 @@ Color Brick::get_color()const {
 
 void Brick::set_resistance(int r){
     resistance = (r > 0)?r:0;
+    set_color();
 }
 void Brick::set_point(int p){
     point = (p>0)?p:0;
+}
+
+void Brick::set_color() {
+    switch (resistance)
+    {
+        case 1:
+            c = WRED;
+            break;
+        case 2:
+            c = WYELLOW;
+            break;
+        case 3:
+            c = WGREEN;
+            break;
+        case 4:
+            c = WBLUE;
+        default:
+            c = WBLACK;
+            break;
+    }
 }
 
 
@@ -54,6 +76,7 @@ void Brick::set_point(int p){
 void Brick::increment_resistance(int r) {
     resistance += r;
     resistance = (resistance<0)?0:resistance;
+    set_color();
 }
 
 void Brick::clear(const Window* w) const {
@@ -108,7 +131,7 @@ Tab_brick::~Tab_brick(){
 }
 
 /* Ajoute une brique au tableau */
-void Tab_brick::add(int resistance,int point,int x,int y,int w,int h,Color c){
+void Tab_brick::add(int resistance,int point,int x,int y,int w,int h){
     if (size >= alloc) {
         /* Réallouer 2 fois plus de mémoire */
         if (alloc ==0) alloc = 2; else alloc *= 2;
@@ -119,7 +142,7 @@ void Tab_brick::add(int resistance,int point,int x,int y,int w,int h,Color c){
             tmp[i] = tab[i];
         delete[] tab;
         tab = tmp;
-        tab[size] = Brick(resistance,point,x,y,w,h,c);
+        tab[size] = Brick(resistance,point,x,y,w,h);
         ++size;
     } else {
         /* Il reste encore de l'espace en mémoire */

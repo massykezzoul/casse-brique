@@ -26,7 +26,7 @@ public:
     /* Constructeur par défault */
     Brick();
     /* Constructeur parametré*/
-    Brick(int resistance,int point,int x,int y,int w,int h,Color = WRED);
+    Brick(int resistance,int point,int x,int y,int w,int h);
 
     /* Les getteurs */
     int get_resistance() const;
@@ -42,6 +42,7 @@ public:
     /*  Les setteurs */
     void set_resistance(int);
     void set_point(int);
+    void set_color();
 
     /* Pour incrementé la valeur de resistance */
     /* La valeur par défault du paramétre est -1 */
@@ -72,7 +73,7 @@ public:
     ~Tab_brick();
 
     /* Ajoute une brique au tableau */
-    void add(int resistance,int point,int x,int y,int w,int h,Color c = WRED);
+    void add(int resistance,int point,int x,int y,int w,int h);
     void del(int i,const Window* w);
     /* Retourn la brique à la position i*/
     Brick* get_brick(int i = 0);

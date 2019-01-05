@@ -184,7 +184,9 @@ int Ball::collideBrick(Tab_brick& tab,const Window* w) const{
     }
     if (i >= tab.get_size()) return 0;
     else {
+        tab.get_brick(i)->clear(w);
         tab.get_brick(i)->increment_resistance();
+        tab.get_brick(i)->print(w);
         tab.get_player()->increment_score(tab.get_brick(i)->get_point());
         if (tab.get_brick(i)->get_resistance() == 0) tab.del(i,w);
         return normal;   
@@ -227,7 +229,7 @@ int Ball::collideBord(const Window* w) const{
 
 }
 
-/* ------------------- LA CLASSE TAB_BRICK --------------------- */
+/* ------------------- LA CLASSE TAB_BALL --------------------- */
 
 Tab_ball::Tab_ball():tab(new Ball[3]),size(0),alloc(3) {
 
