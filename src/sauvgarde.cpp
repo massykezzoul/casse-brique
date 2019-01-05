@@ -58,10 +58,10 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
     /*
         syntaxe du fichier de sauvgarde :
             name vie score niveau nombre_brick
-            forme resistance point x y w h color
-            forme resistance point x y w h color
-            forme resistance point x y w h color
-            forme resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
     */
    string line("");
    string name("");
@@ -69,7 +69,7 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
    /* Tableau de bricks */
    Tab_brick tab_brick;
    /* les attributs de bricks */
-   int forme,resistance,point,x,y,w,h,c;
+   int resistance,point,x,y,w,h,c;
 
    int taille,i=0;
    ifstream file(nom_fichier.c_str());
@@ -80,8 +80,8 @@ Tab_save::Tab_save(string nom_fichier):save(NULL),size(0) {
             /* Lecture des brick */
             tab_brick = Tab_brick();
             for(int j = 0 ; j < nb_brick ; ++j) {
-                file >> forme >> resistance >> point >> x >> y >> w >> h >> c;
-                tab_brick.add(IntToForme(forme),resistance,point,x,y,w,h,IntToColor(c));
+                file >> resistance >> point >> x >> y >> w >> h >> c;
+                tab_brick.add(resistance,point,x,y,w,h,IntToColor(c));
             }
             add(name,vie,score,niveau,tab_brick);
             ++i;
@@ -101,10 +101,10 @@ void Tab_save::write(std::string nom_fichier)const {
     /*
         syntaxe du fichier de sauvgarde :
             name vie score nombre_brick
-            forme resistance point x y w h color
-            forme resistance point x y w h color
-            forme resistance point x y w h color
-            forme resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
+            resistance point x y w h color
     */
     Tab_brick tab;
     Brick b;
@@ -119,7 +119,7 @@ void Tab_save::write(std::string nom_fichier)const {
             s = tab.get_size();
             for(int j = 0; j < s ; j++) {
                 b = *tab.get_brick(j);
-                file << b.get_forme() << " " << b.get_resistance() << " " << b.get_point() 
+                file << b.get_resistance() << " " << b.get_point() 
                     << " " << b.get_posX() << " " << b.get_posY() << " " << b.get_width()
                     << " " << b.get_height() << " " << b.get_color() << endl;
             }

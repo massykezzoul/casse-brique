@@ -10,21 +10,31 @@
 using namespace std;
 
 /* La classe Config */
-/*
-Level Config::get_level() const {
-	numero = line.size() > 6? stoi(line[6]):0;
-					getline(file,line);
-					line = clean_line(line);
-					while (line != "end-level" && !file.eof()) {
-						if (get_key_val(line,key,value)) {
+Level Config::set_level(ifstream& file) const {
+	
+	int width=2,heigth=1,resistance=1,nb_brick=3,nb_lines=3,padding=1;
+	
+	string line,key,value;
 
-						}
-						
-						getline(file,line);
-						line = clean_line(line);	
-					}
+	getline(file,line);
+	line = clean_line(line);
+	while (!file.eof() && line != "end-level") {
+		if (get_key_val(line,key,value)) {
+			if (key == "shape" && value.size()>= 3) {width = value[0] - '0';heigth = value[2]-'0'; }
+			else if (key == "resistance") resistance = stoi(value);
+			else if (key == "nbbricks") nb_brick = stoi(value);
+			else if (key == "nblines") nb_lines = stoi(value);
+			else if (key == "padding") padding = stoi(value);
+
+		}
+		
+		getline(file,line);
+		line = clean_line(line);	
+	}
+
+	return Level(width,heigth,resistance,nb_brick,nb_lines,padding);
 }
-*/
+
 Ball Config::set_ball(ifstream &file) const {
 	float speed = 1.0;
 	float angle = -1; // random
@@ -72,13 +82,12 @@ Raquette Config::set_raquette(ifstream &file) const {
 }
 
 
-Config::Config(std::string file_name) {
+Config::Config(std::string file_name):nb_niveau(0),niveau(NULL) {
 	ifstream file(file_name.c_str());
 	if (file) {
 		string line;
 
 		/* Niveau */
-		int numero;
 		string key,value;
 
 		while ( !file.eof() ) {
@@ -87,7 +96,14 @@ Config::Config(std::string file_name) {
 
 			if (line != "" ) {
 				if ( get_word(line) == "level" ) {
-					/* Lecture d'un niveau */
+					/* Allocation d'un nouveau niveau */
+					Level* tmp = new Level[nb_niveau+1];
+					for (int i = 0; i<nb_niveau;++i) 
+						tmp[i] = niveau[i];
+					if (niveau != NULL) delete[] niveau;
+					niveau = tmp;
+					niveau[nb_niveau] = set_level(file);
+					++nb_niveau;
 					
 				}
 
@@ -108,6 +124,10 @@ Config::Config(std::string file_name) {
 /* Les Getteurs */
 Ball Config::get_ball() const {return ball;}
 Raquette Config::get_raquette() const {return rq;}
+Level Config::get_level(int i) const {
+	return (nb_niveau>i)?niveau[i]:Level();
+}
+int Config::get_size() const {return nb_niveau;}
 
 
 /*-----------------------------------------------*/
@@ -154,7 +174,7 @@ string get_word(string ligne,int i){
 }
 
 bool decode_shape(std::string valeur,int& x,int& y){
-	int i= 0;
+	unsigned int i= 0;
 
 	if (!isdigit(valeur[0]))
 		return false;

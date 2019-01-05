@@ -16,12 +16,15 @@
 #include "boutton/boutton.h"
 #include "score.h"
 #include "sauvgarde.h"
+#include "level.h"
+#include "config/config.h"
 
 using namespace std;
 
 #define KEY_SPACE ' '
 #define KEY_ETR '\n'
 #define FICHIER_SAUVGARDE ".savedGames"
+#define FICHIER_CONFIG "config/config.cfg"
 
 int menu(Color fond,Color bordure){
     Window win(25,50,0,0,' ');
@@ -72,42 +75,66 @@ int menu(Color fond,Color bordure){
 }
 
 void jouer(int i){
-    //Initialisation
+    //Initialisation et déclaration des variables
+
     Terrain terrain(0,0, 50, 25);
     Tab_brick tab;
     Player* p;
-    if (i == -1) {
-        /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-        p = new Player("Massy",10,0,3,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
-        //Niveau
-        tab.add(CARRE, 2, 20, 2, 1,6,2,WGREEN);
-        tab.add(CARRE, 2, 20, 15, 1,6,2,WGREEN);
-        tab.add(CARRE, 2, 20, 30, 1,6,2,WGREEN);
-        tab.add(CARRE, 2, 20, 43, 1,6,2,WGREEN);
+    Raquette rq(10,20,15,1,3,WBLACK,'-');
+    Ball ball(rq,WBLACK);
 
-        tab.add(CARRE, 1, 10, 2, 5,6,2);
-        tab.add(CARRE, 1, 10, 15, 5,6,2);
-        tab.add(CARRE, 1, 10, 30, 5,6,2);
-        tab.add(CARRE, 1, 10, 43, 5,6,2);
+    int niveau_actuel = 0;
+    float angle = -1; // random
+    float speed = 1.0;
+    bool random_angle = true;
+    
+    /* lecture du fichier de configuration */
+    Config conf(FICHIER_CONFIG);
+
+    if (i == -1) {
+        /* Nouvelle partie */
+        /* FAUDRAIS DEMMANDAIS LE NOM DU JOUEUR */
+        /* Les arguments c'est pour placé les stats à droite du Terrain */ 
+        p = new Player("Massy",10,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+
+        if (conf.get_size() == 0) { 
+            tab.add(2, 20, 2, 1,6,2,WGREEN);
+            tab.add(2, 20, 15, 1,6,2,WGREEN);
+            tab.add(2, 20, 30, 1,6,2,WGREEN);
+            tab.add(2, 20, 43, 1,6,2,WGREEN);
+
+            tab.add(1, 10, 2, 5,6,2);
+            tab.add(1, 10, 15, 5,6,2);
+            tab.add(1, 10, 30, 5,6,2);
+            tab.add(1, 10, 43, 5,6,2);
+        } else {
+            tab = conf.get_level(0).get_bricks();
+        }
+
 
     } else {
         /* Charger une partie depuis la sauvgarde */
         Tab_save saves(FICHIER_SAUVGARDE);
         Save save = saves.get_save(i);
         p = new Player(save.get_name(),save.get_vie(),save.get_score(),save.get_niveau(),terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        niveau_actuel = save.get_niveau() - 1;
         tab = save.get_brick();
     }
+
+    ball = conf.get_ball();
+            
+    speed = ball.get_speed();
+    ball.set_speed(0);
+    ball.set_pos(rq);
+
+    random_angle = (ball.get_angle() == -1 )?true:false;
+    rq = conf.get_raquette();
     
     tab.set_player(p);
 
-    //Raquette
-    Raquette rq(10,20,15,1,3,WBLACK,'-');
-    
-    Ball ball(rq,WBLACK);
     /* angle random */
     srand(time(NULL));
-    float angle = -45;
-    float speed = 1.0;
+    
     tab.print(terrain.GetWindow());
     ball.print(terrain.GetWindow());
     rq.print(terrain.GetWindow());
@@ -144,10 +171,12 @@ void jouer(int i){
             if (ball.get_speed() == 0) {
                 ball.set_speed(speed);
                 /* random angle */
-                do{
-                    angle = rand() % 180;
-                } while ((angle > 155 || (angle < 110 && angle > 70 ) || (angle < 25)) );
-                angle = -angle;
+                if (random_angle) {
+                    do{
+                        angle = rand() % 180;
+                    } while ((angle > 155 || (angle < 110 && angle > 70 ) || (angle < 25)) );
+                    angle = -angle;
+                }
                 ball.set_angle(angle);
             }
         default:
@@ -175,7 +204,29 @@ void jouer(int i){
         if (tab.get_brick() == NULL) {
             //Fin de partie toute les brick on été detruite GAGNÉ
             // Passer au niveau suivant
-            c = 'q';
+            niveau_actuel++;
+            if (niveau_actuel < conf.get_size() ) {
+                // charger un niveau
+                tab = conf.get_level(niveau_actuel).get_bricks();
+                ball.clear(terrain.GetWindow());
+                ball.set_pos(rq);
+                ball.set_speed(0);
+                /* random angle */
+                if (random_angle) {
+                    do{
+                        angle = rand() % 180;
+                    } while ((angle > 155 || (angle < 110 && angle > 70 ) || (angle < 25)) );
+                    angle = -angle;
+                }
+                ball.set_angle(angle);
+
+                
+                
+                tab.print(terrain.GetWindow());
+                ball.print(terrain.GetWindow());
+                p->increment_niveau(1);
+                p->print();
+            } else c = 'q';
         }
 
         if (ball.get_speed() != 0) {    

@@ -3,14 +3,16 @@
 
 #include "../ball.h"
 #include "../raquette.h"
+#include "../level.h"
 
 class Config {
 private:
-    // Level niveau
+	int nb_niveau;
+    Level* niveau;
     Ball ball;
     Raquette rq;
 
-    // Level get_level() const;
+    Level set_level(std::ifstream&) const;
     Ball set_ball(std::ifstream&) const;
     Raquette set_raquette(std::ifstream&) const;
 
@@ -20,6 +22,8 @@ public:
 
     Ball get_ball() const;
     Raquette get_raquette() const;
+	Level get_level(int i) const;
+	int get_size() const;
 };
 
 

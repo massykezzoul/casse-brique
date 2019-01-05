@@ -11,15 +11,10 @@ using namespace std;
 
 /* 
 	Compilation : 
-		g++ config-main.cpp config.cpp ../raquette.cpp ../ball.cpp ../window.cpp convert/convert.cpp ../brick.cpp ../player.cpp -o conf -lncurses
+		g++ test-config.cpp config.cpp ../raquette.cpp ../ball.cpp ../window.cpp convert/convert.cpp ../brick.cpp ../player.cpp ../level.cpp -o conf -lncurses
 */
 
 int main(int argc, char** argv){
-	string line;
-	string key,value;
-	ifstream file;
-
-
 
 	Config conf(CONFIG_FILE);
 
@@ -35,8 +30,13 @@ int main(int argc, char** argv){
 		<< "\tspeed : " << conf.get_raquette().get_speed() << endl
 		<< "\ttaille : " << conf.get_raquette().get_width() << endl;
 
+	for (int i = 0 ; i < conf.get_size() ; i++ ) {
+		cout << "Level" << endl;
 
-	file.close();
+		cout << "\tNbbricks * NbLines : " << conf.get_level(i).get_bricks().get_size() << endl;
+
+	}
+
 return 0;
 }
 

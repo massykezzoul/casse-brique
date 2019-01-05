@@ -8,22 +8,10 @@
 #include "window.h"
 #include "player.h"
 
-enum Forme
-{
-    CARRE,
-    TRIANGLE,
-    CREUSE,
-    RONDE,
-    NB_FORME
-};
-
 /* ------------ LA CLASSE BRICK ----------------- */
 
 class Brick {
 private:
-    /* data */
-    /* La forme de la brique */
-    Forme forme;
     /* Le nombre de coup qu'il faut pour la casser */
     int resistance;
     /* Le nombre de point qu'elle fait gagner */
@@ -38,10 +26,9 @@ public:
     /* Constructeur par défault */
     Brick();
     /* Constructeur parametré*/
-    Brick(Forme,int resistance,int point,int x,int y,int w,int h,Color = WRED);
+    Brick(int resistance,int point,int x,int y,int w,int h,Color = WRED);
 
     /* Les getteurs */
-    Forme get_forme() const;
     int get_resistance() const;
     int get_point() const;
 
@@ -53,7 +40,6 @@ public:
     Color get_color() const;
 
     /*  Les setteurs */
-    void set_forme(Forme);
     void set_resistance(int);
     void set_point(int);
 
@@ -86,7 +72,7 @@ public:
     ~Tab_brick();
 
     /* Ajoute une brique au tableau */
-    void add(Forme,int resistance,int point,int x,int y,int w,int h,Color c = WRED);
+    void add(int resistance,int point,int x,int y,int w,int h,Color c = WRED);
     void del(int i,const Window* w);
     /* Retourn la brique à la position i*/
     Brick* get_brick(int i = 0);
@@ -97,9 +83,5 @@ public:
     static void set_player(Player*);
 
 };
-
-int FormeToInt(Forme f);
-
-Forme IntToForme(int i);
 
 #endif

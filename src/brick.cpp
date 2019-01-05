@@ -6,18 +6,16 @@ using namespace std;
 
 
 /* Constructeur */
-Brick::Brick():forme(CARRE),resistance(1),point(10), x(0),y(0), width(2), height(3),c(WRED) {
+Brick::Brick():resistance(1),point(10), x(0),y(0), width(2), height(3),c(WRED) {
 
 }
 
-Brick::Brick(Forme f,int r,int p, int x, int y,int w,int h,Color c):forme(f),resistance(r>0?r:0),point(p>0?p:0), x(x),y(y) ,width(w), height(h),c(c) {
+Brick::Brick(int r,int p, int x, int y,int w,int h,Color c):resistance(r>0?r:0),point(p>0?p:0), x(x),y(y) ,width(w), height(h),c(c) {
 
 }
 
 /* Les getteurs */
-Forme Brick::get_forme() const{
-    return forme;
-}
+
 int Brick::get_resistance() const{
     return resistance;
 }
@@ -42,9 +40,7 @@ Color Brick::get_color()const {
 }
 
 /*  Les setteurs */
-void Brick::set_forme(Forme f){
-    forme = f;
-}
+
 void Brick::set_resistance(int r){
     resistance = (r > 0)?r:0;
 }
@@ -112,7 +108,7 @@ Tab_brick::~Tab_brick(){
 }
 
 /* Ajoute une brique au tableau */
-void Tab_brick::add(Forme f,int resistance,int point,int x,int y,int w,int h,Color c){
+void Tab_brick::add(int resistance,int point,int x,int y,int w,int h,Color c){
     if (size >= alloc) {
         /* Réallouer 2 fois plus de mémoire */
         if (alloc ==0) alloc = 2; else alloc *= 2;
@@ -123,11 +119,11 @@ void Tab_brick::add(Forme f,int resistance,int point,int x,int y,int w,int h,Col
             tmp[i] = tab[i];
         delete[] tab;
         tab = tmp;
-        tab[size] = Brick(f,resistance,point,x,y,w,h,c);
+        tab[size] = Brick(resistance,point,x,y,w,h,c);
         ++size;
     } else {
         /* Il reste encore de l'espace en mémoire */
-        tab[size] = Brick(f,resistance,point,x,y,w,h);
+        tab[size] = Brick(resistance,point,x,y,w,h);
         ++size;
     }
 }
@@ -163,31 +159,4 @@ Player* Tab_brick::get_player() {
 
 void Tab_brick::set_player(Player* p) {
     player = p;
-}
-
-
-/*---------------------------------------------------------*/
-
-int FormeToInt(Forme f) {
-    return (int)f;
-}
-
-Forme IntToForme(int i) {
-    switch(i) {
-        case 0:
-            return CARRE;
-            break;
-        case 1:
-            return TRIANGLE;
-            break;
-        case 2:
-            return CREUSE;
-            break;
-        case 3:
-            return RONDE;
-            break;
-        default:
-            return NB_FORME;
-            break;
-    } 
 }
