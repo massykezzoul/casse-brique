@@ -96,7 +96,7 @@ void jouer(int i){
         /* Nouvelle partie */
         /* FAUDRAIS DEMMANDAIS LE NOM DU JOUEUR */
         /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-        p = new Player("Massy",10,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        p = new Player("Massy",3,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
 
         if (conf.get_size() == 0) { 
             tab.add(2, 20, 2, 1,6,2,WGREEN);
@@ -344,7 +344,7 @@ void score(){
     Window win(25,50,0,0,' ');
     win.setCouleurBordure(BWHITE);
     win.setCouleurFenetre(WBLACK);
-    Score s("hightScore.txt");
+    Score s(FICHIER_SCORES);
     s.print(&win);
     win.clear();
 }
@@ -391,7 +391,7 @@ void option(){
 
         } while ( c == ERR );
     } 
-    if (sel == 3) { file.open(FICHIER_SCORES);file.close(); sel = 5;}
-    else if (sel == 4) { file.open(FICHIER_SAUVGARDE);file.close(); sel = 5;}
+    if (sel == 1) { file.open(FICHIER_SCORES);file.close();}
+    else if (sel == 2) { file.open(FICHIER_SAUVGARDE);file.close();}
     win.clear();
 }
