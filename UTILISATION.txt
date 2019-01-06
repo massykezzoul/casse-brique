@@ -1,0 +1,12 @@
+Compilation :
+    Pour compiler le programme vous devez vous rendre dans le dossier "src" et executer 
+        `make all` via le terminal
+
+Execution du programme : 
+	./casse-brique [OPTION] [ARGUMENTS]
+
+    Les options disponible sont : 
+        -h, --help    : Affiche cette aide puis quitte le programme
+        -v, --version : Affiche la version du programme et quitte
+        -a, --auteur  : Affiche les auteurs du programme et quitte
+        -c, --config [ARGUMENT] : Changer le fichier de configuration

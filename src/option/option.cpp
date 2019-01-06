@@ -124,20 +124,20 @@ void Option_tab::add(const Option &opt){
 		std::cerr << "Identifiant déjà existant dans le tableau." <<std::endl<< std::endl;
 }
 void Option_tab::print() const{
-	for (int i = 0; i < nb; ++i){
+	for (unsigned int i = 0; i < nb; ++i){
 		tab[i].print();
 		std::cout << std::endl;
 	}
 }
 Option::Id Option_tab::cherche(const std::string &nom) const{
-	for (int i = 0; i < nb; ++i) {
+	for (unsigned int i = 0; i < nb; ++i) {
 		if (tab[i].get_nom() == nom)
 			return tab[i].get_identifiant();
 	}
 	return Option::NB_ID;
 }
 Option::Id Option_tab::cherche(const char rac) const{
-	for (int i = 0; i < nb; ++i) {
+	for (unsigned int i = 0; i < nb; ++i) {
 		if (tab[i].get_racourci() == rac)
 			return tab[i].get_identifiant();
 	}
@@ -159,46 +159,44 @@ bool Option_tab::is_raccourci(std::string arg) const {
 }
 
 Option::Arg Option_tab::get_argument(const std::string &nom) const{
-	for (int i = 0; i < nb; ++i) {
+	for (unsigned int i = 0; i < nb; ++i) {
 		if (tab[i].get_nom() == nom)
 			return tab[i].get_argument();
 	}
 	return Option::NB_ARG;
 }
 Option::Arg Option_tab::get_argument(const Option::Id  id) const{
-	for (int i = 0; i < nb; ++i) {
+	for (unsigned int i = 0; i < nb; ++i) {
 		if (tab[i].get_identifiant() == id)
 			return tab[i].get_argument();
 	}
 	return Option::NB_ARG;
 }
 int Option_tab::get_option(const Option::Id id){
-	int i = 0;
+	unsigned int i = 0;
 	while (i < nb) {
 		if (tab[i].get_identifiant() == id)
 			return i;
 	++i;
 	}
-	if (i == nb)
-		return -1;
+	return -1;
 }
-Option const &Option_tab::get_option(int index) {
+Option const &Option_tab::get_option(unsigned int index) {
 	if ((index >= 0) && (index < nb))
 		return tab[index];
-	else 
-		std::cerr << "L'option n'a pas été trouvé" << std::endl;
+	else {
+		cerr << "L'option n'a pas été trouvé" << endl;
+		return tab[0];
+	}
 }
 
 void Option_tab::gere_parametre(int argc,char const *argv[],string& config_file) {
 	int i = 1;
 	int j = -1;
-	int vitesse = -1;
 	string config = "";
-	Option::Id id = Option::NB_ID;
 
 	while (i < argc) {
 		j = -1;
-		id = Option::NB_ID;
 		if (is_nom(argv[i])) {
 			// Est une option avec son nom long spécifié
 			j = get_option(cherche(&argv[i][2]));
@@ -224,7 +222,7 @@ void Option_tab::gere_parametre(int argc,char const *argv[],string& config_file)
 				break;
 			case 1:
 				/* version */
-				cout << "Casse-brique 1.0.0" << endl;
+				cout << "casse-brique 1.0.0" << endl;
 				
 				exit(0);
 				break;
@@ -243,11 +241,14 @@ void Option_tab::gere_parametre(int argc,char const *argv[],string& config_file)
 				break;
 			case 3:
 				/* Auteur */
+				cout << "Casse Brique, Univérsité de Montpellier, Janvier 2019" << endl;
 				cout << "Les auteurs de ce programme sont : " << endl
 					<< "\tKezzoul massili -> Massili.kezzoul@etu.umontpellier.fr"<< endl
-					<< "\tBoyan" << endl 
-					<< "\tRomain" << endl
-					<< "\tYann" << endl;
+					<< "\tBoyan Bechev -> <boyan.bechev@etu.umontpellier.fr>" << endl 
+					<< "\tYashveer Teeluck -> <yashveer.teeluck@etu.umontpellier.fr>" << endl
+					<< "\tRomain Fournier -> <romain.fournier01@etu.umontpellier.fr>" << endl
+					<< "Ecandrant : " << endl
+					<< "Agret Clement" << endl;
 				exit(0);
 				break;
 			default:

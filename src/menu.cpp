@@ -76,7 +76,6 @@ int menu(Color fond,Color bordure){
 
 void jouer(string config_file,int i){
     //Initialisation et déclaration des variables
-
     Terrain terrain(0,0, 50, 25);
     Tab_brick tab;
     Player* p;
@@ -84,10 +83,29 @@ void jouer(string config_file,int i){
     Ball ball(rq,WBLACK);
 
     int niveau_actuel = 0;
-    float angle = -1; // random
+    float angle = -45;
     float speed = 1.0;
     bool random_angle = true;
-    
+
+    /* DEMANDE DU NOM DU JOUEUR */
+    Window dialogue_name(4,25,(int)(0.25*(terrain.get_posX()+terrain.get_width())),(int)(0.15*(terrain.get_posY()+terrain.get_height())),' ');
+    //dialogue_name.setCouleurBordure(BWHITE);
+    dialogue_name.setCouleurFenetre(WBLACK);
+
+    dialogue_name.print(1,1,"Donnez Votre Nom : ");
+    /* Saisie du nom */
+    int name = 0;
+    stringstream nom("");
+    while (name != '\n') {
+        name = 0;
+        name = getch();
+        if (name != ERR && name != '\n') {
+            nom << (char)name;
+            dialogue_name.print(5,2,nom.str());
+        }
+    }
+    if ( nom.str() == "" ) nom.str("Inconnue") ;
+    dialogue_name.clear();
     /* lecture du fichier de configuration */
     Config conf(config_file);
 
@@ -95,7 +113,7 @@ void jouer(string config_file,int i){
         /* Nouvelle partie */
         /* FAUDRAIS DEMMANDAIS LE NOM DU JOUEUR */
         /* Les arguments c'est pour placé les stats à droite du Terrain */ 
-        p = new Player("Massy",10,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
+        p = new Player(nom.str(),10,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
 
         if (conf.get_size() == 0) { 
             tab.add(2, 20, 2, 1,6,2);
@@ -176,8 +194,8 @@ void jouer(string config_file,int i){
                         angle = rand() % 180;
                     } while ((angle > 155 || (angle < 110 && angle > 70 ) || (angle < 25)) );
                     angle = -angle;
-                }
-                ball.set_angle(angle);
+                    ball.set_angle(angle);
+                } 
             }
         default:
             break;
@@ -238,6 +256,7 @@ void jouer(string config_file,int i){
     if (p->get_ball() != 0 && tab.get_brick() != NULL) {
         // Partie non términé proposé de sauvgarder
         Window boite(3,25,(int)(0.25*(terrain.get_posX()+terrain.get_width())),(int)(0.15*(terrain.get_posY()+terrain.get_height())),' ');
+        boite.setCouleurBordure(BWHITE);
         Tab_boutton boutton_tab;
         boutton_tab.add("[ SAVE ]",2,1,WBLACK,BWHITE,true);
         boutton_tab.add("[ QUIT ]",14,1,WBLACK,BWHITE,false);
@@ -298,7 +317,7 @@ int charger() {
         return -1;
     else {
         /* Proposé de charger ou supprimer */
-        Window boite(3,27,(int)(0.25*(win.getX()+win.getLargeur())),(int)(0.15*(win.getY()+win.getHauteur())),' ');
+        Window boite(3,33,(int)(0.25*(win.getX()+win.getLargeur())),(int)(0.15*(win.getY()+win.getHauteur())),' ');
         Tab_boutton tab;
         tab.add("[ CHARGER ]",2,1,WBLACK,BWHITE,true);
         tab.add("[ SUPPRIMER ]",14,1,WBLACK,BWHITE,false);

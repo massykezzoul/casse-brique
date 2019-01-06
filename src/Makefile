@@ -71,3 +71,7 @@ clean :
 # Delete executable
 mrproper: clean
 	@rm $(PROG_NAME) -v
+
+# Print number of lines
+line :
+	@wc -l $(SOURCE) window.h brick.h player.h ball.h raquette.h menu.h boutton/boutton.h score.h sauvgarde.h Terrain.h config/config.h level.h config/convert/convert.h option/option.h

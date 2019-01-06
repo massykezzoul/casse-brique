@@ -168,13 +168,13 @@ void Tab_save::del(int i){
 
 /* Affiche les partie sauvgardé */
 int Tab_save::print(const Window* w) const{
-    int x = (int)(0.15*(w->getX()+w->getLargeur()));
+    int x = (int)(0.10*(w->getX()+w->getLargeur()));
     int y = (int)(0.15*(w->getY()+w->getHauteur()));
     Color c = BWHITE;
     stringstream ss("");
     Tab_boutton selection;
     
-    Window win(size+5,35,x,y,' ');
+    Window win(size+5,40,x,y,' ');
     string separateur(win.getLargeur(),'-');
     win.setCouleurBordure(c);
     win.setCouleurFenetre(WBLACK);

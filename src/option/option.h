@@ -108,7 +108,7 @@ public:
 	int get_option(const Option::Id id);
 
 	// Prend la position d'une option dans le tableau et retourne cette option
-	Option const &get_option(int index);
+	Option const &get_option(unsigned int index);
 
 	/*
 		La méthode qui sera Utilisé par le programme principal
