@@ -19,7 +19,7 @@
 CC	 = g++
 FLAGS    = -Wall -lncurses
 PROG_NAME= casse-brique
-SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp sauvgarde.cpp Terrain.cpp config/config.cpp level.cpp config/convert/convert.cpp
+SOURCE	 = main.cpp window.cpp brick.cpp player.cpp ball.cpp raquette.cpp menu.cpp boutton/boutton.cpp score.cpp sauvgarde.cpp Terrain.cpp config/config.cpp level.cpp config/convert/convert.cpp option/option.cpp
 VERSION  = 'eval\ date\ +%d_%m_%Y'
 
 #usuelles
@@ -55,6 +55,8 @@ config/config.o: config/config.cpp
 	@$(CC) -o config/config.o -c $<  $(FLAGS)
 config/convert/convert.o:config/convert/convert.cpp
 	@$(CC) -o config/convert/convert.o -c $<  $(FLAGS)
+option/option.o: option/option.cpp
+	@$(CC) -o option/option.o -c $<  $(FLAGS)
 
 $(PROG_NAME) : $(SOURCE:.cpp=.o)
 	@$(CC) $^ -o $@ $(FLAGS) && echo 'Compilation OK' || 'Fail on Compilation'

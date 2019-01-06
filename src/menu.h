@@ -23,7 +23,7 @@ int menu(Color fond = WBLACK,Color bordure = BWHITE);
         5 : Quitter
 */
 
-void jouer(int i = -1);
+void jouer(std::string config_file , int = -1);
 /*   
     La Partie commence ici
 */  

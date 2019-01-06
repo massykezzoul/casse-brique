@@ -8,7 +8,6 @@ public:
 		HELP = 0,
 		VERSION,
 		CONFIG, /* Spécifier le nom du fichier de configuration */
-		SPEED, 	/* Peut-être la vitesse de la balle ( à voir si on a le temps d'implementer ça ) */
         AUTEUR, /* Donne le nom des auteurs de ce programme */
 		NB_ID
 	};
@@ -118,7 +117,7 @@ public:
 
 		PS : Peut-être que ce n'est pas sa place mais a voir plus tard
 	*/
-	void gere_parametre(int argc,char const *argv[]);
+	void gere_parametre(int argc,char const *argv[],std::string& config_file);
 
 };
 

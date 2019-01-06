@@ -95,10 +95,7 @@ Option_tab::Option_tab():nb(0){
 	Option opt3(Option::CONFIG,"config",'c',Option::STR,
 		"Donne le fichier de configuration");
 
-	Option opt4(Option::SPEED,"speed",'s',Option::INT,
-		"Spécifié la vitesse de la balle.");
-
-    Option opt5(Option::AUTEUR,"auteur",'a',Option::NOPE,
+    Option opt4(Option::AUTEUR,"auteur",'a',Option::NOPE,
         "Donne le nom des auteur");
 	/* 
 	Pour l'ajout d'une option : 
@@ -114,7 +111,6 @@ Option_tab::Option_tab():nb(0){
 	add(opt2);
 	add(opt3);
 	add(opt4);
-	add(opt5);
 }
 
 // Les methodes 
@@ -193,7 +189,7 @@ Option const &Option_tab::get_option(int index) {
 		std::cerr << "L'option n'a pas été trouvé" << std::endl;
 }
 
-void Option_tab::gere_parametre(int argc,char const *argv[]) {
+void Option_tab::gere_parametre(int argc,char const *argv[],string& config_file) {
 	int i = 1;
 	int j = -1;
 	int vitesse = -1;
@@ -215,47 +211,60 @@ void Option_tab::gere_parametre(int argc,char const *argv[]) {
 		switch (j) {
 			case 0:
 				/* help */
-				cout << "Afficher l'aide du programme" << endl;
+				cout << "Utilisation du programme : " << endl
+					<< "\t./casse-brique [OPTION] [ARGUMENTS]" << endl
+					<< "Les Arguments disponible sont : " << endl
+					<< "\t-h, --help    : Affiche cette aide puis quitte le programme" << endl
+					<< "\t-v, --version : Affiche la version du programme et quitte" << endl
+					<< "\t-a, --auteur  : Affiche les auteurs du programme et quitte" << endl
+					<< "\t-c, --config [ARGUMENT] : Changer le fichier de configuration" << endl;
+
+
+				exit(0);
 				break;
 			case 1:
 				/* version */
-				cout << "Version 0.1" << endl;
+				cout << "Casse-brique 1.0.0" << endl;
+				
+				exit(0);
 				break;
 			case 2:
 				/* config */
 				if ((i + 1 < argc)  &&  (argv[i+1][0] != '-')) {
 					++i; // passe à l'argument de l'option
 					config = argv[i]; // recupere la chaine
+					cout << "Fichier de configuration : '" << config <<"'." << endl;
+					getchar();
 				} else {
 					cerr << "Argument manquant pour '" << argv[i] <<"'"
 						<< endl;
+					exit(1);
 				}	
 				break;
 			case 3:
-				/* speed */
-				if ((i + 1 < argc)  &&  (argv[i+1][0] != '-')) {
-					++i; // passe à l'argument de l'option
-					vitesse = strtod(argv[i],NULL); // recupere l'entier
-				} else {
-					cerr << "Argument manquant pour '" << argv[i] <<"'"
-						<< endl;
-				}	
-				break;
-			case 4:
 				/* Auteur */
-				cout << "Les auteur sont : " << endl
-					<< "\tKezzoul massili"<< endl
-					<< "\tBoyan"<<endl 
+				cout << "Les auteurs de ce programme sont : " << endl
+					<< "\tKezzoul massili -> Massili.kezzoul@etu.umontpellier.fr"<< endl
+					<< "\tBoyan" << endl 
 					<< "\tRomain" << endl
 					<< "\tYann" << endl;
+				exit(0);
 				break;
 			default:
 				cerr << "L'option \"" << argv[i] 
 					<< "\" n'existe pas" << endl;
+				
+				cout << "Utilisation du programme : " << endl
+					<< "\t./casse-brique [OPTION] [ARGUMENTS]" << endl
+					<< "Les Arguments disponible sont : " << endl
+					<< "\t-h, --help    : Affiche l'aide d'utilisation puis quitte le programme" << endl
+					<< "\t-v, --version : Affiche la version du programme et quitte" << endl
+					<< "\t-a, --auteur  : Affiche les auteurs du programme et quitte" << endl
+					<< "\t-c, --config [ARGUMENT] : Changer le fichier de configuration" << endl;
+				exit(1);
 				break;
 			}
 			++i;
 	}
-	cout << "vitesse : " <<  vitesse << endl
-		<< "config : " << config << endl;
+	if (config != "" ) config_file = config;
 }

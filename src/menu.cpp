@@ -25,7 +25,6 @@ using namespace std;
 #define KEY_ETR '\n'
 #define FICHIER_SCORES "hightScore.txt"
 #define FICHIER_SAUVGARDE ".savedGames"
-#define FICHIER_CONFIG "config/config.cfg"
 
 int menu(Color fond,Color bordure){
     Window win(25,50,0,0,' ');
@@ -75,7 +74,7 @@ int menu(Color fond,Color bordure){
     return sel;
 }
 
-void jouer(int i){
+void jouer(string config_file,int i){
     //Initialisation et déclaration des variables
 
     Terrain terrain(0,0, 50, 25);
@@ -90,7 +89,7 @@ void jouer(int i){
     bool random_angle = true;
     
     /* lecture du fichier de configuration */
-    Config conf(FICHIER_CONFIG);
+    Config conf(config_file);
 
     if (i == -1) {
         /* Nouvelle partie */
