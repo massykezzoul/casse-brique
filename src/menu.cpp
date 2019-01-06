@@ -87,31 +87,33 @@ void jouer(string config_file,int i){
     float speed = 1.0;
     bool random_angle = true;
 
-    /* DEMANDE DU NOM DU JOUEUR */
-    Window dialogue_name(4,25,(int)(0.25*(terrain.get_posX()+terrain.get_width())),(int)(0.15*(terrain.get_posY()+terrain.get_height())),' ');
-    //dialogue_name.setCouleurBordure(BWHITE);
-    dialogue_name.setCouleurFenetre(WBLACK);
-
-    dialogue_name.print(1,1,"Donnez Votre Nom : ");
-    /* Saisie du nom */
-    int name = 0;
-    stringstream nom("");
-    while (name != '\n') {
-        name = 0;
-        name = getch();
-        if (name != ERR && name != '\n') {
-            nom << (char)name;
-            dialogue_name.print(5,2,nom.str());
-        }
-    }
-    if ( nom.str() == "" ) nom.str("Inconnue") ;
-    dialogue_name.clear();
+    
     /* lecture du fichier de configuration */
     Config conf(config_file);
 
     if (i == -1) {
         /* Nouvelle partie */
-        /* FAUDRAIS DEMMANDAIS LE NOM DU JOUEUR */
+
+        /* DEMANDE DU NOM DU JOUEUR */
+        Window dialogue_name(4,25,(int)(0.25*(terrain.get_posX()+terrain.get_width())),(int)(0.15*(terrain.get_posY()+terrain.get_height())),' ');
+        //dialogue_name.setCouleurBordure(BWHITE);
+        dialogue_name.setCouleurFenetre(WBLACK);
+
+        dialogue_name.print(1,1,"Donnez Votre Nom : ");
+        /* Saisie du nom */
+        int name = 0;
+        stringstream nom("");
+        while (name != '\n') {
+            name = 0;
+            name = getch();
+            if (name != ERR && name != '\n') {
+                nom << (char)name;
+                dialogue_name.print(5,2,nom.str());
+            }
+        }
+        if ( nom.str() == "" ) nom.str("Inconnue") ;
+        dialogue_name.clear();
+
         /* Les arguments c'est pour placé les stats à droite du Terrain */ 
         p = new Player(nom.str(),10,0,niveau_actuel+1,terrain.get_width()+terrain.get_posX()+2,terrain.get_posY(),23,terrain.get_height());
 
