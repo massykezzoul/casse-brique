@@ -1,9 +1,12 @@
-Le jeu marche UNIQUEMENT sur une system d'exploatation LINUX
+# Casse-Briques
 
-Pour compiler notre programme:
+## Remarque
+Le jeu marche UNIQUEMENT sur un système d'exploitation LINUX
 
-    Placez-vous dans la repertoire des fiches sources sur un terminal
-    Compilez avec la commande "Make"
-    Executez avec "./casse-briqe" pour jouer!
+## Utilisation:
+
+-   Placez-vous dans la repertoire des fiches sources sur un terminal
+-   Compilez avec la commande "Make"
+-   Executez avec "./casse-briqe" pour jouer!
     
     
